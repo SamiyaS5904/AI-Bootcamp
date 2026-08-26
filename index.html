@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BakerIN — Fresh Chocolates, Custom Cakes &amp; Daily Bakes</title>
+<meta name="description" content="BakerIN is a small-batch bakery crafting fresh chocolates, custom cakes, cake tins and everyday bakes. Order on WhatsApp or book your celebration cake in advance.">
+<meta name="theme-color" content="#3B2418">
+
+<!-- Fonts: Fraunces (display) + Inter (body). System fallbacks are declared in CSS. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Inline emoji favicon so no extra files are needed -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127874;</text></svg>">
+
+<style>
+/* ==========================================================================
+   BakerIN — single-file landing page
+   tokens · base · buttons · nav · hero · strip · products · why-us ·
+   booking · contact · float · footer · motion · responsive
+   ========================================================================== */
+
+/* ---------- Design tokens ---------- */
+:root{
+  --cream:     #FBF7F1;
+  --cream-2:   #F6EEE2;
+  --beige:     #EFE2CF;
+  --beige-2:   #E4D2B8;
+  --choc:      #332014;
+  --choc-2:    #4A2E1E;
+  --choc-soft: #6B4530;
+  --caramel:   #B9793C;
+  --caramel-2: #D89A55;
+  --gold:      #E0B25E;
+  --ink:       #2B1C12;
+  --muted:     #7C6A5B;
+  --line:      rgba(51,32,20,.12);
+  --line-soft: rgba(51,32,20,.07);
+  --white:     #FFFDFA;
+
+  --wa:        #1FA855;
+  --wa-dark:   #17833F;
+
+  --shadow-sm: 0 1px 2px rgba(51,32,20,.06), 0 2px 8px rgba(51,32,20,.05);
+  --shadow-md: 0 4px 14px rgba(51,32,20,.07), 0 14px 40px rgba(51,32,20,.07);
+  --shadow-lg: 0 10px 30px rgba(51,32,20,.09), 0 30px 70px rgba(51,32,20,.10);
+
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 34px;
+  --r-pill: 999px;
+
+  --pad: clamp(1.15rem, 5vw, 2rem);
+  --maxw: 1180px;
+  --nav-h: 72px;
+
+  --sans: "Inter", ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+
+  --ease: cubic-bezier(.22,.75,.24,1);
+}
+
+/* ---------- Reset & base ---------- */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+html:focus-within{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.65;
+  letter-spacing:.005em;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; }
+h1,h2,h3,h4{
+  font-family:var(--serif);
+  font-weight:600;
+  line-height:1.08;
+  letter-spacing:-.02em;
+  margin:0 0 .5em;
+  color:var(--choc);
+}
+p{ margin:0 0 1rem; }
+:where(a,button,input,textarea,select,summary,label):focus-visible{
+  outline:2.5px solid var(--caramel);
+  outline-offset:3px;
+  border-radius:6px;
+}
+::selection{ background:var(--beige-2); color:var(--choc); }
+
+/* ---------- Layout helpers ---------- */
+.wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad); }
+.section{ padding-block:clamp(3.6rem, 9vw, 6.5rem); }
+.section--tint{ background:linear-gradient(180deg,var(--cream-2),var(--cream)); }
+.section--panel{ background:var(--cream-2); }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-size:.72rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--caramel);
+  margin-bottom:1rem;
+}
+.eyebrow::before{ content:""; width:26px; height:1.5px; background:currentColor; border-radius:2px; opacity:.55; }
+.head{ max-width:44ch; }
+.head h2{ font-size:clamp(1.9rem, 5.6vw, 3rem); }
+.head p{ color:var(--muted); font-size:1.02rem; max-width:52ch; }
+.head--center{ margin-inline:auto; text-align:center; }
+.head--center .eyebrow::before{ display:none; }
+.head--center p{ margin-inline:auto; }
+
+/* ---------- Buttons ---------- */
+.btn{
+  --btn-bg:var(--choc); --btn-fg:var(--cream);
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  padding:.95rem 1.5rem;
+  min-height:52px;
+  background:var(--btn-bg); color:var(--btn-fg);
+  border:1px solid transparent; border-radius:var(--r-pill);
+  font-size:.95rem; font-weight:600; letter-spacing:.01em;
+  cursor:pointer;
+  box-shadow:var(--shadow-sm);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease),
+             background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+.btn svg{ width:18px; height:18px; flex:none; transition:transform .35s var(--ease); }
+.btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.btn:active{ transform:translateY(0); }
+.btn:hover .arrow{ transform:translateX(3px); }
+.btn--ghost{ --btn-bg:transparent; --btn-fg:var(--choc); border-color:var(--line); box-shadow:none; }
+.btn--ghost:hover{ --btn-bg:var(--white); border-color:rgba(51,32,20,.2); }
+.btn--cream{ --btn-bg:var(--cream); --btn-fg:var(--choc); }
+.btn--wa{ --btn-bg:var(--wa); --btn-fg:#fff; }
+.btn--wa:hover{ --btn-bg:var(--wa-dark); }
+.btn--sm{ padding:.6rem 1.05rem; min-height:42px; font-size:.85rem; }
+.btn--block{ width:100%; }
+
+.link{
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-size:.9rem; font-weight:600; color:var(--caramel);
+  padding-block:.2rem;
+  transition:gap .3s var(--ease), color .25s ease;
+}
+.link:hover{ gap:.65rem; color:var(--choc-soft); }
+
+/* ---------- Sticky navigation ---------- */
+.nav{
+  position:sticky; top:0; z-index:60;
+  background:rgba(251,247,241,.82);
+  backdrop-filter:saturate(1.4) blur(14px);
+  -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav__bar{ display:flex; align-items:center; gap:1rem; min-height:var(--nav-h); }
+.brand{ display:inline-flex; align-items:center; gap:.6rem; margin-right:auto; }
+.brand__mark{
+  width:38px; height:38px; flex:none;
+  border-radius:12px;
+  background:radial-gradient(120% 120% at 25% 15%, var(--caramel-2), var(--choc) 78%);
+  display:grid; place-items:center;
+  color:var(--cream);
+  font-family:var(--serif); font-weight:700; font-size:1.05rem;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25), var(--shadow-sm);
+}
+.brand__name{
+  display:block;
+  font-family:var(--serif); font-size:1.32rem; font-weight:700; letter-spacing:-.02em;
+  color:var(--choc); line-height:1;
+}
+.brand__name em{ font-style:normal; color:var(--caramel); }
+.brand__tag{
+  display:none; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+}
+
+/* Menu is CSS-only by default (works with JS disabled); JS just closes it on tap */
+#navToggle{ position:absolute; opacity:0; pointer-events:none; }
+.burger{
+  display:inline-flex; flex-direction:column; justify-content:center; gap:5px;
+  width:46px; height:46px; padding:0 12px;
+  border:1px solid var(--line); border-radius:14px;
+  background:var(--white); cursor:pointer;
+  transition:box-shadow .3s var(--ease);
+}
+.burger:hover{ box-shadow:var(--shadow-sm); }
+.burger span{
+  display:block; height:2px; background:var(--choc); border-radius:2px;
+  transition:transform .35s var(--ease), opacity .2s ease, width .35s var(--ease);
+}
+.burger span:nth-child(1){ width:100%; }
+.burger span:nth-child(2){ width:70%; }
+.burger span:nth-child(3){ width:85%; }
+#navToggle:checked ~ .nav__bar .burger span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+#navToggle:checked ~ .nav__bar .burger span:nth-child(2){ opacity:0; }
+#navToggle:checked ~ .nav__bar .burger span:nth-child(3){ width:100%; transform:translateY(-7px) rotate(-45deg); }
+
+.menu{
+  position:absolute; left:0; right:0; top:100%;
+  display:grid; gap:.15rem;
+  padding:.6rem var(--pad) 1.15rem;
+  background:var(--cream);
+  border-bottom:1px solid var(--line-soft);
+  box-shadow:var(--shadow-md);
+  opacity:0; visibility:hidden; transform:translateY(-10px);
+  transition:opacity .3s ease, transform .35s var(--ease), visibility .3s;
+}
+#navToggle:checked ~ .menu{ opacity:1; visibility:visible; transform:none; }
+.menu a{
+  padding:.7rem .25rem; font-weight:500; color:var(--choc-2);
+  border-bottom:1px solid var(--line-soft);
+  transition:color .2s ease, padding-left .3s var(--ease), background-color .2s ease;
+}
+.menu a:last-of-type{ border-bottom:0; }
+.menu a:hover{ color:var(--caramel); padding-left:.55rem; }
+.menu .btn{ margin-top:.8rem; }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; overflow:hidden;
+  padding-block:clamp(2.6rem, 8vw, 5.5rem) clamp(3rem, 8vw, 6rem);
+  background:
+    radial-gradient(90% 70% at 88% 8%, rgba(216,154,85,.20), transparent 60%),
+    radial-gradient(70% 60% at 4% 96%, rgba(233,220,201,.75), transparent 62%),
+    linear-gradient(180deg,var(--cream) 0%, var(--cream-2) 100%);
+}
+.hero__grid{ display:grid; gap:clamp(2.4rem,6vw,3.5rem); align-items:center; }
+.hero h1{ font-size:clamp(2.35rem, 9.5vw, 4.35rem); margin-bottom:.55em; }
+.hero h1 em{ font-style:italic; color:var(--caramel); }
+.hero__lede{
+  font-size:clamp(1rem, 2.4vw, 1.12rem); color:var(--muted); max-width:50ch;
+  margin-bottom:1.9rem;
+}
+.hero__cta{ display:flex; flex-wrap:wrap; gap:.7rem; }
+.pill{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.42rem .85rem .42rem .5rem;
+  background:var(--white); border:1px solid var(--line-soft);
+  border-radius:var(--r-pill);
+  font-size:.78rem; font-weight:600; color:var(--choc-2);
+  box-shadow:var(--shadow-sm);
+  margin-bottom:1.4rem;
+}
+.pill b{ color:var(--caramel); }
+.pill__dot{
+  width:22px; height:22px; border-radius:50%; display:grid; place-items:center;
+  background:var(--cream-2); font-size:.72rem;
+}
+.hero__proof{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:1.1rem 1.4rem;
+  margin:2.4rem 0 0; padding-top:1.7rem;
+  border-top:1px solid var(--line);
+  max-width:34rem;
+}
+.stat b{
+  display:block; font-family:var(--serif); font-size:1.5rem; font-weight:700; color:var(--choc);
+  letter-spacing:-.02em; line-height:1.1;
+}
+.stat span{ font-size:.79rem; color:var(--muted); }
+
+/* Hero artwork */
+.hero__art{ position:relative; justify-self:center; width:100%; max-width:460px; }
+.art__disc{
+  position:relative;
+  border-radius:var(--r-xl);
+  padding:1.6rem 1.2rem 1.2rem;
+  background:radial-gradient(120% 90% at 50% 0%, #FFF9EF, var(--beige) 70%, var(--beige-2) 100%);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.art__disc::after{
+  content:""; position:absolute; inset:auto -20% -55% -20%; height:60%;
+  background:radial-gradient(50% 100% at 50% 0%, rgba(255,255,255,.55), transparent 70%);
+  pointer-events:none;
+}
+.art__badge{
+  position:absolute; z-index:2;
+  display:flex; align-items:center; gap:.6rem;
+  padding:.6rem .9rem;
+  background:var(--white); border:1px solid var(--line-soft);
+  border-radius:var(--r-md);
+  box-shadow:var(--shadow-md);
+  font-size:.76rem; font-weight:600; color:var(--choc);
+  animation:bob 6s ease-in-out infinite;
+}
+.art__badge small{ display:block; font-size:.66rem; font-weight:500; color:var(--muted); }
+.art__badge--tl{ top:6%; left:-4%; }
+.art__badge--br{ bottom:8%; right:-3%; animation-delay:-3s; }
+.art__badge i{
+  width:30px; height:30px; border-radius:10px; flex:none;
+  display:grid; place-items:center; font-style:normal; font-size:.9rem;
+  background:var(--cream-2);
+}
+
+/* ---------- Trust strip / marquee ---------- */
+.strip{ background:var(--choc); color:var(--cream); padding-block:.95rem; overflow:hidden; }
+.strip__track{ display:flex; gap:2.6rem; width:max-content; animation:slide 34s linear infinite; }
+.strip__track span{
+  display:inline-flex; align-items:center; gap:.7rem;
+  font-size:.79rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+  opacity:.9; white-space:nowrap;
+}
+.strip__track span::before{ content:"\2726"; color:var(--gold); font-size:.8rem; }
+.strip:hover .strip__track{ animation-play-state:paused; }
+
+/* ---------- Products ---------- */
+.cards{ display:grid; gap:1.1rem; margin-top:2.6rem; }
+.card{
+  position:relative; display:flex; flex-direction:column;
+  background:var(--white);
+  border:1px solid var(--line-soft);
+  border-radius:var(--r-lg);
+  padding:1.15rem;
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), border-color .3s ease;
+}
+.card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lg); border-color:rgba(51,32,20,.14); }
+.card__media{
+  position:relative; height:158px; flex:none;
+  border-radius:var(--r-md);
+  display:grid; place-items:center;
+  overflow:hidden;
+  margin-bottom:1.15rem;
+  background:linear-gradient(160deg,var(--beige),var(--beige-2));
+}
+.card__media::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(70% 60% at 30% 12%, rgba(255,255,255,.75), transparent 62%);
+}
+.card__media::after{
+  content:""; position:absolute; width:150%; aspect-ratio:1; border-radius:50%;
+  bottom:-88%; left:-25%;
+  background:rgba(255,255,255,.24);
+  transition:transform .6s var(--ease);
+}
+.card:hover .card__media::after{ transform:translateY(-12px) scale(1.04); }
+.card:nth-child(2) .card__media{ background:linear-gradient(160deg,#F2DCC4,#DFB98C); }
+.card:nth-child(3) .card__media{ background:linear-gradient(160deg,#EADFD0,#CBA778); }
+.card:nth-child(4) .card__media{ background:linear-gradient(160deg,#F6E9D6,#E5C79B); }
+.card:nth-child(5) .card__media{ background:linear-gradient(160deg,#E7D8C4,#C79E6E); }
+.card__icon{
+  position:relative; z-index:1;
+  width:62px; height:62px;
+  color:var(--choc);
+  transition:transform .5s var(--ease);
+}
+.card:hover .card__icon{ transform:translateY(-4px) scale(1.06) rotate(-2deg); }
+.card__tag{
+  position:absolute; z-index:2; top:.7rem; right:.7rem;
+  padding:.28rem .62rem;
+  background:rgba(255,253,250,.92);
+  border-radius:var(--r-pill);
+  font-size:.68rem; font-weight:700; letter-spacing:.03em; color:var(--choc);
+  box-shadow:var(--shadow-sm);
+}
+.card h3{ font-size:1.24rem; margin-bottom:.35em; }
+.card p{ font-size:.9rem; color:var(--muted); margin-bottom:1rem; }
+.card__foot{
+  margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+  padding-top:.85rem; border-top:1px solid var(--line-soft);
+}
+.card__price{ font-size:.82rem; font-weight:600; color:var(--choc-2); }
+.card__price span{ color:var(--muted); font-weight:500; }
+
+/* ---------- Why choose us ---------- */
+.why{ display:grid; gap:2.2rem; align-items:start; margin-top:2.6rem; }
+.feats{ display:grid; gap:.9rem; }
+.feat{
+  display:flex; gap:1rem;
+  padding:1.1rem;
+  background:var(--white);
+  border:1px solid var(--line-soft);
+  border-radius:var(--r-md);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.feat:hover{ transform:translateX(4px); box-shadow:var(--shadow-md); }
+.feat__ico{
+  width:44px; height:44px; flex:none; border-radius:13px;
+  display:grid; place-items:center;
+  background:linear-gradient(150deg,var(--cream-2),var(--beige));
+  color:var(--choc-soft);
+}
+.feat__ico svg{ width:22px; height:22px; }
+.feat h3{
+  font-size:1.04rem; margin-bottom:.2em;
+  font-family:var(--sans); font-weight:700; letter-spacing:-.01em;
+}
+.feat p{ font-size:.87rem; color:var(--muted); margin:0; }
+
+.quote{
+  position:relative; overflow:hidden; margin:0;
+  padding:1.9rem 1.6rem;
+  border-radius:var(--r-lg);
+  background:linear-gradient(155deg,var(--choc),var(--choc-2) 70%, #5C3925);
+  color:var(--cream);
+  box-shadow:var(--shadow-lg);
+}
+.quote::before{
+  content:"\201C"; position:absolute; top:-2.2rem; right:.6rem;
+  font-family:var(--serif); font-size:11rem; line-height:1; color:rgba(224,178,94,.18);
+}
+.quote p{ font-family:var(--serif); font-size:1.18rem; line-height:1.45; position:relative; }
+.quote footer{ display:flex; align-items:center; gap:.75rem; font-size:.82rem; opacity:.88; }
+.quote footer i{
+  width:34px; height:34px; border-radius:50%; flex:none;
+  background:linear-gradient(140deg,var(--caramel-2),var(--caramel));
+  display:grid; place-items:center; font-style:normal; font-size:.8rem; color:#fff; font-weight:700;
+}
+.quote__stars{ color:var(--gold); letter-spacing:.15em; font-size:.85rem; margin-bottom:.8rem; }
+
+/* ---------- Booking ---------- */
+.booking{ display:grid; gap:1.6rem; margin-top:2.6rem; }
+.steps{ display:grid; gap:.95rem; counter-reset:step; }
+.step{
+  display:flex; gap:1rem; align-items:flex-start;
+  padding:1.05rem 1.15rem;
+  background:var(--white); border:1px solid var(--line-soft); border-radius:var(--r-md);
+  transition:border-color .3s ease, box-shadow .4s var(--ease);
+}
+.step:hover{ border-color:rgba(184,121,60,.4); box-shadow:var(--shadow-sm); }
+.step::before{
+  counter-increment:step; content:"0" counter(step);
+  font-family:var(--serif); font-size:1.05rem; font-weight:700; color:var(--caramel);
+  width:34px; height:34px; flex:none; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--cream-2);
+}
+.step h3{
+  font-family:var(--sans); font-size:1rem; font-weight:700;
+  margin-bottom:.15em; letter-spacing:-.01em;
+}
+.step p{ margin:0; font-size:.87rem; color:var(--muted); }
+
+.form{
+  padding:1.4rem;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow-md);
+}
+.form h3{ font-size:1.3rem; margin-bottom:.25em; }
+.form > p{ font-size:.86rem; color:var(--muted); }
+.field{ display:grid; gap:.35rem; margin-bottom:.9rem; }
+.field label{
+  font-size:.78rem; font-weight:600; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--choc-2);
+}
+.field input, .field select, .field textarea{
+  font:inherit; font-size:.92rem; color:var(--ink);
+  padding:.8rem .9rem;
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  width:100%;
+  transition:border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
+}
+.field textarea{ min-height:104px; resize:vertical; }
+.field input:hover, .field select:hover, .field textarea:hover{ border-color:rgba(51,32,20,.22); }
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none; background:var(--white);
+  border-color:var(--caramel);
+  box-shadow:0 0 0 4px rgba(184,121,60,.14);
+}
+.field ::placeholder{ color:#A99483; }
+.row{ display:grid; gap:.9rem; }
+.form__note{ font-size:.74rem; color:var(--muted); margin:.85rem 0 0; text-align:center; }
+.form__note b{ color:var(--choc-2); }
+.chips{ display:flex; flex-wrap:wrap; gap:.4rem; margin:1.3rem 0 0; }
+.chip{
+  font-size:.74rem; font-weight:600; color:var(--choc-2);
+  padding:.32rem .7rem;
+  background:var(--cream-2); border-radius:var(--r-pill);
+}
+
+/* ---------- Contact ---------- */
+.contact{ display:grid; gap:1.1rem; margin-top:2.6rem; }
+.info{
+  display:flex; gap:1rem;
+  padding:1.3rem;
+  background:var(--white); border:1px solid var(--line-soft); border-radius:var(--r-lg);
+  box-shadow:var(--shadow-sm);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.info:hover{ transform:translateY(-4px); box-shadow:var(--shadow-md); }
+.info__ico{
+  width:42px; height:42px; flex:none; border-radius:13px;
+  display:grid; place-items:center; color:var(--caramel);
+  background:var(--cream-2);
+}
+.info__ico svg{ width:20px; height:20px; }
+.info h3{
+  font-family:var(--sans); font-size:.78rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:.4em;
+}
+.info p{ margin:0; font-size:.95rem; color:var(--choc-2); line-height:1.55; }
+.info a:hover{ color:var(--caramel); }
+.info small{ display:block; color:var(--muted); font-size:.8rem; margin-top:.3rem; }
+
+.cta{
+  margin-top:1.6rem;
+  padding:clamp(1.6rem,5vw,2.6rem);
+  border-radius:var(--r-xl);
+  background:
+    radial-gradient(80% 120% at 90% 10%, rgba(224,178,94,.28), transparent 60%),
+    linear-gradient(150deg,var(--choc),var(--choc-2));
+  color:var(--cream);
+  text-align:center;
+  box-shadow:var(--shadow-lg);
+}
+.cta h2{ color:var(--cream); font-size:clamp(1.6rem,5vw,2.35rem); }
+.cta p{ color:rgba(251,247,241,.78); max-width:46ch; margin-inline:auto; }
+.cta__row{ display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; margin-top:1.4rem; }
+
+/* ---------- Floating WhatsApp button ---------- */
+.wa-float{
+  position:fixed; z-index:70;
+  right:clamp(.9rem,3vw,1.6rem); bottom:clamp(.9rem,3vw,1.6rem);
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.85rem 1.15rem;
+  background:var(--wa); color:#fff;
+  border-radius:var(--r-pill);
+  font-size:.9rem; font-weight:700;
+  box-shadow:0 8px 24px rgba(31,168,85,.34), 0 2px 6px rgba(0,0,0,.12);
+  transition:transform .35s var(--ease), background-color .25s ease, box-shadow .35s var(--ease);
+}
+.wa-float svg{ width:24px; height:24px; flex:none; }
+.wa-float:hover{ transform:translateY(-3px) scale(1.02); background:var(--wa-dark); }
+.wa-float__txt{ display:none; }
+.wa-float::after{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  border:2px solid rgba(31,168,85,.5);
+  animation:ping 2.8s var(--ease) infinite;
+  pointer-events:none;
+}
+
+/* ---------- Footer ---------- */
+.footer{
+  background:var(--choc); color:rgba(251,247,241,.72);
+  padding-block:clamp(2.6rem,7vw,3.6rem) 1.6rem;
+  font-size:.9rem;
+}
+.footer__grid{ display:grid; gap:2rem; }
+.footer h4{
+  color:var(--cream); font-family:var(--sans);
+  font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.footer .brand{ margin-bottom:1rem; }
+.footer .brand__name{ color:var(--cream); }
+.footer .brand__mark{ background:linear-gradient(140deg,var(--caramel-2),var(--gold)); color:var(--choc); }
+.footer p{ font-size:.88rem; line-height:1.7; max-width:34ch; }
+.footer ul{ list-style:none; margin:0; padding:0; display:grid; gap:.55rem; }
+.footer a{ transition:color .2s ease, padding-left .3s var(--ease); }
+.footer a:hover{ color:var(--gold); }
+.footer ul a:hover{ padding-left:.3rem; }
+.socials{ display:flex; gap:.5rem; margin-top:1.2rem; }
+.socials a{
+  width:40px; height:40px; border-radius:12px;
+  display:grid; place-items:center;
+  background:rgba(251,247,241,.08); color:var(--cream);
+  transition:background-color .25s ease, transform .35s var(--ease), color .25s ease;
+}
+.socials a:hover{ background:rgba(224,178,94,.9); color:var(--choc); transform:translateY(-3px); }
+.socials svg{ width:18px; height:18px; }
+.footer__base{
+  margin-top:2.4rem; padding-top:1.3rem;
+  border-top:1px solid rgba(251,247,241,.14);
+  display:grid; gap:.5rem;
+  font-size:.78rem;
+}
+
+/* ---------- Motion ---------- */
+@keyframes rise{ from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:none; } }
+@keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-9px); } }
+@keyframes slide{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@keyframes ping{ 0%{ transform:scale(1); opacity:.7; } 70%,100%{ transform:scale(1.35); opacity:0; } }
+@keyframes float-in{ from{ opacity:0; transform:translateY(26px) scale(.985); } to{ opacity:1; transform:none; } }
+
+.rise{ animation:rise .9s var(--ease) both; }
+.d1{ animation-delay:.08s; } .d2{ animation-delay:.16s; } .d3{ animation-delay:.24s; }
+.d4{ animation-delay:.32s; }
+
+/* Scroll-linked reveal where supported; content is always visible otherwise */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{
+      animation:float-in linear both;
+      animation-timeline:view();
+      animation-range:entry 2% cover 20%;
+    }
+  }
+}
+/* Fallback reveal for browsers without scroll timelines (script adds .js) */
+.js .reveal-js{
+  opacity:0; transform:translateY(24px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+}
+.js .reveal-js.in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  html:focus-within{ scroll-behavior:auto; }
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  .js .reveal-js{ opacity:1; transform:none; }
+}
+
+/* ---------- Responsive (mobile-first) ---------- */
+@media (min-width:560px){
+  .row--2{ grid-template-columns:1fr 1fr; }
+  .cards{ grid-template-columns:repeat(2,1fr); }
+  .contact{ grid-template-columns:repeat(2,1fr); }
+  .wa-float__txt{ display:inline; }
+  .brand__tag{ display:block; }
+  .footer__base{ grid-template-columns:1fr auto; align-items:center; }
+  .footer__base span:last-child{ text-align:right; }
+}
+
+@media (min-width:860px){
+  :root{ --nav-h:82px; }
+  .burger{ display:none; }
+  .menu{
+    position:static; display:flex; align-items:center; gap:.35rem;
+    padding:0; background:none; border:0; box-shadow:none;
+    opacity:1; visibility:visible; transform:none;
+  }
+  .menu a{ border:0; padding:.5rem .8rem; font-size:.92rem; border-radius:var(--r-pill); }
+  .menu a:hover{ padding-left:.8rem; background:rgba(51,32,20,.05); color:var(--choc); }
+  .menu .btn{ margin:0 0 0 .55rem; }
+  .hero__grid{ grid-template-columns:1.05fr .95fr; }
+  .hero__proof{ grid-template-columns:repeat(4,1fr); }
+  .why{ grid-template-columns:1.15fr .85fr; gap:2.6rem; }
+  .booking{ grid-template-columns:1fr 1fr; gap:2.4rem; align-items:start; }
+  .contact{ grid-template-columns:repeat(3,1fr); }
+  .footer__grid{ grid-template-columns:1.5fr 1fr 1fr 1.1fr; gap:2.4rem; }
+}
+
+@media (min-width:1060px){
+  .cards{ grid-template-columns:repeat(3,1fr); }
+  .head h2{ font-size:clamp(2.1rem,3.4vw,3.1rem); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ======================= STICKY NAV ======================= -->
+<header class="nav" id="top">
+  <input type="checkbox" id="navToggle" aria-hidden="true" tabindex="-1">
+  <div class="wrap nav__bar">
+    <a class="brand" href="#top" aria-label="BakerIN home">
+      <span class="brand__mark" aria-hidden="true">B</span>
+      <span>
+        <span class="brand__name">Baker<em>IN</em></span>
+        <span class="brand__tag">Baked fresh daily</span>
+      </span>
+    </a>
+
+    <label class="burger" for="navToggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+  </div>
+
+  <nav class="menu wrap" aria-label="Main">
+    <a href="#products">What we bake</a>
+    <a href="#why">Why BakerIN</a>
+    <a href="#booking">Custom cakes</a>
+    <a href="#contact">Visit us</a>
+    <!-- WHATSAPP PLACEHOLDER: replace 919876543210 with your number in international format (no + or spaces) -->
+    <a class="btn btn--wa btn--sm" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+      Order now
+    </a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ======================= HERO ======================= -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <span class="pill rise">
+          <span class="pill__dot" aria-hidden="true">&#11088;</span>
+          <b>4.9/5</b> from 620+ happy customers
+        </span>
+        <h1 class="rise d1">Freshly baked <em>joy</em>, made to order every morning.</h1>
+        <p class="hero__lede rise d2">
+          BakerIN is a small-batch neighbourhood bakery crafting artisan chocolates,
+          celebration cakes, buttery tin cakes and everyday bakes &mdash; real ingredients,
+          nothing frozen, never mass-produced.
+        </p>
+        <div class="hero__cta rise d3">
+          <!-- WHATSAPP PLACEHOLDER: replace 919876543210 with your WhatsApp business number -->
+          <a class="btn btn--wa" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+            Order on WhatsApp
+          </a>
+          <a class="btn btn--ghost" href="#booking">
+            Book a custom cake
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <dl class="hero__proof rise d4">
+          <div class="stat"><b>8,000+</b><span>Cakes baked to order</span></div>
+          <div class="stat"><b>Daily</b><span>Fresh batches from 7 am</span></div>
+          <div class="stat"><b>48 hrs</b><span>Custom cake notice</span></div>
+          <div class="stat"><b>100%</b><span>Eggless options</span></div>
+        </dl>
+      </div>
+
+      <!-- Hero artwork: inline SVG, no image files required -->
+      <div class="hero__art rise d2">
+        <div class="art__badge art__badge--tl">
+          <i aria-hidden="true">&#127851;</i>
+          <span>Belgian couverture<small>Chocolate we melt ourselves</small></span>
+        </div>
+
+        <div class="art__disc">
+          <svg viewBox="0 0 400 400" role="img" aria-label="Illustration of a three-tier celebration cake on a stand">
+            <defs>
+              <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#F6E3CB"/><stop offset="1" stop-color="#E2BF93"/>
+              </linearGradient>
+              <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#FFFCF6"/><stop offset="1" stop-color="#F0E2CD"/>
+              </linearGradient>
+              <linearGradient id="gBot" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#7A4B33"/><stop offset="1" stop-color="#41291B"/>
+              </linearGradient>
+              <linearGradient id="gStand" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#C99A63"/><stop offset="1" stop-color="#A5754A"/>
+              </linearGradient>
+            </defs>
+
+            <!-- soft ground shadow -->
+            <ellipse cx="200" cy="352" rx="132" ry="16" fill="#3B2418" opacity=".10"/>
+
+            <!-- cake stand -->
+            <path d="M186 300h28v34h-28z" fill="url(#gStand)"/>
+            <ellipse cx="200" cy="337" rx="62" ry="12" fill="url(#gStand)"/>
+            <ellipse cx="200" cy="333" rx="62" ry="12" fill="#DCB183"/>
+            <ellipse cx="200" cy="300" rx="118" ry="20" fill="#E7C79A"/>
+            <ellipse cx="200" cy="296" rx="118" ry="20" fill="#F2DCBB"/>
+
+            <!-- bottom tier -->
+            <rect x="86" y="212" width="228" height="84" rx="16" fill="url(#gBot)"/>
+            <ellipse cx="200" cy="212" rx="114" ry="20" fill="#8A5738"/>
+            <path d="M86 206c14 0 14 22 28 22s14-26 28-26 14 30 28 30 14-24 30-24 14 26 28 26 14-28 28-28 14 24 28 24 14-22 30-22v14H86Z" fill="#F6E9D6"/>
+            <g fill="#E0B25E">
+              <rect x="120" y="252" width="14" height="5" rx="2.5" transform="rotate(-18 120 252)"/>
+              <rect x="168" y="266" width="14" height="5" rx="2.5" transform="rotate(12 168 266)"/>
+              <rect x="224" y="248" width="14" height="5" rx="2.5" transform="rotate(-24 224 248)"/>
+              <rect x="264" y="268" width="14" height="5" rx="2.5" transform="rotate(20 264 268)"/>
+            </g>
+            <g fill="#D89A55" opacity=".85">
+              <circle cx="146" cy="276" r="4"/><circle cx="200" cy="244" r="4"/><circle cx="252" cy="278" r="4"/>
+            </g>
+
+            <!-- middle tier -->
+            <rect x="112" y="152" width="176" height="62" rx="14" fill="url(#gMid)"/>
+            <ellipse cx="200" cy="152" rx="88" ry="16" fill="#FFFDF8"/>
+            <path d="M112 148c12 0 12 18 24 18s12-20 24-20 12 22 24 22 12-18 24-18 12 20 24 20 12-22 24-22 12 18 24 18 12-16 24-16v12H112Z" fill="#7A4B33" opacity=".9"/>
+
+            <!-- top tier -->
+            <rect x="142" y="104" width="116" height="50" rx="12" fill="url(#gTop)"/>
+            <ellipse cx="200" cy="104" rx="58" ry="12" fill="#FBEEDB"/>
+
+            <!-- cherry -->
+            <path d="M200 78c0-10 8-14 14-18" stroke="#5F8B4C" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <circle cx="200" cy="88" r="13" fill="#B4402F"/>
+            <circle cx="196" cy="84" r="4" fill="#fff" opacity=".45"/>
+
+            <!-- piped florets -->
+            <g fill="#F6E9D6">
+              <circle cx="130" cy="196" r="9"/><circle cx="200" cy="196" r="9"/><circle cx="270" cy="196" r="9"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="art__badge art__badge--br">
+          <i aria-hidden="true">&#127874;</i>
+          <span>Custom designs<small>Your idea, our kitchen</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= TRUST STRIP ======================= -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip__track">
+      <span>Baked fresh every morning</span>
+      <span>No preservatives</span>
+      <span>Eggless on request</span>
+      <span>FSSAI licensed kitchen</span>
+      <span>Same-day delivery</span>
+      <span>Advance cake bookings</span>
+      <!-- duplicated for a seamless loop -->
+      <span>Baked fresh every morning</span>
+      <span>No preservatives</span>
+      <span>Eggless on request</span>
+      <span>FSSAI licensed kitchen</span>
+      <span>Same-day delivery</span>
+      <span>Advance cake bookings</span>
+    </div>
+  </div>
+
+  <!-- ======================= PRODUCTS ======================= -->
+  <section class="section" id="products">
+    <div class="wrap">
+      <div class="head head--center reveal reveal-js">
+        <span class="eyebrow">What we bake</span>
+        <h2>Five things we do exceptionally well</h2>
+        <p>Everything is made in small batches in our own kitchen &mdash; so you taste butter, chocolate and fruit, not shortcuts.</p>
+      </div>
+
+      <div class="cards">
+        <!-- 1 - Fresh chocolates -->
+        <article class="card reveal reveal-js">
+          <div class="card__media">
+            <span class="card__tag">Bestseller</span>
+            <svg class="card__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="10" y="14" width="44" height="36" rx="6"/>
+              <path d="M10 26h44M10 38h44M25 14v36M39 14v36"/>
+              <path d="M18 8c2 2 2 4 0 6M32 8c2 2 2 4 0 6M46 8c2 2 2 4 0 6" opacity=".55"/>
+            </svg>
+          </div>
+          <h3>Fresh Chocolates</h3>
+          <p>Hand-rolled truffles, filled bonbons, dragees and slabs &mdash; tempered daily with Belgian couverture and real cream.</p>
+          <div class="card__foot">
+            <span class="card__price">From &#8377;249 <span>/ 9-pc box</span></span>
+            <!-- WHATSAPP PLACEHOLDER -->
+            <a class="link" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20order%20chocolates." target="_blank" rel="noopener">Order
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 2 - Custom cakes -->
+        <article class="card reveal reveal-js">
+          <div class="card__media">
+            <span class="card__tag">Made to order</span>
+            <svg class="card__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 52h40M14 52V34c0-3 2-5 5-5h26c3 0 5 2 5 5v18"/>
+              <path d="M14 40c3 0 4-3 7-3s4 3 7 3 4-3 7-3 4 3 7 3 4-3 8-3"/>
+              <path d="M32 29v-8"/><circle cx="32" cy="16" r="3.5"/>
+            </svg>
+          </div>
+          <h3>Custom Cakes</h3>
+          <p>Birthdays, weddings, farewells. You describe the occasion, flavour and look &mdash; we design, quote and bake it fresh.</p>
+          <div class="card__foot">
+            <span class="card__price">From &#8377;899 <span>/ kg</span></span>
+            <a class="link" href="#booking">Book a date
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 3 - Cake tins -->
+        <article class="card reveal reveal-js">
+          <div class="card__media">
+            <span class="card__tag">Gift-ready</span>
+            <svg class="card__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 22h36v26c0 3-2 5-5 5H19c-3 0-5-2-5-5V22Z"/>
+              <rect x="10" y="13" width="44" height="9" rx="3"/>
+              <path d="M26 34h12M24 42h16" opacity=".6"/>
+            </svg>
+          </div>
+          <h3>Cake Tins</h3>
+          <p>Signature loaf and tin cakes &mdash; dark chocolate, orange almond, banana walnut &mdash; packed to travel and stay moist for days.</p>
+          <div class="card__foot">
+            <span class="card__price">From &#8377;399 <span>/ tin</span></span>
+            <!-- WHATSAPP PLACEHOLDER -->
+            <a class="link" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20order%20a%20cake%20tin." target="_blank" rel="noopener">Order
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 4 - Fresh bakery -->
+        <article class="card reveal reveal-js">
+          <div class="card__media">
+            <span class="card__tag">Out at 7 am</span>
+            <svg class="card__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 38c0-9 7-16 16-16h16c9 0 16 7 16 16 0 4-3 7-7 7H15c-4 0-7-3-7-7Z"/>
+              <path d="M22 22c2-4 6-6 10-6s8 2 10 6"/>
+              <path d="M20 45v5M32 45v5M44 45v5" opacity=".55"/>
+            </svg>
+          </div>
+          <h3>Fresh Bakery</h3>
+          <p>Sourdough, croissants, cinnamon rolls, cookies and fudgy brownies &mdash; baked through the day, sold the same day.</p>
+          <div class="card__foot">
+            <span class="card__price">From &#8377;49 <span>/ piece</span></span>
+            <a class="link" href="#contact">Visit the shop
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 5 - Advance bookings -->
+        <article class="card reveal reveal-js">
+          <div class="card__media">
+            <span class="card__tag">Plan ahead</span>
+            <svg class="card__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="10" y="16" width="44" height="38" rx="6"/>
+              <path d="M10 28h44M22 10v8M42 10v8"/>
+              <path d="M24 40l5 5 11-11"/>
+            </svg>
+          </div>
+          <h3>Advance Bookings</h3>
+          <p>Reserve your date for festivals, weddings and bulk orders. Lock the design and price now, collect it fresh on the day.</p>
+          <div class="card__foot">
+            <span class="card__price">48 hrs <span>minimum notice</span></span>
+            <a class="link" href="#booking">Reserve a slot
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= WHY CHOOSE US ======================= -->
+  <section class="section section--panel" id="why">
+    <div class="wrap">
+      <div class="head reveal reveal-js">
+        <span class="eyebrow">Why BakerIN</span>
+        <h2>Fresh is not a slogan here. It is the schedule.</h2>
+        <p>Small batches, short shelf life, honest ingredients. If it is not good enough for our own table, it does not leave the kitchen.</p>
+      </div>
+
+      <div class="why">
+        <div class="feats">
+          <article class="feat reveal reveal-js">
+            <span class="feat__ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s4 4 4 8a4 4 0 0 1-8 0c0-4 4-8 4-8Z"/><path d="M5 21h14"/><path d="M7 17c1.5 1.2 3.2 1.8 5 1.8s3.5-.6 5-1.8"/></svg>
+            </span>
+            <div>
+              <h3>Baked fresh, every single morning</h3>
+              <p>Nothing is frozen or carried over. Batches are sized to the day, so what you buy was made hours ago &mdash; not weeks.</p>
+            </div>
+          </article>
+
+          <article class="feat reveal reveal-js">
+            <span class="feat__ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.7 5.6 6.1.8-4.4 4.3 1 6.1L12 16.4l-5.4 2.9 1-6.1L3.2 8.9l6.1-.8L12 2.5Z"/></svg>
+            </span>
+            <div>
+              <h3>Ingredients you can pronounce</h3>
+              <p>Belgian couverture, cultured butter, seasonal fruit and single-origin cocoa. No hydrogenated fats, no artificial preservatives.</p>
+            </div>
+          </article>
+
+          <article class="feat reveal reveal-js">
+            <span class="feat__ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5A8.5 8.5 0 1 1 12 3"/><path d="M12 3v9l6 3"/><path d="M17 3.5l3 1-1 3"/></svg>
+            </span>
+            <div>
+              <h3>Made to order, not made in advance</h3>
+              <p>Custom cakes are baked, filled and finished for your date and time slot. Eggless, low-sugar and nut-free variants on request.</p>
+            </div>
+          </article>
+
+          <article class="feat reveal reveal-js">
+            <span class="feat__ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.4-3.1 8.2-7.5 9.5-4.4-1.3-7.5-5.1-7.5-9.5V6L12 3Z"/><path d="M9 12.2l2.2 2.2L15.5 10"/></svg>
+            </span>
+            <div>
+              <h3>An FSSAI-licensed, hygiene-first kitchen</h3>
+              <p>Temperature-controlled storage, daily sanitation logs and sealed packaging &mdash; the same standards we want for our own family.</p>
+            </div>
+          </article>
+        </div>
+
+        <figure class="quote reveal reveal-js">
+          <div class="quote__stars" aria-label="Rated 5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>&ldquo;I ordered a two-tier chocolate cake with 48 hours&rsquo; notice and it arrived looking exactly like the sketch I sent on WhatsApp. It tasted even better than it looked.&rdquo;</p>
+          <footer>
+            <i aria-hidden="true">AK</i>
+            <span>Aanya K. &middot; anniversary cake</span>
+          </footer>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= CUSTOM CAKE BOOKING ======================= -->
+  <section class="section" id="booking">
+    <div class="wrap">
+      <div class="head reveal reveal-js">
+        <span class="eyebrow">Custom cake booking</span>
+        <h2>Tell us the occasion. We will bake the rest.</h2>
+        <p>From a simple half-kilo birthday cake to a three-tier celebration centrepiece &mdash; booking takes about two minutes.</p>
+      </div>
+
+      <div class="booking">
+        <div>
+          <div class="steps">
+            <article class="step reveal reveal-js">
+              <div>
+                <h3>Share your idea</h3>
+                <p>Send the date, size, flavour and any reference photo on WhatsApp &mdash; a rough description is plenty to start with.</p>
+              </div>
+            </article>
+            <article class="step reveal reveal-js">
+              <div>
+                <h3>Approve the design &amp; quote</h3>
+                <p>We reply within a few hours with a sketch or sample, a firm price and an available pickup or delivery slot.</p>
+              </div>
+            </article>
+            <article class="step reveal reveal-js">
+              <div>
+                <h3>Collect it fresh</h3>
+                <p>A small advance locks your date. The cake is baked and finished on the day &mdash; pick it up or have it delivered.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="chips reveal reveal-js">
+            <span class="chip">0.5 kg &ndash; 12 kg</span>
+            <span class="chip">Eggless available</span>
+            <span class="chip">Sugar-free options</span>
+            <span class="chip">Nut-free on request</span>
+            <span class="chip">Photo &amp; theme cakes</span>
+            <span class="chip">Tiered cakes</span>
+            <span class="chip">Same-day delivery slots</span>
+          </div>
+        </div>
+
+        <!-- Frontend-only enquiry form: submitting opens WhatsApp with the typed brief pre-filled.
+             WHATSAPP PLACEHOLDER: replace 919876543210 in the action below with your business number. -->
+        <form class="form reveal reveal-js" action="https://wa.me/919876543210" method="get" target="_blank" rel="noopener">
+          <h3>Start your booking</h3>
+          <p>Fill this in and we will open WhatsApp with your brief ready to send.</p>
+
+          <div class="row row--2">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" type="text" placeholder="e.g. Aanya" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="f-date">Needed on</label>
+              <input id="f-date" type="date">
+            </div>
+          </div>
+
+          <div class="row row--2">
+            <div class="field">
+              <label for="f-occasion">Occasion</label>
+              <select id="f-occasion">
+                <option>Birthday</option>
+                <option>Anniversary</option>
+                <option>Wedding or engagement</option>
+                <option>Baby shower</option>
+                <option>Corporate / bulk order</option>
+                <option>Just because</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-size">Cake size</label>
+              <select id="f-size">
+                <option>0.5 kg</option>
+                <option>1 kg</option>
+                <option>1.5 kg</option>
+                <option>2 kg</option>
+                <option>Tiered / above 3 kg</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-brief">Your cake brief</label>
+            <!-- The field named "text" becomes the pre-filled WhatsApp message -->
+            <textarea id="f-brief" name="text" required placeholder="Hi BakerIN! I'd like to book a 1 kg eggless dark chocolate cake for a birthday on the 14th, evening pickup. Theme: minimal, white and gold."></textarea>
+          </div>
+
+          <button class="btn btn--wa btn--block" type="submit">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+            Send booking on WhatsApp
+          </button>
+          <!-- PHONE PLACEHOLDER: replace +91 98765 43210 and the tel: link with your shop number -->
+          <p class="form__note">Prefer to talk? Call <b><a href="tel:+919876543210">+91 98765 43210</a></b> &middot; Custom cakes need 48 hours&rsquo; notice.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= CONTACT ======================= -->
+  <section class="section section--tint" id="contact">
+    <div class="wrap">
+      <div class="head head--center reveal reveal-js">
+        <span class="eyebrow">Visit us</span>
+        <h2>Come in for something warm</h2>
+        <p>The counter is busiest right after the 7 am bake. Walk in, call ahead, or message us &mdash; whatever suits you.</p>
+      </div>
+
+      <div class="contact">
+        <article class="info reveal reveal-js">
+          <span class="info__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          </span>
+          <div>
+            <h3>The bakery</h3>
+            <!-- ADDRESS PLACEHOLDER: replace with your shop address -->
+            <p>Shop 14, Model Town Market,<br>Ludhiana, Punjab 141002</p>
+            <small>Parking available behind the market</small>
+          </div>
+        </article>
+
+        <article class="info reveal reveal-js">
+          <span class="info__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg>
+          </span>
+          <div>
+            <h3>Opening hours</h3>
+            <p>Mon &ndash; Sat &middot; 8:30 am &ndash; 9:30 pm<br>Sunday &middot; 9:00 am &ndash; 6:00 pm</p>
+            <small>Fresh bakery counter opens at 7:00 am</small>
+          </div>
+        </article>
+
+        <article class="info reveal reveal-js">
+          <span class="info__ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5C4.5 4.7 5.2 4 6 4h2.3c.7 0 1.3.5 1.4 1.2l.6 3a1.4 1.4 0 0 1-.7 1.5l-1.2.7a11 11 0 0 0 5.2 5.2l.7-1.2a1.4 1.4 0 0 1 1.5-.7l3 .6c.7.1 1.2.7 1.2 1.4V18c0 .8-.7 1.5-1.5 1.5h-.5A14.5 14.5 0 0 1 4.5 6V5.5Z"/></svg>
+          </span>
+          <div>
+            <h3>Call or message</h3>
+            <!-- PHONE / EMAIL PLACEHOLDERS: replace with your real details -->
+            <p><a href="tel:+919876543210">+91 98765 43210</a><br><a href="mailto:hello@bakerin.example">hello@bakerin.example</a></p>
+            <small>WhatsApp replies within a few hours</small>
+          </div>
+        </article>
+      </div>
+
+      <div class="cta reveal reveal-js">
+        <h2>Craving something? We are probably still baking.</h2>
+        <p>Message us and we will tell you what came out of the oven in the last hour.</p>
+        <div class="cta__row">
+          <!-- WHATSAPP PLACEHOLDER -->
+          <a class="btn btn--wa" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20What%27s%20fresh%20today%3F" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+            Chat on WhatsApp
+          </a>
+          <!-- PHONE PLACEHOLDER -->
+          <a class="btn btn--cream" href="tel:+919876543210">Call the bakery</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ======================= FLOATING WHATSAPP BUTTON ======================= -->
+<!-- WHATSAPP PLACEHOLDER: replace 919876543210 here too -->
+<a class="wa-float" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener" aria-label="Order from BakerIN on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+  <span class="wa-float__txt">Order on WhatsApp</span>
+</a>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="brand__mark" aria-hidden="true">B</span>
+          <span class="brand__name">Baker<em>IN</em></span>
+        </a>
+        <p>A small-batch bakery for chocolates, custom cakes, cake tins and everyday bakes. Made fresh, sold fresh.</p>
+        <div class="socials">
+          <!-- SOCIAL PLACEHOLDERS: replace the # links with your profiles -->
+          <a href="#" aria-label="BakerIN on Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" aria-label="BakerIN on Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.2c0-.9.3-1.5 1.6-1.5H16.5V5.1C16.1 5 15.2 5 14.2 5c-2.1 0-3.6 1.3-3.6 3.7V11H8v3h2.6v7h2.9Z"/></svg>
+          </a>
+          <!-- WHATSAPP PLACEHOLDER -->
+          <a href="https://wa.me/919876543210" target="_blank" rel="noopener" aria-label="BakerIN on WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav aria-label="Shop">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#products">Fresh chocolates</a></li>
+          <li><a href="#products">Custom cakes</a></li>
+          <li><a href="#products">Cake tins</a></li>
+          <li><a href="#products">Fresh bakery</a></li>
+          <li><a href="#booking">Advance bookings</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Bakery">
+        <h4>Bakery</h4>
+        <ul>
+          <li><a href="#why">Why BakerIN</a></li>
+          <li><a href="#booking">How booking works</a></li>
+          <li><a href="#contact">Store &amp; hours</a></li>
+          <li><a href="#top">Back to top</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <!-- PHONE / EMAIL / ADDRESS PLACEHOLDERS -->
+          <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+          <li><a href="mailto:hello@bakerin.example">hello@bakerin.example</a></li>
+          <li>Shop 14, Model Town Market,<br>Ludhiana, Punjab 141002</li>
+          <li>Mon &ndash; Sat &middot; 8:30 am &ndash; 9:30 pm</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__base">
+      <span>&copy; 2026 BakerIN. All rights reserved. &middot; FSSAI Lic. 00000000000000</span>
+      <span>Baked in small batches, with a lot of butter.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Progressive enhancement only - the page is fully usable with JavaScript disabled.
+   1) closes the mobile menu after a link is tapped or Esc is pressed
+   2) reveals sections on scroll in browsers without CSS scroll-linked animations */
+(function () {
+  document.documentElement.classList.add('js');
+
+  var toggle = document.getElementById('navToggle');
+  Array.prototype.forEach.call(document.querySelectorAll('.menu a'), function (a) {
+    a.addEventListener('click', function () { toggle.checked = false; });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { toggle.checked = false; }
+  });
+
+  var items = document.querySelectorAll('.reveal-js');
+  var hasScrollTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline: view()');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function showAll() {
+    Array.prototype.forEach.call(items, function (el) { el.classList.add('in'); });
+  }
+  if (hasScrollTimeline || reduced || !('IntersectionObserver' in window)) { showAll(); return; }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+  Array.prototype.forEach.call(items, function (el, i) {
+    el.style.transitionDelay = (i % 4) * 60 + 'ms';
+    io.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
