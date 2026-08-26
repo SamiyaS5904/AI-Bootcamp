@@ -158,9 +158,31 @@ p{ margin:0 0 1rem; }
   backdrop-filter:saturate(1.4) blur(14px);
   -webkit-backdrop-filter:saturate(1.4) blur(14px);
   border-bottom:1px solid var(--line-soft);
+  transition:background-color .3s ease, box-shadow .4s var(--ease);
 }
-.nav__bar{ display:flex; align-items:center; gap:1rem; min-height:var(--nav-h); }
-.brand{ display:inline-flex; align-items:center; gap:.6rem; margin-right:auto; }
+/* a hairline of gold + a soft lift once the page is scrolled (class added by script) */
+.nav::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(224,178,94,.55), transparent);
+  opacity:0; transition:opacity .4s ease; pointer-events:none;
+}
+.nav--stuck{
+  background:rgba(251,247,241,.93);
+  box-shadow:0 10px 30px rgba(51,32,20,.06);
+}
+.nav--stuck::after{ opacity:1; }
+
+/* brand | centred links | actions */
+.nav__bar{
+  display:grid; grid-template-columns:1fr auto;
+  align-items:center; gap:1rem;
+  min-height:var(--nav-h);
+}
+.nav__actions{ display:flex; align-items:center; gap:.55rem; justify-self:end; }
+.nav__cta-txt{ display:none; }
+.brand{ display:inline-flex; align-items:center; gap:.6rem; justify-self:start; }
+.brand:hover .brand__mark{ transform:rotate(-6deg) scale(1.05); }
+.brand__mark{ transition:transform .4s var(--ease); }
 .brand__mark{
   width:38px; height:38px; flex:none;
   border-radius:12px;
@@ -211,7 +233,7 @@ p{ margin:0 0 1rem; }
   opacity:0; visibility:hidden; transform:translateY(-10px);
   transition:opacity .3s ease, transform .35s var(--ease), visibility .3s;
 }
-#navToggle:checked ~ .menu{ opacity:1; visibility:visible; transform:none; }
+#navToggle:checked ~ .nav__bar .menu{ opacity:1; visibility:visible; transform:none; }
 .menu a{
   padding:.7rem .25rem; font-weight:500; color:var(--choc-2);
   border-bottom:1px solid var(--line-soft);
@@ -219,7 +241,6 @@ p{ margin:0 0 1rem; }
 }
 .menu a:last-of-type{ border-bottom:0; }
 .menu a:hover{ color:var(--caramel); padding-left:.55rem; }
-.menu .btn{ margin-top:.8rem; }
 
 /* ---------- Hero ---------- */
 .hero{
@@ -268,6 +289,9 @@ p{ margin:0 0 1rem; }
 /* Hero artwork */
 .hero__art{ position:relative; justify-self:center; width:100%; max-width:460px; }
 .art__disc{
+  /* it is a <button> so it works on tap and on Enter/Space */
+  appearance:none; -webkit-appearance:none;
+  font:inherit; color:inherit; display:block; width:100%; cursor:pointer;
   position:relative;
   border-radius:var(--r-xl);
   padding:1.6rem 1.2rem 1.2rem;
@@ -521,20 +545,24 @@ p{ margin:0 0 1rem; }
 .cta__row{ display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; margin-top:1.4rem; }
 
 /* ---------- Floating WhatsApp button ---------- */
+/* Icon-only bubble: the nav and the hero already say "Order on WhatsApp",
+   so this one stays wordless and only appears once you scroll past the hero. */
 .wa-float{
   position:fixed; z-index:70;
   right:clamp(.9rem,3vw,1.6rem); bottom:clamp(.9rem,3vw,1.6rem);
-  display:inline-flex; align-items:center; gap:.6rem;
-  padding:.85rem 1.15rem;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:56px; height:56px;
   background:var(--wa); color:#fff;
-  border-radius:var(--r-pill);
-  font-size:.9rem; font-weight:700;
+  border-radius:50%;
   box-shadow:0 8px 24px rgba(31,168,85,.34), 0 2px 6px rgba(0,0,0,.12);
-  transition:transform .35s var(--ease), background-color .25s ease, box-shadow .35s var(--ease);
+  transition:transform .4s var(--ease), background-color .25s ease,
+             box-shadow .35s var(--ease), opacity .4s ease, visibility .4s;
 }
-.wa-float svg{ width:24px; height:24px; flex:none; }
-.wa-float:hover{ transform:translateY(-3px) scale(1.02); background:var(--wa-dark); }
-.wa-float__txt{ display:none; }
+.wa-float svg{ width:26px; height:26px; flex:none; }
+.wa-float:hover{ transform:translateY(-3px) scale(1.05); background:var(--wa-dark); }
+/* hidden only when the script is running, so it stays visible without JS */
+.js .wa-float{ opacity:0; visibility:hidden; transform:translateY(14px) scale(.9); }
+.js .wa-float--show{ opacity:1; visibility:visible; transform:none; }
 .wa-float::after{
   content:""; position:absolute; inset:0; border-radius:inherit;
   border:2px solid rgba(31,168,85,.5);
@@ -585,6 +613,101 @@ p{ margin:0 0 1rem; }
 @keyframes ping{ 0%{ transform:scale(1); opacity:.7; } 70%,100%{ transform:scale(1.35); opacity:0; } }
 @keyframes float-in{ from{ opacity:0; transform:translateY(26px) scale(.985); } to{ opacity:1; transform:none; } }
 
+/* --- Hero cake animation (plain CSS keyframes on the SVG - no libraries needed) --- */
+.cake-body{ animation:cake-float 5.6s ease-in-out infinite; }
+.cherry{ animation:cherry-bob 5.6s ease-in-out infinite; animation-delay:-.45s; }
+.cake-shadow{
+  transform-box:fill-box; transform-origin:center;
+  animation:cake-shadow 5.6s ease-in-out infinite;
+}
+.cake-glow{
+  transform-box:fill-box; transform-origin:center;
+  animation:cake-glow 7s ease-in-out infinite;
+}
+.spark{
+  transform-box:fill-box; transform-origin:center;
+  opacity:.35;
+  animation:twinkle 3.4s ease-in-out infinite;
+}
+.s2{ animation-delay:-.7s; } .s3{ animation-delay:-1.4s; }
+.s4{ animation-delay:-2.1s; } .s5{ animation-delay:-2.8s; }
+/* the whole cake leans in when you hover the card */
+.cake-zoom{
+  transform-box:fill-box; transform-origin:center bottom;
+  transition:transform .6s var(--ease);
+}
+.art__disc:hover .cake-zoom{ transform:scale(1.04); }
+
+@keyframes cake-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+@keyframes cherry-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3.5px); } }
+@keyframes cake-shadow{
+  0%,100%{ transform:scaleX(1); opacity:.1; }
+  50%{ transform:scaleX(.94); opacity:.06; }
+}
+@keyframes cake-glow{
+  0%,100%{ transform:scale(1); opacity:.8; }
+  50%{ transform:scale(1.06); opacity:1; }
+}
+@keyframes twinkle{
+  0%,100%{ opacity:.18; transform:scale(.7); }
+  50%{ opacity:1; transform:scale(1.15) rotate(45deg); }
+}
+
+/* --- Tap the cake: it squishes, the cherry flies off and confetti bursts out.
+       The .pop class is re-applied by the script on every click so it replays. --- */
+.cherry-launch{ transform-box:fill-box; transform-origin:center; }
+.pop-ring, .bit{ opacity:0; }
+.pop .cake-zoom{ animation:cake-pop .85s var(--ease); }
+.pop .cherry-launch{ animation:cherry-fly 1.15s var(--ease); }
+.pop .pop-ring{
+  transform-box:fill-box; transform-origin:center;
+  animation:pop-ring .8s var(--ease);
+}
+.pop .bit{
+  transform-box:fill-box; transform-origin:center;
+  animation:burst 1.05s var(--ease);
+}
+.pop .bit:nth-child(3n){ animation-delay:.05s; }
+.pop .bit:nth-child(3n+1){ animation-delay:.1s; }
+
+@keyframes cake-pop{
+  0%{ transform:scale(1,1); }
+  20%{ transform:scale(.92,1.07) rotate(-1.5deg); }
+  44%{ transform:scale(1.07,.93) rotate(1.6deg); }
+  66%{ transform:scale(.97,1.03) rotate(-.7deg); }
+  84%{ transform:scale(1.02,.99) rotate(.3deg); }
+  100%{ transform:scale(1,1); }
+}
+@keyframes cherry-fly{
+  0%{ transform:translate(0,0) rotate(0deg); opacity:1; }
+  28%{ transform:translate(10px,-80px) rotate(150deg); opacity:1; }
+  58%{ transform:translate(24px,-140px) rotate(320deg); opacity:0; }
+  72%{ transform:translate(0,-46px) rotate(340deg); opacity:0; }
+  100%{ transform:translate(0,0) rotate(360deg); opacity:1; }
+}
+@keyframes pop-ring{
+  0%{ transform:scale(.3); opacity:.85; stroke-width:7; }
+  100%{ transform:scale(1.28); opacity:0; stroke-width:1; }
+}
+@keyframes burst{
+  0%{ transform:translate(0,0) scale(.3); opacity:0; }
+  14%{ opacity:1; }
+  100%{ transform:translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1); opacity:0; }
+}
+
+/* little nudge to tell people the cake is tappable; fades after the first tap */
+.art__hint{
+  margin:.9rem 0 0; text-align:center;
+  font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted);
+  opacity:.85;
+  animation:hint-bob 2.6s ease-in-out infinite;
+  transition:opacity .5s ease, transform .5s var(--ease);
+}
+/* animation:none matters - a running animation on opacity would outrank this */
+.popped .art__hint{ opacity:0; transform:translateY(6px); animation:none; }
+@keyframes hint-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+
 .rise{ animation:rise .9s var(--ease) both; }
 .d1{ animation-delay:.08s; } .d2{ animation-delay:.16s; } .d3{ animation-delay:.24s; }
 .d4{ animation-delay:.32s; }
@@ -620,23 +743,36 @@ p{ margin:0 0 1rem; }
   .row--2{ grid-template-columns:1fr 1fr; }
   .cards{ grid-template-columns:repeat(2,1fr); }
   .contact{ grid-template-columns:repeat(2,1fr); }
-  .wa-float__txt{ display:inline; }
+  .nav__cta-txt{ display:inline; }
   .brand__tag{ display:block; }
   .footer__base{ grid-template-columns:1fr auto; align-items:center; }
   .footer__base span:last-child{ text-align:right; }
 }
 
 @media (min-width:860px){
-  :root{ --nav-h:82px; }
+  :root{ --nav-h:80px; }
   .burger{ display:none; }
+  /* three balanced columns: brand left, links dead centre, CTA right */
+  .nav__bar{ grid-template-columns:1fr auto 1fr; min-height:80px; }
   .menu{
-    position:static; display:flex; align-items:center; gap:.35rem;
+    position:static; display:flex; align-items:center; justify-content:center; gap:.15rem;
     padding:0; background:none; border:0; box-shadow:none;
     opacity:1; visibility:visible; transform:none;
   }
-  .menu a{ border:0; padding:.5rem .8rem; font-size:.92rem; border-radius:var(--r-pill); }
-  .menu a:hover{ padding-left:.8rem; background:rgba(51,32,20,.05); color:var(--choc); }
-  .menu .btn{ margin:0 0 0 .55rem; }
+  .menu a{
+    position:relative;
+    border:0; padding:.55rem .9rem; font-size:.92rem; font-weight:500;
+    color:var(--choc-2); background:none;
+  }
+  /* underline grows from the centre instead of a grey pill */
+  .menu a::after{
+    content:""; position:absolute; left:50%; bottom:.3rem;
+    width:0; height:1.5px; border-radius:2px;
+    background:var(--caramel); transform:translateX(-50%);
+    transition:width .35s var(--ease);
+  }
+  .menu a:hover{ padding-left:.9rem; color:var(--choc); }
+  .menu a:hover::after{ width:calc(100% - 1.8rem); }
   .hero__grid{ grid-template-columns:1.05fr .95fr; }
   .hero__proof{ grid-template-columns:repeat(4,1fr); }
   .why{ grid-template-columns:1.15fr .85fr; gap:2.6rem; }
@@ -666,20 +802,23 @@ p{ margin:0 0 1rem; }
       </span>
     </a>
 
-    <label class="burger" for="navToggle" aria-label="Open menu"><span></span><span></span><span></span></label>
-  </div>
+    <nav class="menu" aria-label="Main">
+      <a href="#products">What we bake</a>
+      <a href="#why">Why BakerIN</a>
+      <a href="#booking">Custom cakes</a>
+      <a href="#contact">Visit us</a>
+    </nav>
 
-  <nav class="menu wrap" aria-label="Main">
-    <a href="#products">What we bake</a>
-    <a href="#why">Why BakerIN</a>
-    <a href="#booking">Custom cakes</a>
-    <a href="#contact">Visit us</a>
-    <!-- WHATSAPP PLACEHOLDER: replace 919876543210 with your number in international format (no + or spaces) -->
-    <a class="btn btn--wa btn--sm" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
-      Order now
-    </a>
-  </nav>
+    <div class="nav__actions">
+      <!-- WHATSAPP PLACEHOLDER: replace 919876543210 with your number in international format (no + or spaces) -->
+      <a class="btn btn--wa btn--sm" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener" aria-label="Order on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
+        <span class="nav__cta-txt">Order now</span>
+      </a>
+
+      <label class="burger" for="navToggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -725,7 +864,7 @@ p{ margin:0 0 1rem; }
           <span>Belgian couverture<small>Chocolate we melt ourselves</small></span>
         </div>
 
-        <div class="art__disc">
+        <button class="art__disc" type="button" aria-label="Tap the cake for a little surprise">
           <svg viewBox="0 0 400 400" role="img" aria-label="Illustration of a three-tier celebration cake on a stand">
             <defs>
               <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
@@ -740,52 +879,96 @@ p{ margin:0 0 1rem; }
               <linearGradient id="gStand" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0" stop-color="#C99A63"/><stop offset="1" stop-color="#A5754A"/>
               </linearGradient>
+              <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#E8B96F" stop-opacity=".5"/>
+                <stop offset="55%" stop-color="#E0B25E" stop-opacity=".13"/>
+                <stop offset="100%" stop-color="#E0B25E" stop-opacity="0"/>
+              </radialGradient>
             </defs>
 
-            <!-- soft ground shadow -->
-            <ellipse cx="200" cy="352" rx="132" ry="16" fill="#3B2418" opacity=".10"/>
+            <!-- warm glow that breathes behind the cake -->
+            <circle class="cake-glow" cx="200" cy="200" r="170" fill="url(#gGlow)"/>
 
-            <!-- cake stand -->
-            <path d="M186 300h28v34h-28z" fill="url(#gStand)"/>
-            <ellipse cx="200" cy="337" rx="62" ry="12" fill="url(#gStand)"/>
-            <ellipse cx="200" cy="333" rx="62" ry="12" fill="#DCB183"/>
-            <ellipse cx="200" cy="300" rx="118" ry="20" fill="#E7C79A"/>
-            <ellipse cx="200" cy="296" rx="118" ry="20" fill="#F2DCBB"/>
+            <!-- soft ground shadow (tightens as the cake lifts) -->
+            <ellipse class="cake-shadow" cx="200" cy="352" rx="132" ry="16" fill="#3B2418" opacity=".10"/>
 
-            <!-- bottom tier -->
-            <rect x="86" y="212" width="228" height="84" rx="16" fill="url(#gBot)"/>
-            <ellipse cx="200" cy="212" rx="114" ry="20" fill="#8A5738"/>
-            <path d="M86 206c14 0 14 22 28 22s14-26 28-26 14 30 28 30 14-24 30-24 14 26 28 26 14-28 28-28 14 24 28 24 14-22 30-22v14H86Z" fill="#F6E9D6"/>
-            <g fill="#E0B25E">
-              <rect x="120" y="252" width="14" height="5" rx="2.5" transform="rotate(-18 120 252)"/>
-              <rect x="168" y="266" width="14" height="5" rx="2.5" transform="rotate(12 168 266)"/>
-              <rect x="224" y="248" width="14" height="5" rx="2.5" transform="rotate(-24 224 248)"/>
-              <rect x="264" y="268" width="14" height="5" rx="2.5" transform="rotate(20 264 268)"/>
+            <!-- cake-zoom: leans in on hover · cake-body: gentle float -->
+            <g class="cake-zoom">
+             <g class="cake-body">
+              <!-- cake stand -->
+              <path d="M186 300h28v34h-28z" fill="url(#gStand)"/>
+              <ellipse cx="200" cy="337" rx="62" ry="12" fill="url(#gStand)"/>
+              <ellipse cx="200" cy="333" rx="62" ry="12" fill="#DCB183"/>
+              <ellipse cx="200" cy="300" rx="118" ry="20" fill="#E7C79A"/>
+              <ellipse cx="200" cy="296" rx="118" ry="20" fill="#F2DCBB"/>
+
+              <!-- bottom tier -->
+              <rect x="86" y="212" width="228" height="84" rx="16" fill="url(#gBot)"/>
+              <ellipse cx="200" cy="212" rx="114" ry="20" fill="#8A5738"/>
+              <path d="M86 206c14 0 14 22 28 22s14-26 28-26 14 30 28 30 14-24 30-24 14 26 28 26 14-28 28-28 14 24 28 24 14-22 30-22v14H86Z" fill="#F6E9D6"/>
+              <g fill="#E0B25E">
+                <rect x="120" y="252" width="14" height="5" rx="2.5" transform="rotate(-18 120 252)"/>
+                <rect x="168" y="266" width="14" height="5" rx="2.5" transform="rotate(12 168 266)"/>
+                <rect x="224" y="248" width="14" height="5" rx="2.5" transform="rotate(-24 224 248)"/>
+                <rect x="264" y="268" width="14" height="5" rx="2.5" transform="rotate(20 264 268)"/>
+              </g>
+              <g fill="#D89A55" opacity=".85">
+                <circle cx="146" cy="276" r="4"/><circle cx="200" cy="244" r="4"/><circle cx="252" cy="278" r="4"/>
+              </g>
+
+              <!-- middle tier -->
+              <rect x="112" y="152" width="176" height="62" rx="14" fill="url(#gMid)"/>
+              <ellipse cx="200" cy="152" rx="88" ry="16" fill="#FFFDF8"/>
+              <path d="M112 148c12 0 12 18 24 18s12-20 24-20 12 22 24 22 12-18 24-18 12 20 24 20 12-22 24-22 12 18 24 18 12-16 24-16v12H112Z" fill="#7A4B33" opacity=".9"/>
+
+              <!-- top tier -->
+              <rect x="142" y="104" width="116" height="50" rx="12" fill="url(#gTop)"/>
+              <ellipse cx="200" cy="104" rx="58" ry="12" fill="#FBEEDB"/>
+
+              <!-- cherry: bobs with a soft lag, and launches off when the cake is tapped -->
+              <g class="cherry-launch">
+                <g class="cherry">
+                  <path d="M200 78c0-10 8-14 14-18" stroke="#5F8B4C" stroke-width="4" fill="none" stroke-linecap="round"/>
+                  <circle cx="200" cy="88" r="13" fill="#B4402F"/>
+                  <circle cx="196" cy="84" r="4" fill="#fff" opacity=".45"/>
+                </g>
+              </g>
+
+              <!-- piped florets -->
+              <g fill="#F6E9D6">
+                <circle cx="130" cy="196" r="9"/><circle cx="200" cy="196" r="9"/><circle cx="270" cy="196" r="9"/>
+              </g>
+             </g>
             </g>
-            <g fill="#D89A55" opacity=".85">
-              <circle cx="146" cy="276" r="4"/><circle cx="200" cy="244" r="4"/><circle cx="252" cy="278" r="4"/>
+
+            <!-- twinkles -->
+            <g fill="#E3B268">
+              <path class="spark s1" transform="translate(80 128) scale(.95)"  d="M0-8Q1.2-1.2 8 0Q1.2 1.2 0 8Q-1.2 1.2-8 0Q-1.2-1.2 0-8Z"/>
+              <path class="spark s2" transform="translate(322 116) scale(1.2)" d="M0-8Q1.2-1.2 8 0Q1.2 1.2 0 8Q-1.2 1.2-8 0Q-1.2-1.2 0-8Z"/>
+              <path class="spark s3" transform="translate(304 248) scale(.75)" d="M0-8Q1.2-1.2 8 0Q1.2 1.2 0 8Q-1.2 1.2-8 0Q-1.2-1.2 0-8Z"/>
+              <path class="spark s4" transform="translate(92 240) scale(.65)"  d="M0-8Q1.2-1.2 8 0Q1.2 1.2 0 8Q-1.2 1.2-8 0Q-1.2-1.2 0-8Z"/>
+              <path class="spark s5" transform="translate(202 46) scale(.85)"  d="M0-8Q1.2-1.2 8 0Q1.2 1.2 0 8Q-1.2 1.2-8 0Q-1.2-1.2 0-8Z"/>
             </g>
 
-            <!-- middle tier -->
-            <rect x="112" y="152" width="176" height="62" rx="14" fill="url(#gMid)"/>
-            <ellipse cx="200" cy="152" rx="88" ry="16" fill="#FFFDF8"/>
-            <path d="M112 148c12 0 12 18 24 18s12-20 24-20 12 22 24 22 12-18 24-18 12 20 24 20 12-22 24-22 12 18 24 18 12-16 24-16v12H112Z" fill="#7A4B33" opacity=".9"/>
-
-            <!-- top tier -->
-            <rect x="142" y="104" width="116" height="50" rx="12" fill="url(#gTop)"/>
-            <ellipse cx="200" cy="104" rx="58" ry="12" fill="#FBEEDB"/>
-
-            <!-- cherry -->
-            <path d="M200 78c0-10 8-14 14-18" stroke="#5F8B4C" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <circle cx="200" cy="88" r="13" fill="#B4402F"/>
-            <circle cx="196" cy="84" r="4" fill="#fff" opacity=".45"/>
-
-            <!-- piped florets -->
-            <g fill="#F6E9D6">
-              <circle cx="130" cy="196" r="9"/><circle cx="200" cy="196" r="9"/><circle cx="270" cy="196" r="9"/>
+            <!-- tap burst: a ring plus confetti. Invisible until the cake is clicked.
+                 Each bit carries its own direction in --tx / --ty / --rot. -->
+            <circle class="pop-ring" cx="200" cy="205" r="118" fill="none" stroke="#D89A55" stroke-width="3"/>
+            <g class="confetti">
+              <circle class="bit" style="--tx:-96px;--ty:-64px;--rot:200deg"  cx="200" cy="86" r="6" fill="#B4402F"/>
+              <rect   class="bit" style="--tx:78px;--ty:-88px;--rot:-160deg"  x="193" y="82" width="14" height="6" rx="3" fill="#E0B25E"/>
+              <circle class="bit" style="--tx:-52px;--ty:-116px;--rot:120deg" cx="200" cy="86" r="5" fill="#5F8B4C"/>
+              <rect   class="bit" style="--tx:104px;--ty:-30px;--rot:220deg"  x="193" y="82" width="12" height="5" rx="2.5" fill="#7A4B33"/>
+              <circle class="bit" style="--tx:34px;--ty:-124px;--rot:-90deg"  cx="200" cy="86" r="7" fill="#F6E9D6"/>
+              <rect   class="bit" style="--tx:-108px;--ty:8px;--rot:140deg"   x="193" y="82" width="13" height="6" rx="3" fill="#D89A55"/>
+              <circle class="bit" style="--tx:12px;--ty:-136px;--rot:180deg"  cx="200" cy="86" r="4" fill="#B4402F"/>
+              <rect   class="bit" style="--tx:-70px;--ty:-100px;--rot:-200deg" x="193" y="82" width="11" height="5" rx="2.5" fill="#5F8B4C"/>
+              <circle class="bit" style="--tx:92px;--ty:-84px;--rot:260deg"   cx="200" cy="86" r="6" fill="#E0B25E"/>
+              <rect   class="bit" style="--tx:-24px;--ty:-130px;--rot:-120deg" x="193" y="82" width="14" height="5" rx="2.5" fill="#F6E9D6"/>
             </g>
           </svg>
-        </div>
+        </button>
+
+        <p class="art__hint">tap the cake &#127874;</p>
 
         <div class="art__badge art__badge--br">
           <i aria-hidden="true">&#127874;</i>
@@ -1161,7 +1344,6 @@ p{ margin:0 0 1rem; }
 <!-- WHATSAPP PLACEHOLDER: replace 919876543210 here too -->
 <a class="wa-float" href="https://wa.me/919876543210?text=Hi%20BakerIN!%20I%27d%20like%20to%20place%20an%20order." target="_blank" rel="noopener" aria-label="Order from BakerIN on WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.35-.53.05-1.02.24-3.45-.72-2.93-1.16-4.75-4.2-4.9-4.4-.14-.2-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.36.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.8 1.97.87 2.11.07.15.12.32.02.51-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.45.29.15.46.12.63-.07.17-.2.73-.85.93-1.14.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.14.48.22.55.34.07.13.07.75-.17 1.43Z"/></svg>
-  <span class="wa-float__txt">Order on WhatsApp</span>
 </a>
 
 <!-- ======================= FOOTER ======================= -->
@@ -1243,6 +1425,30 @@ p{ margin:0 0 1rem; }
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { toggle.checked = false; }
   });
+
+  /* nav gets a soft shadow + gold hairline once the page is scrolled, and the
+     WhatsApp bubble only appears after the hero (where the big CTA already is) */
+  var nav = document.querySelector('.nav');
+  var waFloat = document.querySelector('.wa-float');
+  var onScroll = function () {
+    var y = window.scrollY;
+    nav.classList.toggle('nav--stuck', y > 8);
+    waFloat.classList.toggle('wa-float--show', y > 420);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* tap the cake: squish, launch the cherry, throw confetti - replays every click */
+  var disc = document.querySelector('.art__disc');
+  var art = document.querySelector('.hero__art');
+  if (disc) {
+    disc.addEventListener('click', function () {
+      art.classList.add('popped');
+      disc.classList.remove('pop');
+      void disc.offsetWidth;          // forces a reflow so the animation restarts
+      disc.classList.add('pop');
+    });
+  }
 
   var items = document.querySelectorAll('.reveal-js');
   var hasScrollTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline: view()');
