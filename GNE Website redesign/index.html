@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guru Nanak Dev Engineering College, Ludhiana</title>
+<meta name="description" content="Guru Nanak Dev Engineering College, Ludhiana - established 1956. UGC autonomous, NAAC 'A' grade, affiliated to IKGPTU. Admissions 2026-27 open.">
+
+<!--
+  ===========================================================================
+  GNDEC LUDHIANA - UI REDESIGN (static front-end)
+  ---------------------------------------------------------------------------
+  Plain HTML5 + CSS. No JavaScript, no frameworks, no build step.
+  Every interactive-feeling element is CSS-only; each trick is commented at
+  its markup site here and again at its rule block in style.css.
+
+  CSS-only techniques used on this page:
+    1. Mobile nav        -> hidden checkbox + label, `#nav-toggle:checked ~ ...`
+    2. Nav dropdowns     -> `li:hover > ul` plus `li:focus-within > ul`
+    3. Hero slideshow    -> auto-rotating @keyframes, overridable by radio dots
+    4. Notice board tabs -> radio group + `:checked ~` sibling selectors
+    5. Smooth anchors    -> CSS `scroll-behavior: smooth`
+  ===========================================================================
+-->
+
+<link rel="icon" href="images/crest-gndec.png">
+<!-- Webfonts are plain CSS, no JS. Delete these two links to fall back to the
+     system font stack already declared in style.css. -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- =====================================================================
+     SIDE NAVIGATION PANEL  (shared component - identical on every page)
+     ---------------------------------------------------------------------
+     A slide-out panel holding three groups: Departments, Quick Links and
+     Contact. Entirely CSS-driven; there is no JavaScript anywhere on this
+     site. How it works:
+
+     * `#sidenav-toggle` is a real checkbox. It is transparent but NOT
+       hidden, so it stays clickable and keyboard-focusable, and Space
+       toggles it natively. Everything else here is decoration painted
+       underneath it.
+     * When closed, CSS parks the checkbox exactly over the vertical edge
+       tab. When `:checked`, CSS moves it to sit exactly over the X in the
+       panel's top-right corner - one input, two positions, so open and
+       close are both native controls rather than a scripted button.
+     * `.sidenav__scrim` is a second <label> for the same checkbox, which
+       gives click-outside-to-close for free.
+     * The panel is `visibility: hidden` when closed, so its links stay out
+       of the tab order and out of the accessibility tree until opened.
+
+     Links are page-qualified (index.html#about rather than #about) so this
+     block can be copied byte-for-byte between the three HTML files. Keep
+     them in sync: index.html, admissions.html, departments.html.
+     ===================================================================== -->
+<div class="sidenav">
+
+  <input class="sidenav__switch" type="checkbox" id="sidenav-toggle"
+         aria-label="Open navigation panel: departments, quick links and contacts">
+
+  <!-- Closed state: the vertical tab clipped to the right edge of the screen. -->
+  <span class="sidenav__tab" aria-hidden="true">
+    <span class="sidenav__tab-bars"></span>
+    <span class="sidenav__tab-text">Explore</span>
+  </span>
+
+  <!-- Open state: the X, and the dimmed backdrop that closes on click. -->
+  <span class="sidenav__close" aria-hidden="true"></span>
+  <label class="sidenav__scrim" for="sidenav-toggle" aria-hidden="true"></label>
+
+  <nav class="sidenav__panel" aria-label="Departments, quick links and contacts">
+    <div class="sidenav__inner">
+
+      <div class="sidenav__head">
+        <img src="images/crest-gndec.png" alt="" width="284" height="288">
+        <span>
+          <strong>Guru Nanak Dev Engineering College</strong>
+          <em>Vidya Vichari Ta Parupkari</em>
+        </span>
+      </div>
+
+      <div class="sidenav__groups">
+
+        <section class="sidenav__group sidenav__group--depts">
+          <h2 class="sidenav__label">Departments</h2>
+          <ul class="sidenav__list">
+            <li><a href="departments.html#architecture"><span class="sidenav__code">ARCH</span> School of Architecture</a></li>
+            <li><a href="departments.html#applied-science"><span class="sidenav__code">AS</span> Applied Science</a></li>
+            <li><a href="departments.html#civil"><span class="sidenav__code">CE</span> Civil Engineering</a></li>
+            <li><a href="departments.html#electrical"><span class="sidenav__code">EE</span> Electrical Engineering</a></li>
+            <li><a href="departments.html#mechanical"><span class="sidenav__code">ME</span> Mechanical &amp; Production</a></li>
+            <li><a href="departments.html#ece"><span class="sidenav__code">ECE</span> Electronics &amp; Communication</a></li>
+            <li><a href="departments.html#cse"><span class="sidenav__code">CSE</span> Computer Science &amp; Engg.</a></li>
+            <li><a href="departments.html#it"><span class="sidenav__code">IT</span> Information Technology</a></li>
+            <li><a href="departments.html#bba"><span class="sidenav__code">BBA</span> Business Administration</a></li>
+            <li><a href="departments.html#mca"><span class="sidenav__code">MCA</span> Computer Applications</a></li>
+          </ul>
+        </section>
+
+        <section class="sidenav__group sidenav__group--quick">
+          <h2 class="sidenav__label">Quick Links</h2>
+          <ul class="sidenav__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About the college</a></li>
+            <li><a href="admissions.html">Admissions 2026&ndash;27</a></li>
+            <li><a href="index.html#notices">Campus news &amp; notices</a></li>
+            <li><a href="index.html#alumni">Alumni</a></li>
+            <li><a href="index.html#facilities">Facilities</a></li>
+            <li><a href="index.html#research">Research</a></li>
+            <li><a href="index.html#quality">Quality &amp; accreditation</a></li>
+          </ul>
+        </section>
+
+        <section class="sidenav__group sidenav__group--contact">
+          <h2 class="sidenav__label">Contact</h2>
+          <ul class="sidenav__list sidenav__list--contact">
+            <li>
+              <a href="tel:+919041495448">
+                <svg class="sidenav__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg>
+                <span><strong>Admission helpline</strong><em>90414 95448</em></span>
+              </a>
+            </li>
+            <li>
+              <a href="tel:+917347200448">
+                <svg class="sidenav__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.3A9 9 0 1 0 12 3z"/></svg>
+                <span><strong>WhatsApp helpline</strong><em>73472 00448</em></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://mail.gndec.ac.in" target="_blank" rel="noopener">
+                <svg class="sidenav__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+                <span><strong>Webmail</strong><em>mail.gndec.ac.in</em></span>
+              </a>
+            </li>
+            <li>
+              <a href="index.html#contact">
+                <svg class="sidenav__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+                <span><strong>Campus</strong><em>Gill Park, Gill Road, Ludhiana</em></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://tnpgndec.com" target="_blank" rel="noopener">
+                <svg class="sidenav__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a4 4 0 0 0 5.7.4l3-3A4 4 0 0 0 13 4.7l-1.4 1.4"/><path d="M14 11a4 4 0 0 0-5.7-.4l-3 3A4 4 0 0 0 11 19.3l1.4-1.4"/></svg>
+                <span><strong>For recruiters</strong><em>Training &amp; Placement portal</em></span>
+              </a>
+            </li>
+            <li>
+              <a href="index.html#contact">
+                <svg class="sidenav__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="3.2"/><path d="M4 9h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zM7 4.5 17 8"/></svg>
+                <span><strong>FM 90.8</strong><em>Community radio</em></span>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+      </div>
+
+      <p class="sidenav__foot">
+        Press <kbd>Space</kbd> on the focused control, click the X, or click
+        outside the panel to close.
+      </p>
+
+    </div>
+  </nav>
+</div>
+
+<!-- =====================================================================
+     SPLIT HEADER - identity on the left, two high-intent CTAs on the right.
+     Kept deliberately slim: one logo, one name block, two buttons.
+     ===================================================================== -->
+<header class="site-header">
+  <div class="wrap site-header__inner">
+
+    <a class="brand" href="index.html">
+      <img class="brand__mark" src="images/crest-gndec.png" alt="" width="284" height="288">
+      <span class="brand__text">
+        <strong class="brand__name">Guru Nanak Dev Engineering College</strong>
+        <span class="brand__tagline">Vidya Vichari Ta Parupkari<span class="brand__gloss"> &mdash; knowledge, reflected upon, becomes service</span></span>
+        <span class="brand__creds">Ludhiana, Punjab &middot; Est. 1956 &middot; UGC Autonomous &middot; NAAC &lsquo;A&rsquo; Grade &middot; IKGPTU</span>
+      </span>
+    </a>
+
+    <div class="header-cta">
+      <a class="btn btn--primary" href="admissions.html">
+        <span class="btn__label">Spot Counselling &amp; Notices</span>
+        <span class="btn__sub">Admissions 2026&ndash;27</span>
+      </a>
+      <!-- Real Training &amp; Placement portal. TODO: confirm http vs https on the live host. -->
+      <a class="btn btn--ghost" href="https://tnpgndec.com" target="_blank" rel="noopener">
+        <span class="btn__label">For Recruiters</span>
+        <span class="btn__sub">Training &amp; Placement portal</span>
+      </a>
+    </div>
+
+  </div>
+</header>
+
+<!-- =====================================================================
+     APP BAR / PRIMARY NAV
+     GNDEC's nine real top-level groups condensed into seven, with the
+     original sub-items preserved inside CSS-only dropdowns.
+
+     TECHNIQUE 1 - mobile menu without JS:
+       `#nav-toggle` is a visually hidden checkbox placed BEFORE the menu in
+       the DOM, so `#nav-toggle:checked ~ .nav__menu` can reveal it. The
+       <label> is the tappable hamburger - clicking a label toggles its
+       associated checkbox for free, no script required.
+     ===================================================================== -->
+<nav class="app-bar" aria-label="Primary">
+  <div class="wrap app-bar__inner">
+
+    <input class="nav-toggle" type="checkbox" id="nav-toggle">
+    <label class="nav-toggle__btn" for="nav-toggle">
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+      <span class="nav-toggle__word">Menu</span>
+    </label>
+
+    <ul class="nav__menu">
+      <!-- TECHNIQUE 2 - dropdowns open on :hover for pointers and on
+           :focus-within for keyboard users. No JS, no focus trap. -->
+      <li class="nav__item nav__item--has-sub">
+        <a href="#about">About</a>
+        <ul class="nav__sub">
+          <li><a href="#about">Principal&rsquo;s Desk</a></li>
+          <li><a href="#about">Vision, Mission &amp; Goals</a></li>
+          <li><a href="#about">History</a></li>
+          <li><a href="#about">Administration</a></li>
+          <li><a href="#about">Governing Body &amp; Academic Council</a></li>
+          <li><a href="#about">Mandatory Disclosure</a></li>
+          <li><a href="#about">Annual Report &amp; Balance Sheets</a></li>
+        </ul>
+      </li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="#academics">Academics</a>
+        <ul class="nav__sub">
+          <li><a href="#academics">Programs Offered</a></li>
+          <li><a href="#academics">Post Graduation</a></li>
+          <li><a href="#academics">Academic Calendar</a></li>
+          <li><a href="#academics">List of Holidays</a></li>
+          <li><a href="#academics">Information Brochure 2026</a></li>
+          <li><a href="#academics">Examination &amp; COE Office</a></li>
+          <li><a href="#academics">Results &amp; Roll of Honour</a></li>
+        </ul>
+      </li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="departments.html">Departments</a>
+        <ul class="nav__sub nav__sub--wide">
+          <li><a href="departments.html#architecture">School of Architecture</a></li>
+          <li><a href="departments.html#applied-science">Applied Science</a></li>
+          <li><a href="departments.html#civil">Civil Engineering</a></li>
+          <li><a href="departments.html#electrical">Electrical Engineering</a></li>
+          <li><a href="departments.html#mechanical">Mechanical &amp; Production Engg.</a></li>
+          <li><a href="departments.html#ece">Electronics &amp; Communication Engg.</a></li>
+          <li><a href="departments.html#cse">Computer Science &amp; Engineering</a></li>
+          <li><a href="departments.html#it">Information Technology</a></li>
+          <li><a href="departments.html#bba">Business Administration</a></li>
+          <li><a href="departments.html#mca">Computer Applications</a></li>
+        </ul>
+      </li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="admissions.html">Admissions</a>
+        <ul class="nav__sub">
+          <li><a href="admissions.html#spot">Spot Counselling 2026&ndash;27</a></li>
+          <li><a href="admissions.html#waiting">Waiting List 2026&ndash;27</a></li>
+          <li><a href="admissions.html#enquiry">Enquiry cum Registration Module</a></li>
+          <li><a href="admissions.html#fee">Fee Structure</a></li>
+          <li><a href="admissions.html#notices">Important Notices</a></li>
+          <li><a href="admissions.html#helpline">Admission Helplines</a></li>
+        </ul>
+      </li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="#facilities">Facilities</a>
+        <ul class="nav__sub nav__sub--wide">
+          <li><a href="#facilities">Hostels</a></li>
+          <li><a href="#facilities">Library</a></li>
+          <li><a href="#facilities">Computer Centre</a></li>
+          <li><a href="#facilities">Central Measurement Lab (CML)</a></li>
+          <li><a href="#facilities">Workshops</a></li>
+          <li><a href="#facilities">Sports</a></li>
+          <li><a href="#facilities">NCC</a></li>
+          <li><a href="#facilities">NSS</a></li>
+          <li><a href="#facilities">Cultural Committee</a></li>
+        </ul>
+      </li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="#research">Research</a>
+        <ul class="nav__sub">
+          <li><a href="#research">Research &amp; Development</a></li>
+          <li><a href="#research">Testing &amp; Consultancy Cell</a></li>
+          <li><a href="#research">IPR Cell</a></li>
+          <li><a href="#research">NISP &amp; Start-ups (STEP)</a></li>
+          <li><a href="#research">Unnat Bharat Abhiyan</a></li>
+          <li><a href="#research">SWAYAM &ndash; NPTEL</a></li>
+        </ul>
+      </li>
+      <li class="nav__item"><a href="#contact">Contact</a></li>
+    </ul>
+
+    <!-- Accreditation shortcut, held outside the main list so the app bar stays
+         uncluttered on desktop. It stacks under the menu on small screens. -->
+    <a class="app-bar__aside" href="#quality">Quality &amp; Accreditation</a>
+
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- =====================================================================
+     HERO SLIDESHOW (TECHNIQUE 3)
+     ---------------------------------------------------------------------
+     Two behaviours in one, no JS:
+
+     a) AUTO-ROTATE. The three slides are stacked on top of each other. Each
+        runs the same `heroFade` keyframes on an infinite 24s loop with a
+        negative animation-delay (0s, -8s, -16s), which offsets them by one
+        third of the cycle. The dots run a matching `dotPulse` so the
+        indicator stays in step.
+
+     b) MANUAL OVERRIDE. The three radios sit BEFORE the slides, so
+        `.hero__radio:checked ~ .hero__slide` matches every slide and can
+        cancel the animation wholesale; a more specific `#hero-N:checked ~ .s-N`
+        rule then reveals just the chosen one. Clicking a dot therefore stops
+        the carousel and pins that slide, which is what users expect.
+     ===================================================================== -->
+<section class="hero" aria-label="Campus highlights">
+
+  <input class="hero__radio" type="radio" name="hero" id="hero-1">
+  <input class="hero__radio" type="radio" name="hero" id="hero-2">
+
+  <!--
+    Two slides, not three. The other two campus photographs in images/ are
+    915px and 697px wide at source - fine at content size, visibly soft when
+    upscaled to a full-bleed hero - so they are used in the About and
+    Academics sections instead. `sizes="100vw"` because the hero is full-bleed.
+  -->
+  <figure class="hero__slide s-1">
+    <img src="images/campus-fountain-1280.jpg"
+         srcset="images/campus-fountain-800.jpg 800w,
+                 images/campus-fountain-1280.jpg 1280w,
+                 images/campus-fountain-1920.jpg 1920w"
+         sizes="100vw" width="1920" height="1080"
+         fetchpriority="high" decoding="async"
+         alt="The fountain and lawn in front of the main block at GNDEC Ludhiana">
+  </figure>
+  <figure class="hero__slide s-2">
+    <img src="images/campus-entrance-1280.jpg"
+         srcset="images/campus-entrance-800.jpg 800w,
+                 images/campus-entrance-1280.jpg 1280w"
+         sizes="100vw" width="1280" height="720"
+         fetchpriority="low" decoding="async"
+         alt="The main entrance porch of Guru Nanak Dev Engineering College">
+  </figure>
+
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="wrap hero__body">
+    <div class="hero__copy">
+      <p class="eyebrow">Seven decades of engineering education in Punjab</p>
+      <h1>Engineers, architects and managers made in Ludhiana.</h1>
+      <p class="hero__lede">
+        An autonomous, NAAC &lsquo;A&rsquo; graded institution founded in 1956 by the
+        Nankana Sahib Education Trust &mdash; ten departments, eleven postgraduate
+        programmes and an alumni network more than 37,000 strong.
+      </p>
+      <p class="hero__actions">
+        <a class="btn btn--accent" href="admissions.html">Apply for 2026&ndash;27</a>
+        <a class="btn btn--outline" href="departments.html">Explore departments</a>
+      </p>
+    </div>
+
+    <!-- Dot controls. The labels are the visible target; the radios do the work. -->
+    <div class="hero__dots" role="group" aria-label="Choose a slide">
+      <label for="hero-1" class="d-1"><span class="sr-only">Slide 1: campus fountain and main block</span></label>
+      <label for="hero-2" class="d-2"><span class="sr-only">Slide 2: college main entrance</span></label>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     QUICK STATS STRIP - real figures from the current gndec.ac.in content.
+     ===================================================================== -->
+<section class="stats" aria-label="The college at a glance">
+  <div class="wrap stats__grid">
+    <div class="stat">
+      <p class="stat__num">1956</p>
+      <p class="stat__label">Founded</p>
+      <p class="stat__note">Foundation stone laid 8 April 1956</p>
+    </div>
+    <div class="stat">
+      <p class="stat__num">&lsquo;A&rsquo;</p>
+      <p class="stat__label">NAAC grade</p>
+      <p class="stat__note">UGC autonomous status since 2012</p>
+    </div>
+    <div class="stat">
+      <p class="stat__num">10</p>
+      <p class="stat__label">Departments</p>
+      <p class="stat__note">Six UG engineering branches, 11 PG programmes</p>
+    </div>
+    <div class="stat">
+      <p class="stat__num">37,500<span class="stat__plus">+</span></p>
+      <p class="stat__label">Alumni</p>
+      <p class="stat__note">~30,000 undergraduate, 7,500 postgraduate</p>
+    </div>
+    <div class="stat">
+      <p class="stat__num">3<span class="stat__plus">&times;</span></p>
+      <p class="stat__label">NBA accredited</p>
+      <p class="stat__note">Since 2004, plus ISO 9001:2015 and TCS accreditation</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     ABOUT
+     ===================================================================== -->
+<section class="section" id="about">
+  <div class="wrap about">
+    <div class="about__copy">
+      <p class="eyebrow eyebrow--dark">About GNDEC</p>
+      <h2>A trust-run college with the freedom of an autonomous institution.</h2>
+      <p>
+        Guru Nanak Dev Engineering College grew out of the polytechnic established
+        in Ludhiana in 1953 and was founded in its own right in 1956 under the
+        Nankana Sahib Education Trust. It is approved by AICTE, affiliated to
+        I. K. Gujral Punjab Technical University, and has held UGC autonomous
+        status since 2012 &mdash; which means curriculum, examination and evaluation
+        are designed in-house rather than inherited.
+      </p>
+      <p>
+        The college has been accredited by NBA three times since 2004, holds a
+        NAAC &lsquo;A&rsquo; grade and ISO 9001:2015 certification, and has drawn
+        major competitive funding including Rs 10 crore under TEQIP-II and
+        Rs 1 crore under the DST FIST programme.
+      </p>
+      <p class="about__actions">
+        <a class="link-arrow" href="#quality">Accreditation &amp; quality documents</a>
+        <a class="link-arrow" href="#about">Read the college history</a>
+      </p>
+    </div>
+
+    <div class="about__side">
+      <!-- Courtyard photograph. Displayed at roughly 420px wide, so the 697px
+           source still has headroom on a 2x screen. -->
+      <figure class="about__figure">
+        <img src="images/campus-courtyard-697.jpg"
+             srcset="images/campus-courtyard-480.jpg 480w,
+                     images/campus-courtyard-697.jpg 697w"
+             sizes="(max-width: 1080px) 90vw, 420px"
+             width="697" height="523" loading="lazy" decoding="async"
+             alt="The landscaped central courtyard between the academic blocks">
+        <figcaption>The central courtyard, between the academic blocks.</figcaption>
+      </figure>
+
+      <aside class="about__aside" id="quality">
+      <h3>Quality &amp; accreditation</h3>
+      <!-- Mirrors the real "Quality Work" menu, which is the most-visited
+           compliance area of the current site. -->
+      <ul class="pill-list">
+        <li><a href="#quality">AICTE Approval</a></li>
+        <li><a href="#quality">UGC Autonomy</a></li>
+        <li><a href="#quality">IKGPTU Affiliation</a></li>
+        <li><a href="#quality">NBA &amp; ISO Certification</a></li>
+        <li><a href="#quality">NAAC / IQAC / AQAR</a></li>
+        <li><a href="#quality">NIRF</a></li>
+        <li><a href="#quality">NISP</a></li>
+        <li><a href="#quality">ARIIA</a></li>
+        <li><a href="#quality">IE(I) Accreditation</a></li>
+        <li><a href="#quality">TCS Accreditation</a></li>
+        <li><a href="#quality">Mandatory Disclosure</a></li>
+        <li><a href="#quality">Best Practices</a></li>
+      </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     ACADEMICS - compact band.
+
+     This replaced a ten-card Departments grid that dominated the middle of
+     the homepage. The department links now live in the slide-out side
+     navigation panel (and on departments.html), so the main scrolling flow
+     stays focused on admissions and news. The `#academics` id is kept because
+     the app bar and footer both link to it.
+     ===================================================================== -->
+<section class="section section--tint" id="academics">
+  <div class="wrap academics">
+
+    <div class="academics__copy">
+      <p class="eyebrow eyebrow--dark">Academics</p>
+      <h2>Ten departments, one campus</h2>
+      <p>
+        Six undergraduate engineering branches, a five-year architecture
+        programme, management and computing degrees, eleven postgraduate
+        programmes and doctoral research &mdash; all designed in-house under UGC
+        autonomous status rather than inherited from an affiliating university.
+      </p>
+
+      <ul class="academics__facts">
+        <li><strong>6</strong> UG engineering branches</li>
+        <li><strong>11</strong> postgraduate programmes</li>
+        <li><strong>5&nbsp;yr</strong> B.Arch. professional degree</li>
+        <li><strong>Ph.D.</strong> across departments</li>
+      </ul>
+
+      <p class="academics__actions">
+        <a class="btn btn--primary btn--sm" href="departments.html">All departments</a>
+        <!-- A second <label> for the side-panel checkbox. An input may have any
+             number of labels, so this opens the same panel as the edge tab. -->
+        <label class="btn btn--outline btn--sm as-button" for="sidenav-toggle">
+          Browse in the side panel
+        </label>
+      </p>
+    </div>
+
+    <figure class="academics__figure">
+      <img src="images/campus-block-915.jpg"
+           srcset="images/campus-block-800.jpg 800w,
+                   images/campus-block-915.jpg 915w"
+           sizes="(max-width: 900px) 92vw, 520px"
+           width="915" height="515" loading="lazy" decoding="async"
+           alt="An academic block at GNDEC, seen across the garden">
+    </figure>
+
+  </div>
+</section>
+
+<!-- =====================================================================
+     ADMISSIONS HIGHLIGHTS - the six real admissions entry points, promoted
+     out of the sidebar list they currently live in.
+     ===================================================================== -->
+<section class="section" id="admissions">
+  <div class="wrap">
+    <header class="section__head">
+      <div>
+        <p class="eyebrow eyebrow--dark">Admissions 2026&ndash;27</p>
+        <h2>Everything an applicant needs, in one place</h2>
+      </div>
+      <a class="btn btn--primary btn--sm" href="admissions.html">Admissions home</a>
+    </header>
+
+    <div class="card-grid card-grid--3">
+      <a class="adm-card adm-card--urgent" href="admissions.html#spot">
+        <p class="adm-card__flag">Open now</p>
+        <h3>Spot Counselling 2026&ndash;27</h3>
+        <p>Schedule, reporting centre and document checklist for spot rounds.</p>
+        <span class="link-arrow">View schedule</span>
+      </a>
+      <a class="adm-card" href="admissions.html#waiting">
+        <h3>Waiting List 2026&ndash;27</h3>
+        <p>Branch-wise waiting positions, updated after each counselling round.</p>
+        <span class="link-arrow">Check your position</span>
+      </a>
+      <a class="adm-card" href="admissions.html#enquiry">
+        <h3>Enquiry cum Registration Module</h3>
+        <p>Register your interest and get called back by the admission cell.</p>
+        <span class="link-arrow">Start registration</span>
+      </a>
+      <a class="adm-card" href="admissions.html#fee">
+        <h3>Fee Structure</h3>
+        <p>Programme-wise tuition, hostel and one-time charges for the session.</p>
+        <span class="link-arrow">View fee structure</span>
+      </a>
+      <a class="adm-card" href="admissions.html#notices">
+        <h3>Important Notices</h3>
+        <p>Checklist of documents, affidavit and undertaking formats, deadlines.</p>
+        <span class="link-arrow">All notices</span>
+      </a>
+      <a class="adm-card" href="#academics">
+        <h3>Programs Offered</h3>
+        <p>Every UG and PG programme with intake, eligibility and duration.</p>
+        <span class="link-arrow">Browse programmes</span>
+      </a>
+    </div>
+
+    <!-- Helplines are the single most useful thing on the current homepage;
+         keeping them above the fold-equivalent here. -->
+    <div class="helpline" id="helpline">
+      <h3>Admission helplines</h3>
+      <ul class="helpline__list">
+        <li><span>B.Tech. &amp; M.Tech.</span> <a href="tel:+919041495448">90414 95448</a>, <a href="tel:+918968553073">89685 53073</a></li>
+        <li><span>BBA, B.Com &amp; MBA</span> <a href="tel:+919815903230">98159 03230</a>, <a href="tel:+919417992553">94179 92553</a></li>
+        <li><span>BCA &amp; MCA</span> <a href="tel:+919876700810">98767 00810</a>, <a href="tel:+919417271184">94172 71184</a></li>
+        <li><span>B.Arch. &amp; B.Voc.</span> <a href="tel:+918427866335">84278 66335</a>, <a href="tel:+917696521055">76965 21055</a></li>
+        <li><span>WhatsApp helpline</span> <a href="tel:+917347200448">73472 00448</a></li>
+        <li><span>PMS scholarship</span> <a href="tel:+919041557904">90415 57904</a></li>
+      </ul>
+      <p class="helpline__note">Full branch-wise list, including B.Tech. for working professionals, on the <a href="admissions.html#helpline">admissions page</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     NOTICE BOARD (TECHNIQUE 4)
+     ---------------------------------------------------------------------
+     GNDEC keeps three separate notice streams - Campus News, Public Corner
+     and Student Corner. Rather than stacking three long bulleted lists, they
+     become CSS-only tabs:
+
+       * three radios named "notice" sit before the panels;
+       * the <label>s are styled as tabs;
+       * `#tab-x:checked ~ .tabs__panels .panel--x { display: block }` shows
+         the matching panel and `#tab-x:checked ~ .tabs__list label[for=tab-x]`
+         styles the active tab.
+
+     The first radio carries `checked` so a panel is always visible, including
+     with CSS disabled (all three panels simply render in sequence).
+     ===================================================================== -->
+<section class="section section--tint" id="notices">
+  <div class="wrap">
+    <header class="section__head">
+      <div>
+        <p class="eyebrow eyebrow--dark">Notice board</p>
+        <h2>What is happening on campus</h2>
+      </div>
+      <a class="btn btn--outline btn--sm" href="#notices">Archive</a>
+    </header>
+
+    <div class="tabs">
+      <input class="tabs__radio" type="radio" name="notice" id="tab-campus" checked>
+      <input class="tabs__radio" type="radio" name="notice" id="tab-public">
+      <input class="tabs__radio" type="radio" name="notice" id="tab-student">
+
+      <div class="tabs__list" role="group" aria-label="Notice categories">
+        <label for="tab-campus" class="t-campus">Campus News</label>
+        <label for="tab-public" class="t-public">Public Corner</label>
+        <label for="tab-student" class="t-student">Student Corner</label>
+      </div>
+
+      <div class="tabs__panels">
+
+        <div class="panel panel--campus">
+          <ul class="notice-list">
+            <li>
+              <p class="notice__meta">Publication</p>
+              <a href="#notices">College Newsletter 2025 (Vol. 13)</a>
+            </li>
+            <li>
+              <p class="notice__meta">Publication</p>
+              <a href="#notices">Harmony 2025 &mdash; the annual college magazine</a>
+            </li>
+            <li>
+              <p class="notice__meta">Publication</p>
+              <a href="#notices">College Newsletter 2024 (Vol. 12)</a>
+            </li>
+            <li>
+              <p class="notice__meta">Library</p>
+              <a href="#notices">Self-registration for off-campus remote access to the Knimbus digital library</a>
+            </li>
+            <li>
+              <p class="notice__meta">Advisory</p>
+              <a href="#notices">Awareness about the National Cyber Crime Portal</a>
+            </li>
+            <li>
+              <p class="notice__meta">Alumni</p>
+              <a href="#alumni">GNE Alumni Australasia Inc.</a>
+            </li>
+            <li>
+              <p class="notice__meta">App</p>
+              <a href="#notices">GNDEC e-Library app, on Google Play and the App Store</a>
+            </li>
+            <li>
+              <p class="notice__meta">Press</p>
+              <a href="#notices">Press releases</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel panel--public">
+          <ul class="notice-list">
+            <li>
+              <p class="notice__meta">Conference</p>
+              <a href="#notices">12th International Conference on Advancements and Futuristic Trends in Mechanical and Materials Engineering</a>
+            </li>
+            <li>
+              <p class="notice__meta">Recognition</p>
+              <a href="#notices">Felicitations</a>
+            </li>
+            <li>
+              <p class="notice__meta">Events</p>
+              <a href="#notices">Addresses by prominent personalities</a>
+            </li>
+            <li>
+              <p class="notice__meta">Procurement</p>
+              <a href="#notices">Quotations and tenders (CMC)</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel panel--student">
+          <ul class="notice-list">
+            <li>
+              <p class="notice__meta">Action required</p>
+              <a href="#notices">Submission of original documents by students admitted in 2026</a>
+            </li>
+            <li>
+              <p class="notice__meta">Scholarship</p>
+              <a href="#notices">Sitaram Jindal Scholarship</a>
+            </li>
+            <li>
+              <p class="notice__meta">Fees</p>
+              <a href="#notices">Fee notice July&ndash;December 2026 (all branches)</a>
+            </li>
+            <li>
+              <p class="notice__meta">Fees</p>
+              <a href="#notices">Fee notice July&ndash;December 2026 (B.Architecture)</a>
+            </li>
+            <li>
+              <p class="notice__meta">Scholarship</p>
+              <a href="#notices">Alumni scholarship for needy and academically sound students, 2026</a>
+            </li>
+            <li>
+              <p class="notice__meta">Learning</p>
+              <a href="#notices">e-Content by MHRD and digital initiatives in higher education</a>
+            </li>
+            <li>
+              <p class="notice__meta">AICTE</p>
+              <a href="#notices">Skill testing campaign, YASHASVI scheme and internship MoUs</a>
+            </li>
+            <li>
+              <p class="notice__meta">Research</p>
+              <a href="#research">Ph.D. programme information</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     ALUMNI HIGHLIGHTS - a small selection from the real department-wise
+     alumni roll on gndec.ac.in.
+     ===================================================================== -->
+<section class="section" id="alumni">
+  <div class="wrap">
+    <header class="section__head">
+      <div>
+        <p class="eyebrow eyebrow--dark">Alumni</p>
+        <h2>Where a GNE degree goes</h2>
+      </div>
+      <a class="btn btn--outline btn--sm" href="#alumni">Full alumni roll</a>
+    </header>
+
+    <div class="card-grid card-grid--3">
+      <article class="alum-card">
+        <p class="alum-card__batch">ECE &middot; Batch 1988</p>
+        <h3>Er. Karan Bajwa</h3>
+        <p class="alum-card__role">Managing Director, IBM India</p>
+      </article>
+      <article class="alum-card">
+        <p class="alum-card__batch">Electrical &middot; Batch 1980</p>
+        <h3>Air Marshal R. K. S. Shera</h3>
+        <p class="alum-card__role">Air Officer Commanding-in-Chief, Indian Air Force</p>
+      </article>
+      <article class="alum-card">
+        <p class="alum-card__batch">Electrical &middot; Batch 1961</p>
+        <h3>Er. A. S. Chatha, IAS</h3>
+        <p class="alum-card__role">Former Chief Secretary, Government of Punjab</p>
+      </article>
+      <article class="alum-card">
+        <p class="alum-card__batch">Civil &middot; Batch 1979</p>
+        <h3>Er. Sukh Dhaliwal</h3>
+        <p class="alum-card__role">Member of Parliament, Canada</p>
+      </article>
+      <article class="alum-card">
+        <p class="alum-card__batch">ECE &middot; Batch 1985</p>
+        <h3>Dr. Ajay Kumar Sharma</h3>
+        <p class="alum-card__role">Vice-Chancellor, I. K. Gujral Punjab Technical University</p>
+      </article>
+      <article class="alum-card">
+        <p class="alum-card__batch">IT &middot; Batch 2003</p>
+        <h3>Er. Harleen Juneja</h3>
+        <p class="alum-card__role">Program Manager, Google, Santa Clara</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     FACILITIES + RESEARCH - two compact modules sharing a row.
+     ===================================================================== -->
+<section class="section section--tint">
+  <div class="wrap duo">
+
+    <div class="duo__col" id="facilities">
+      <p class="eyebrow eyebrow--dark">Campus life</p>
+      <h2>Facilities</h2>
+      <ul class="tile-list">
+        <li><a href="#facilities"><strong>Hostels</strong><span>Separate residences for men and women</span></a></li>
+        <li><a href="#facilities"><strong>Library</strong><span>Print collection plus Knimbus remote access</span></a></li>
+        <li><a href="#facilities"><strong>Computer Centre</strong><span>Campus-wide computing and network services</span></a></li>
+        <li><a href="#facilities"><strong>Central Measurement Lab</strong><span>Calibration and instrumentation</span></a></li>
+        <li><a href="#facilities"><strong>Workshops</strong><span>Machine, welding, foundry and fitting shops</span></a></li>
+        <li><a href="#facilities"><strong>Sports</strong><span>Grounds, courts and the annual athletic meet</span></a></li>
+        <li><a href="#facilities"><strong>NCC</strong><span>106 cadets &mdash; 79 boys, 27 girls</span></a></li>
+        <li><a href="#facilities"><strong>NSS</strong><span>350 enrolled volunteers, over 1,000 participating a year</span></a></li>
+      </ul>
+    </div>
+
+    <div class="duo__col" id="research">
+      <p class="eyebrow eyebrow--dark">Research &amp; outreach</p>
+      <h2>Research</h2>
+      <ul class="tile-list">
+        <li><a href="#research"><strong>Research &amp; Development Cell</strong><span>Doctoral supervision and sponsored projects</span></a></li>
+        <li><a href="#research"><strong>Testing &amp; Consultancy Cell</strong><span>Paid testing services for regional industry</span></a></li>
+        <li><a href="#research"><strong>IPR Cell</strong><span>Patent filing and disclosure support</span></a></li>
+        <li><a href="#research"><strong>STEP &amp; NISP</strong><span>Entrepreneurship and start-up policy</span></a></li>
+        <li><a href="#research"><strong>Unnat Bharat Abhiyan</strong><span>Village adoption and rural technology</span></a></li>
+        <li><a href="#research"><strong>SWAYAM &ndash; NPTEL</strong><span>Local chapter and certification courses</span></a></li>
+        <li><a href="#research"><strong>DST FIST</strong><span>Rs 1 crore infrastructure grant</span></a></li>
+        <li><a href="#research"><strong>TEQIP-II &amp; III</strong><span>Rs 10 crore competitive funding</span></a></li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- =====================================================================
+     PLACEMENT / RECRUITER BAND - mirrors the "For Recruiters" header CTA.
+     ===================================================================== -->
+<section class="band">
+  <div class="wrap band__inner">
+    <div>
+      <h2>Hiring from GNDEC</h2>
+      <p>
+        Campus recruitment is coordinated by the Training &amp; Placement cell,
+        which runs pre-placement talks, drives and internship MoUs across all
+        ten departments.
+      </p>
+    </div>
+    <p class="band__actions">
+      <a class="btn btn--accent" href="https://tnpgndec.com" target="_blank" rel="noopener">Recruiter portal</a>
+      <a class="btn btn--outline btn--on-dark" href="#contact">Talk to the T&amp;P cell</a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- =====================================================================
+     FOOTER - the real quick links from the current site footer, plus
+     contact details. Anything marked TODO needs confirming against the
+     live site before launch.
+     ===================================================================== -->
+<footer class="site-footer" id="contact">
+  <div class="wrap footer__grid">
+
+    <div class="footer__brand">
+      <img src="images/crest-gndec.png" alt="" width="284" height="288" loading="lazy" decoding="async">
+      <p class="footer__name">Guru Nanak Dev Engineering College</p>
+      <p class="footer__addr">
+        Gill Park, Gill Road,<br>
+        Ludhiana 141006, Punjab, India
+        <!-- TODO: confirm postal address and the main switchboard number. -->
+      </p>
+      <p class="footer__addr">
+        <a href="https://mail.gndec.ac.in" target="_blank" rel="noopener">Webmail</a> &middot;
+        <a href="#contact">Enquiry form</a>
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label="Quick links">
+      <h2>Quick links</h2>
+      <ul>
+        <li><a href="#alumni">Alumni</a></li>
+        <li><a href="#notices">Archive</a></li>
+        <li><a href="#contact">Useful Links</a></li>
+        <li><a href="#contact">RTI &rsquo;05</a></li>
+        <li><a href="#contact">Downloads</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Academics">
+      <h2>Academics</h2>
+      <ul>
+        <li><a href="#academics">Programs Offered</a></li>
+        <li><a href="#academics">Academic Calendar</a></li>
+        <li><a href="#academics">Examination Portal &mdash; Students</a></li>
+        <li><a href="#academics">Examination Portal &mdash; Staff</a></li>
+        <li><a href="#academics">Results</a></li>
+        <li><a href="#academics">Roll of Honour</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Institution">
+      <h2>Institution</h2>
+      <ul>
+        <li><a href="#quality">Mandatory Disclosure</a></li>
+        <li><a href="#quality">NAAC &amp; IQAC</a></li>
+        <li><a href="#quality">NIRF</a></li>
+        <li><a href="#about">Governing Body</a></li>
+        <li><a href="#about">Service &amp; Conduct Rules</a></li>
+        <li><a href="#about">Code of Professional Ethics</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h2>Connect</h2>
+      <ul>
+        <li><a href="https://tnpgndec.com" target="_blank" rel="noopener">Training &amp; Placement</a></li>
+        <li><a href="#contact">FM 90.8 Community Radio</a></li>
+        <li><a href="#contact">Facebook</a></li>
+        <li><a href="#contact">e-Library app</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="wrap footer__bar">
+    <p>&copy; 2026 Guru Nanak Dev Engineering College, Ludhiana. Managed by the Nankana Sahib Education Trust.</p>
+    <p><a href="#top">Back to top &uarr;</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

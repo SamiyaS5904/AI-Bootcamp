@@ -1,0 +1,1686 @@
+/* ===========================================================================
+   GNDEC LUDHIANA - UI REDESIGN
+   style.css - the only stylesheet. No preprocessor, no build step.
+
+   CONTENTS
+     01  Design tokens (:root custom properties)
+     02  Reset & base
+     03  Layout helpers
+     04  Buttons & links
+     05  Split header
+     06  App bar / nav        [CSS-only: checkbox menu + hover/focus dropdowns]
+     07  Hero slideshow       [CSS-only: keyframes autoplay + radio override]
+     08  Stats strip
+     09  Sections & cards
+     10  Notice board tabs    [CSS-only: radio tabs]
+     11  Duo columns, band
+     11b Interior pages       (admissions.html, departments.html)
+     12  Footer
+     12b Side navigation      [CSS-only: one checkbox, two positions]
+     13  Responsive           [breakpoints: 1080px, 860px, 620px]
+     14  Motion & print
+   =========================================================================== */
+
+
+/* ---------------------------------------------------------------------------
+   01  DESIGN TOKENS
+   Change the theme here and nowhere else. Colours, spacing scale, type scale,
+   radii and shadows are all variables; no hard-coded hex values appear below
+   this block except inside gradients that intentionally reference two tokens.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Brand -------------------------------------------------------------- */
+  --c-navy-900: #071B30;   /* deepest ink, headings on light                */
+  --c-navy-800: #0E2A47;   /* primary brand navy - header, footer, buttons  */
+  --c-navy-700: #17416B;   /* hover state for navy surfaces                 */
+  --c-navy-100: #E8EEF5;   /* navy-tinted surface                           */
+
+  --c-maroon-800: #8C1D2F; /* secondary - accreditation, urgent flags       */
+  --c-maroon-700: #A82A3E;
+
+  --c-saffron-600: #C9821A;/* warm accent, accessible on light backgrounds  */
+  --c-saffron-500: #E4A32B;/* warm accent on dark backgrounds               */
+  --c-saffron-100: #FBEFD8;
+
+  /* Neutrals ----------------------------------------------------------- */
+  --c-bg: #FFFFFF;
+  --c-bg-tint: #F7F9FC;    /* alternating section background                */
+  --c-cream: #FBF8F3;
+  --c-text: #16202B;
+  --c-muted: #5A6B7C;
+  --c-line: #E1E7EF;
+  --c-line-strong: #C9D4E0;
+
+  /* Typography --------------------------------------------------------- */
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Fluid type scale. clamp() keeps headings readable from 320px to 1600px
+     without a single media query. */
+  --t-xs: 0.75rem;
+  --t-sm: 0.8125rem;
+  --t-base: 1rem;
+  --t-md: 1.0625rem;
+  --t-lg: clamp(1.125rem, 0.9rem + 0.6vw, 1.375rem);
+  --t-h3: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  --t-h2: clamp(1.5rem, 1.15rem + 1.5vw, 2.375rem);
+  --t-h1: clamp(2rem, 1.3rem + 3.2vw, 3.75rem);
+  --t-stat: clamp(1.75rem, 1.2rem + 2.2vw, 2.875rem);
+
+  /* Spacing scale (a 4px base, doubling loosely) ------------------------ */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 2.5rem;
+  --s-8: 3rem;
+  --s-9: 4rem;
+  --s-10: 5rem;
+  --s-11: 6rem;
+
+  /* Structure ---------------------------------------------------------- */
+  --wrap: 1240px;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-pill: 999px;
+
+  --sh-1: 0 1px 2px rgba(7, 27, 48, 0.06), 0 1px 3px rgba(7, 27, 48, 0.04);
+  --sh-2: 0 4px 14px rgba(7, 27, 48, 0.08);
+  --sh-3: 0 14px 40px rgba(7, 27, 48, 0.14);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 180ms;
+
+  /* Hero slideshow timing. Two slides, so each holds for half the cycle.
+     Change --hero-cycle and the keyframe percentages in section 07 together. */
+  --hero-cycle: 18s;
+
+  /* Side navigation panel (section 15). */
+  --sidenav-w: min(94vw, 780px);
+  --sidenav-ease: cubic-bezier(0.32, 0.72, 0.24, 1);   /* soft, no overshoot */
+  --sidenav-dur: 460ms;
+}
+
+
+/* ---------------------------------------------------------------------------
+   02  RESET & BASE
+   --------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* TECHNIQUE 5 - smooth in-page anchor scrolling with no JS. */
+  scroll-behavior: smooth;
+  /* Keeps anchor targets clear of the sticky app bar. */
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-size: var(--t-md);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 var(--s-3);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  color: var(--c-navy-900);
+  text-wrap: balance;              /* progressive enhancement; ignored if unsupported */
+}
+h1 { font-size: var(--t-h1); font-weight: 800; }
+h2 { font-size: var(--t-h2); }
+h3 { font-size: var(--t-h3); }
+
+p { margin: 0 0 var(--s-4); }
+p:last-child { margin-bottom: 0; }
+
+ul { margin: 0; padding: 0; list-style: none; }
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: var(--c-navy-700); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { color: var(--c-maroon-800); }
+
+/* One visible focus style for the whole site. Never remove this without
+   replacing it - the site has no JS fallback for keyboard users. */
+:focus-visible {
+  outline: 3px solid var(--c-saffron-600);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* Screen-reader-only text, used for the hero dot labels. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: var(--s-4); top: -3rem; z-index: 100;
+  padding: var(--s-2) var(--s-4);
+  background: var(--c-navy-800); color: #fff;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+  font-weight: 600; text-decoration: none;
+  transition: top var(--dur) var(--ease);
+}
+.skip-link:focus { top: 0; color: #fff; }
+
+
+/* ---------------------------------------------------------------------------
+   03  LAYOUT HELPERS
+   --------------------------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5.5rem); }
+.section--tint { background: var(--c-bg-tint); border-block: 1px solid var(--c-line); }
+
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-7);
+}
+.section__head h2 { margin-bottom: 0; }
+
+.eyebrow {
+  margin-bottom: var(--s-2);
+  font-family: var(--font-display);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-saffron-500);
+}
+.eyebrow--dark { color: var(--c-maroon-800); }
+
+
+/* ---------------------------------------------------------------------------
+   04  BUTTONS & LINKS
+   .btn is a two-line block by default (label + sub) so the header CTAs can
+   carry context; .btn--sm and the plain hero buttons collapse to one line.
+   --------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: var(--s-3) var(--s-5);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--t-base);
+  line-height: 1.25;
+  text-decoration: none;
+  transition: background var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn__sub {
+  font-family: var(--font-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  opacity: 0.78;
+  letter-spacing: 0.01em;
+}
+.btn--sm { flex-direction: row; align-items: center; padding: var(--s-2) var(--s-4); font-size: var(--t-base); }
+
+.btn--primary { background: var(--c-navy-800); color: #fff; box-shadow: var(--sh-1); }
+.btn--primary:hover { background: var(--c-navy-700); color: #fff; box-shadow: var(--sh-2); }
+
+.btn--accent { background: var(--c-saffron-500); color: var(--c-navy-900); box-shadow: var(--sh-1); }
+.btn--accent:hover { background: var(--c-saffron-600); color: var(--c-navy-900); }
+
+.btn--ghost { background: var(--c-bg); color: var(--c-navy-800); border-color: var(--c-line-strong); }
+.btn--ghost:hover { background: var(--c-navy-100); color: var(--c-navy-800); border-color: var(--c-navy-700); }
+
+.btn--outline { background: transparent; color: var(--c-navy-800); border-color: var(--c-line-strong); }
+.btn--outline:hover { background: var(--c-navy-800); color: #fff; border-color: var(--c-navy-800); }
+
+/* On the dark placement band and the hero, outline buttons invert. */
+.btn--on-dark, .hero .btn--outline { color: #fff; border-color: rgba(255, 255, 255, 0.55); }
+.btn--on-dark:hover, .hero .btn--outline:hover { background: #fff; color: var(--c-navy-900); border-color: #fff; }
+
+/* Small affordance used at the end of card copy and inline "read more" links. */
+.link-arrow {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  font-family: var(--font-display); font-weight: 700; font-size: var(--t-base);
+  color: var(--c-navy-800); text-decoration: none;
+}
+.link-arrow::after {
+  content: "\2192";                        /* right arrow */
+  transition: transform var(--dur) var(--ease);
+}
+.link-arrow:hover { color: var(--c-maroon-800); }
+.link-arrow:hover::after { transform: translateX(3px); }
+
+
+/* ---------------------------------------------------------------------------
+   05  SPLIT HEADER
+   Left: crest + name block. Right: two CTAs. Nothing else - the density of
+   the old header lives in the app bar dropdowns instead.
+   --------------------------------------------------------------------------- */
+.site-header { background: var(--c-bg); border-bottom: 1px solid var(--c-line); }
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  padding-block: var(--s-4);
+}
+
+.brand { display: flex; align-items: center; gap: var(--s-4); text-decoration: none; color: inherit; }
+.brand__mark { width: 58px; height: 58px; flex: none; }
+.brand__text { display: flex; flex-direction: column; }
+.brand__name {
+  font-family: var(--font-display);
+  font-size: var(--t-lg);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--c-navy-900);
+  line-height: 1.2;
+}
+/* The tagline is the Gurbani line inscribed over the college entrance,
+   "Vidya Vichari Ta Parupkari". Set in italic to read as a motto rather than
+   as another line of facts; the accreditation line below carries those. */
+.brand__tagline {
+  font-size: var(--t-sm);
+  color: var(--c-maroon-800);
+  font-weight: 600;
+  font-style: italic;
+}
+/* The English gloss is dropped on narrow screens so the motto stays on one
+   line and the header stays two lines tall. */
+@media (max-width: 900px) { .brand__gloss { display: none; } }
+.brand__creds { font-size: var(--t-xs); color: var(--c-muted); }
+
+.header-cta { display: flex; gap: var(--s-3); flex: none; }
+
+
+/* ---------------------------------------------------------------------------
+   06  APP BAR / NAV
+   Sticky, so the primary nav is always one reach away while scrolling.
+   --------------------------------------------------------------------------- */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--c-navy-800);
+  /* Subtle top highlight so the bar reads as a distinct layer over content. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--sh-2);
+}
+
+.app-bar__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+
+.nav__menu { display: flex; flex-wrap: wrap; }
+
+.nav__item { position: relative; }
+
+.nav__item > a {
+  display: block;
+  padding: var(--s-4) var(--s-4);
+  font-family: var(--font-display);
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  /* Reserve the underline space up front so hover does not shift the text. */
+  border-bottom: 3px solid transparent;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.nav__item > a:hover,
+.nav__item:focus-within > a {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: var(--c-saffron-500);
+  color: #fff;
+}
+
+/* Caret on items that own a dropdown. */
+.nav__item--has-sub > a::after {
+  content: "";
+  display: inline-block;
+  width: 0.42em; height: 0.42em;
+  margin-left: 0.5em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.15em) rotate(45deg);
+}
+
+/*
+  TECHNIQUE 2 - CSS-only dropdowns
+  --------------------------------------------------------------------------
+  Closed state uses opacity + visibility + translateY rather than
+  `display: none`, so the panel can transition and so screen readers still
+  skip it (visibility: hidden removes it from the a11y tree).
+
+  It opens on TWO conditions:
+    * `.nav__item:hover > .nav__sub`        - pointer users
+    * `.nav__item:focus-within > .nav__sub` - keyboard users tabbing into the
+      parent link or any child link. :focus-within is what replaces the
+      JS keydown handlers a scripted menu would need.
+*/
+.nav__sub {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 60;
+  min-width: 17rem;
+  padding: var(--s-2);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 0 0 var(--r-md) var(--r-md);
+  box-shadow: var(--sh-3);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity var(--dur) var(--ease),
+              transform var(--dur) var(--ease),
+              visibility var(--dur) var(--ease);
+}
+.nav__item:hover > .nav__sub,
+.nav__item:focus-within > .nav__sub {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Long menus (Departments, Facilities) get two columns so they never run off
+   the bottom of the viewport. */
+.nav__sub--wide { min-width: 34rem; columns: 2; column-gap: var(--s-2); }
+
+.nav__sub a {
+  display: block;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-sm);
+  font-size: var(--t-base);
+  color: var(--c-text);
+  text-decoration: none;
+}
+.nav__sub a:hover { background: var(--c-navy-100); color: var(--c-navy-800); }
+
+.app-bar__aside {
+  flex: none;
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--r-pill);
+  font-family: var(--font-display);
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: background var(--dur) var(--ease);
+}
+.app-bar__aside:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+
+/*
+  TECHNIQUE 1 - the mobile menu checkbox.
+  The input itself is never visible; it only exists so `:checked` can be
+  queried. It stays in the DOM (not `display: none`) so it remains focusable
+  and so the label association keeps working.
+  Desktop hides the label and the checkbox has no effect - see section 13 for
+  the small-screen rules that give it teeth.
+*/
+.nav-toggle { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+.nav-toggle__btn { display: none; }
+
+
+/* ---------------------------------------------------------------------------
+   07  HERO SLIDESHOW
+   --------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: clamp(26rem, 20rem + 26vw, 40rem);
+  overflow: hidden;
+  background: var(--c-navy-900);   /* shows while images load */
+}
+
+/* The radios are the state machine. Kept off-screen but focusable, so a
+   keyboard user can Tab to the dots and pick a slide with the arrow keys
+   (native radio-group behaviour - again, no JS). */
+.hero__radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  /*
+    a) AUTOPLAY. One 24s loop per slide, offset by negative delays below.
+       `animation-fill-mode: both` holds the 0% opacity before the first
+       cycle starts so nothing flashes on load.
+  */
+  opacity: 0;
+  /* `linear` matters here: the cross-fade ramps of the outgoing and incoming
+     slides are complementary, so a linear curve keeps their combined opacity
+     close to 1 and avoids a dark dip mid-dissolve. */
+  animation: heroFade var(--hero-cycle) linear infinite both;
+}
+.hero__slide img { width: 100%; height: 100%; object-fit: cover; }
+
+/*
+  A negative delay puts a slide that far AHEAD on its own timeline. With two
+  slides the offset is exactly half the cycle, so the pair is symmetric.
+
+  To add a third slide the delays become 0, -2/3 and -1/3 of the cycle (note
+  the order: -1/3 plays LAST, not second), and the keyframe percentages below
+  move from halves (46 / 50) to thirds (29.3 / 33.3).
+*/
+.s-1 { animation-delay: 0s; }
+.s-2 { animation-delay: calc(var(--hero-cycle) / -2); }
+
+/*
+  The timeline is written so that 0% is the FULLY VISIBLE state and the
+  fade-in happens in the last 5% of the cycle. That detail matters: it means
+  slide 1 (delay 0s) is already at full opacity on page load, instead of the
+  page opening mid-cross-fade on slide 2.
+
+  Reading it as wall-clock, with an 18s cycle:
+      0%    -> 46%   visible, slowly scaling up (a gentle Ken Burns)
+      46%   -> 50%   fades out (~0.7s)
+      50%   -> 96%   invisible; the scale silently resets in here
+      96%   -> 100%  fades back in
+
+  Both fade windows are 4% wide and, because the delays are exact halves, the
+  incoming slide's 96%->100% ramp lands on precisely the same wall-clock
+  second as the outgoing slide's 46%->50% ramp. Each slide holds for ~8s.
+*/
+@keyframes heroFade {
+  0%     { opacity: 1; transform: scale(1.000); }
+  46%    { opacity: 1; transform: scale(1.055); }
+  50%    { opacity: 0; transform: scale(1.060); }
+  96%    { opacity: 0; transform: scale(1.000); }
+  100%   { opacity: 1; transform: scale(1.000); }
+}
+
+/*
+  b) MANUAL OVERRIDE.
+  The radios precede every slide, so a checked radio matches ALL of them via
+  the general sibling combinator. First stop the carousel and hide everything:
+*/
+.hero__radio:checked ~ .hero__slide { animation: none; opacity: 0; transform: none; }
+/* ...then a more specific ID pairing reveals only the requested slide. */
+#hero-1:checked ~ .s-1,
+#hero-2:checked ~ .s-2 { opacity: 1; }
+
+/* Dark gradient scrim so the headline stays legible over any photograph. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(7, 27, 48, 0.92) 0%, rgba(7, 27, 48, 0.72) 42%, rgba(7, 27, 48, 0.28) 100%),
+    linear-gradient(to top, rgba(7, 27, 48, 0.55), transparent 55%);
+}
+
+.hero__body {
+  position: relative;                /* above the scrim */
+  align-self: center;
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+}
+.hero__copy { max-width: 46rem; color: #fff; }
+.hero__copy h1 { color: #fff; margin-bottom: var(--s-4); }
+.hero__lede { font-size: var(--t-lg); color: rgba(255, 255, 255, 0.9); max-width: 40rem; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+
+/* Dot controls -------------------------------------------------------------- */
+.hero__dots { display: flex; gap: var(--s-3); margin-top: var(--s-8); }
+.hero__dots label {
+  width: 2.75rem; height: 4px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  /* The dots run the same 24s clock as the slides so the indicator tracks
+     the autoplay without any script keeping them in sync. */
+  animation: dotPulse var(--hero-cycle) linear infinite both;
+  transition: background var(--dur) var(--ease);
+}
+.hero__dots label:hover { background: rgba(255, 255, 255, 0.7); }
+/*
+  Same delays as the slides above.
+  These are qualified with `.hero__dots` on purpose: the base rule above is
+  `.hero__dots label`, specificity (0,1,1), and the `animation` shorthand it
+  uses sets animation-delay to 0s. A bare `.d-2` is only (0,1,0) and would
+  lose, leaving both dots pulsing in lockstep.
+*/
+.hero__dots .d-1 { animation-delay: 0s; }
+.hero__dots .d-2 { animation-delay: calc(var(--hero-cycle) / -2); }
+
+/* Mirrors heroFade's timing exactly. If you retime heroFade, retime these
+   percentages with it or the indicator will drift out of step. */
+@keyframes dotPulse {
+  0%,  46%  { background: var(--c-saffron-500);      width: 4.5rem; }
+  50%, 96%  { background: rgba(255, 255, 255, 0.35); width: 2.75rem; }
+  100%      { background: var(--c-saffron-500);      width: 4.5rem; }
+}
+
+/* Same override pattern as the slides: freeze the dot animation, then light
+   up the chosen one. Note the dots sit inside .hero__body, so the selector
+   reaches through it. */
+.hero__radio:checked ~ .hero__body .hero__dots label { animation: none; background: rgba(255, 255, 255, 0.35); width: 2.75rem; }
+#hero-1:checked ~ .hero__body .d-1,
+#hero-2:checked ~ .hero__body .d-2 { background: var(--c-saffron-500); width: 4.5rem; }
+
+/* Keyboard users get a ring on the dot whose radio has focus. */
+.hero__radio:focus-visible ~ .hero__body .hero__dots label { outline: 2px dashed rgba(255, 255, 255, 0.6); outline-offset: 4px; }
+
+
+/* ---------------------------------------------------------------------------
+   08  STATS STRIP
+   --------------------------------------------------------------------------- */
+.stats { background: var(--c-navy-900); color: #fff; }
+/*
+  The 1px `gap` is the divider: the grid's own background shows through it, so
+  no borders are needed. Column counts are explicit rather than auto-fit -
+  auto-fit collapses surplus tracks to 0px but still draws their gaps, which
+  left stray 1px slivers at the end of the row.
+*/
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  padding-inline: 0;
+}
+.stat { background: var(--c-navy-900); padding: var(--s-6) var(--gutter); }
+.stat__num {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t-stat);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--c-saffron-500);
+}
+.stat__plus { font-size: 0.6em; vertical-align: 0.28em; margin-left: 1px; }
+.stat__label {
+  margin: var(--s-2) 0 var(--s-1);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--t-base);
+  color: #fff;
+}
+.stat__note { margin: 0; font-size: var(--t-sm); color: rgba(255, 255, 255, 0.68); line-height: 1.45; }
+
+
+/* ---------------------------------------------------------------------------
+   09  SECTIONS & CARDS
+   --------------------------------------------------------------------------- */
+.about { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(2rem, 1rem + 4vw, 4.5rem); }
+.about__copy h2 { max-width: 30ch; margin-bottom: var(--s-5); }
+.about__copy p { color: var(--c-muted); max-width: 62ch; }
+.about__actions { display: flex; flex-wrap: wrap; gap: var(--s-5); margin-top: var(--s-5); }
+
+/* Right-hand column of the About row: courtyard photo above the quality box. */
+.about__side { display: grid; gap: var(--s-5); align-content: start; }
+
+.about__figure {
+  margin: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;                 /* clips the image to the rounded corners */
+  border: 1px solid var(--c-line);
+  box-shadow: var(--sh-1);
+}
+.about__figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.about__figure figcaption {
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-cream);
+  border-top: 1px solid var(--c-line);
+  font-size: var(--t-sm);
+  color: var(--c-muted);
+}
+
+.about__aside {
+  padding: var(--s-6);
+  background: var(--c-cream);
+  border: 1px solid var(--c-line);
+  border-left: 4px solid var(--c-maroon-800);
+  border-radius: var(--r-lg);
+  align-self: start;
+}
+.about__aside h3 { margin-bottom: var(--s-4); }
+
+.pill-list { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.pill-list a {
+  display: block;
+  padding: var(--s-2) var(--s-4);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-pill);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  color: var(--c-navy-800);
+  text-decoration: none;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.pill-list a:hover { background: var(--c-navy-800); border-color: var(--c-navy-800); color: #fff; }
+
+/* Academics band ----------------------------------------------------------
+   Replaced the ten-card department grid. Deliberately short: copy and four
+   facts on the left, one photograph on the right, two ways out (the
+   departments page, or the side navigation panel). */
+.academics {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+  align-items: center;
+}
+.academics__copy h2 { margin-bottom: var(--s-4); max-width: 18ch; }
+.academics__copy > p { color: var(--c-muted); max-width: 56ch; }
+
+.academics__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--s-3) var(--s-5);
+  margin: var(--s-5) 0;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-line-strong);
+}
+.academics__facts li { font-size: var(--t-sm); color: var(--c-muted); line-height: 1.4; }
+.academics__facts strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--t-h3);
+  font-weight: 800;
+  color: var(--c-navy-900);
+}
+
+.academics__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+.academics__figure {
+  margin: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-2);
+}
+.academics__figure img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* A <label> styled as a button. Labels are not focusable, so this is a
+   pointer affordance only - the keyboard route to the same checkbox is the
+   edge tab in section 15, which IS focusable. */
+.as-button { cursor: pointer; user-select: none; }
+
+/* Card grids. auto-fit + minmax means the column count adapts on its own;
+   the --N classes only set the maximum. */
+.card-grid { display: grid; gap: var(--s-5); }
+.card-grid--3 { grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
+
+.alum-card, .adm-card {
+  padding: var(--s-5);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.alum-card:hover, .adm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-2);
+  border-color: var(--c-line-strong);
+}
+
+/* .dept-card__tag is still used on departments.html as a standalone label. */
+.dept-card__tag, .alum-card__batch {
+  margin-bottom: var(--s-2);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-saffron-600);
+}
+
+.alum-card__batch { color: var(--c-maroon-800); }
+.alum-card h3 { margin-bottom: var(--s-1); }
+.alum-card__role { font-size: var(--t-base); color: var(--c-muted); }
+
+/* Admissions cards are whole-card links, hence the block-level <a>. */
+.adm-card { display: flex; flex-direction: column; gap: var(--s-2); text-decoration: none; color: inherit; }
+.adm-card h3 { margin: 0; }
+.adm-card p { margin: 0; font-size: var(--t-base); color: var(--c-muted); }
+.adm-card .link-arrow { margin-top: auto; padding-top: var(--s-3); }
+.adm-card--urgent { border-color: var(--c-maroon-800); border-top: 4px solid var(--c-maroon-800); background: var(--c-cream); }
+.adm-card__flag {
+  align-self: flex-start;
+  padding: 2px var(--s-3);
+  background: var(--c-maroon-800);
+  border-radius: var(--r-pill);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* Helpline block ----------------------------------------------------------- */
+.helpline {
+  margin-top: var(--s-7);
+  padding: var(--s-6);
+  background: var(--c-navy-100);
+  border-radius: var(--r-lg);
+}
+.helpline h3 { margin-bottom: var(--s-4); }
+.helpline__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: var(--s-3) var(--s-6); }
+.helpline__list li { font-size: var(--t-base); }
+.helpline__list span {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.helpline__list a { font-weight: 600; color: var(--c-navy-800); text-decoration: none; }
+.helpline__list a:hover { text-decoration: underline; color: var(--c-maroon-800); }
+.helpline__note { margin-top: var(--s-5); margin-bottom: 0; font-size: var(--t-sm); color: var(--c-muted); }
+
+
+/* ---------------------------------------------------------------------------
+   10  NOTICE BOARD TABS
+   --------------------------------------------------------------------------- */
+.tabs { position: relative; }
+
+/* Same pattern as the hero: the radios are invisible state, placed before
+   everything they control so `:checked ~` can reach it. */
+.tabs__radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+.tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  border-bottom: 1px solid var(--c-line-strong);
+  margin-bottom: var(--s-6);
+}
+.tabs__list label {
+  padding: var(--s-3) var(--s-5);
+  margin-bottom: -1px;                /* sit on the border */
+  border: 1px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--t-base);
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.tabs__list label:hover { color: var(--c-navy-800); background: var(--c-bg); }
+
+/* Active tab styling, one pairing per tab. */
+#tab-campus:checked  ~ .tabs__list .t-campus,
+#tab-public:checked  ~ .tabs__list .t-public,
+#tab-student:checked ~ .tabs__list .t-student {
+  color: var(--c-navy-900);
+  background: var(--c-bg);
+  border-color: var(--c-line);
+  border-bottom-color: var(--c-maroon-800);
+}
+/* Focus ring for keyboard users on whichever tab holds focus. */
+.tabs__radio:focus-visible ~ .tabs__list label { outline: 2px dashed var(--c-saffron-600); outline-offset: 2px; }
+
+/* Panels are hidden by default and revealed by the matching radio. With CSS
+   disabled all three simply render one after another, which is still usable. */
+.panel { display: none; }
+#tab-campus:checked  ~ .tabs__panels .panel--campus,
+#tab-public:checked  ~ .tabs__panels .panel--public,
+#tab-student:checked ~ .tabs__panels .panel--student { display: block; }
+
+.notice-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: var(--s-3); }
+.notice-list li {
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-saffron-500);
+  border-radius: var(--r-md);
+  transition: border-left-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.notice-list li:hover { border-left-color: var(--c-maroon-800); box-shadow: var(--sh-1); }
+.notice__meta {
+  margin: 0 0 var(--s-1);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.notice-list a { font-weight: 500; color: var(--c-navy-900); text-decoration: none; }
+.notice-list a:hover { color: var(--c-maroon-800); text-decoration: underline; }
+
+
+/* ---------------------------------------------------------------------------
+   11  DUO COLUMNS & PLACEMENT BAND
+   --------------------------------------------------------------------------- */
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: clamp(2rem, 1rem + 4vw, 4rem); }
+.duo h2 { margin-bottom: var(--s-5); }
+
+.tile-list { display: grid; gap: var(--s-2); }
+.tile-list a {
+  display: grid;
+  gap: 2px;
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  text-decoration: none;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.tile-list a:hover { border-color: var(--c-navy-700); transform: translateX(3px); }
+.tile-list strong { font-family: var(--font-display); color: var(--c-navy-900); }
+.tile-list span { font-size: var(--t-sm); color: var(--c-muted); }
+
+.band {
+  background: linear-gradient(120deg, var(--c-navy-800), var(--c-navy-700));
+  color: #fff;
+  padding-block: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+.band__inner { display: grid; grid-template-columns: minmax(0, 1.6fr) auto; align-items: center; gap: var(--s-6); }
+.band h2 { color: #fff; }
+.band p { color: rgba(255, 255, 255, 0.85); max-width: 58ch; margin: 0; }
+.band__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+
+
+/* ---------------------------------------------------------------------------
+   11b INTERIOR PAGES  (admissions.html, departments.html)
+   Interior pages skip the slideshow and open on a compact coloured band, so
+   the content starts higher up the viewport.
+   --------------------------------------------------------------------------- */
+.page-hero {
+  background: linear-gradient(115deg, var(--c-navy-900) 0%, var(--c-navy-800) 55%, var(--c-navy-700) 100%);
+  color: #fff;
+  padding-block: clamp(2rem, 1.2rem + 3.5vw, 4.5rem);
+}
+.page-hero h1 { color: #fff; margin-bottom: var(--s-4); }
+.page-hero__lede { font-size: var(--t-lg); color: rgba(255, 255, 255, 0.86); max-width: 58ch; }
+
+.crumbs { margin-bottom: var(--s-5); font-size: var(--t-sm); color: rgba(255, 255, 255, 0.66); }
+.crumbs a { color: rgba(255, 255, 255, 0.9); text-decoration: none; }
+.crumbs a:hover { color: #fff; text-decoration: underline; }
+.crumbs span { margin-inline: var(--s-2); }
+
+/* Marks the current section in the app bar. Uses a left border rather than a
+   colour change so it still reads when the bar is hovered. */
+.nav__item > a[aria-current="page"] { border-bottom-color: var(--c-saffron-500); background: rgba(255, 255, 255, 0.08); }
+
+/* Readable measure for long-form blocks. */
+.prose { max-width: 68ch; }
+.prose p { color: var(--c-muted); }
+.prose h2 { margin-bottom: var(--s-4); }
+.muted-note {
+  margin-top: var(--s-5);
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-saffron-100);
+  border-radius: var(--r-md);
+  font-size: var(--t-base);
+  color: var(--c-text);
+}
+
+/* Tick list. The marker is a CSS ::before so no image or icon font is needed. */
+.check-list { display: grid; gap: var(--s-3); margin-bottom: var(--s-5); }
+.check-list li { position: relative; padding-left: var(--s-6); color: var(--c-muted); }
+.check-list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 0.5rem; height: 0.9rem;
+  border-right: 2.5px solid var(--c-saffron-600);
+  border-bottom: 2.5px solid var(--c-saffron-600);
+  transform: rotate(45deg);
+}
+
+/* Tables stay usable on phones by scrolling inside their own container rather
+   than forcing the page to scroll sideways. */
+.table-scroll { overflow-x: auto; margin-bottom: var(--s-5); border: 1px solid var(--c-line); border-radius: var(--r-md); }
+.table { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: var(--t-base); background: var(--c-bg); }
+.table caption {
+  padding: var(--s-3) var(--s-4);
+  text-align: left;
+  font-size: var(--t-sm);
+  color: var(--c-muted);
+  background: var(--c-bg-tint);
+  border-bottom: 1px solid var(--c-line);
+}
+.table th, .table td { padding: var(--s-3) var(--s-4); text-align: left; border-bottom: 1px solid var(--c-line); }
+.table thead th { font-family: var(--font-display); font-size: var(--t-sm); letter-spacing: 0.04em; text-transform: uppercase; color: var(--c-navy-900); background: var(--c-bg-tint); }
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover { background: var(--c-navy-100); }
+
+/* Department detail rows -------------------------------------------------- */
+.dept-stack { display: grid; gap: var(--s-6); }
+.dept-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+  padding: var(--s-6);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-left: 4px solid var(--c-navy-800);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  transition: border-left-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.dept-detail:hover { border-left-color: var(--c-maroon-800); box-shadow: var(--sh-2); }
+.dept-detail__head h2 { margin-bottom: var(--s-3); }
+.dept-detail__head p { color: var(--c-muted); margin-bottom: 0; }
+
+/* Definition list rendered as label/value rows. */
+.dept-detail__meta {
+  margin: 0;
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-bg-tint);
+  border-radius: var(--r-md);
+  align-self: start;
+}
+.dept-detail__meta dt {
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.dept-detail__meta dd { margin: 0 0 var(--s-4); font-size: var(--t-base); color: var(--c-text); }
+.dept-detail__meta dd:last-child { margin-bottom: 0; }
+
+
+/* ---------------------------------------------------------------------------
+   12  FOOTER
+   --------------------------------------------------------------------------- */
+.site-footer { background: var(--c-navy-900); color: rgba(255, 255, 255, 0.78); }
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr));
+  gap: var(--s-6);
+  padding-block: var(--s-9) var(--s-7);
+}
+/* The crest is red-and-blue line art drawn for light backgrounds, so on the
+   navy footer it sits on a white disc rather than straight on the dark. */
+.footer__brand img {
+  width: 56px; height: 56px;
+  padding: 5px;
+  margin-bottom: var(--s-4);
+  background: #fff;
+  border-radius: 50%;
+  object-fit: contain;
+}
+.footer__name { font-family: var(--font-display); font-weight: 700; color: #fff; margin-bottom: var(--s-2); }
+.footer__addr { font-size: var(--t-sm); line-height: 1.6; }
+
+.footer__col h2 {
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-saffron-500);
+  margin-bottom: var(--s-4);
+}
+.footer__col li { margin-bottom: var(--s-2); }
+.site-footer a { color: rgba(255, 255, 255, 0.8); font-size: var(--t-base); text-decoration: none; }
+.site-footer a:hover { color: #fff; text-decoration: underline; }
+
+.footer__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding-block: var(--s-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: var(--t-sm);
+}
+.footer__bar p { margin: 0; }
+
+
+/* ===========================================================================
+   12b  SIDE NAVIGATION PANEL          [CSS-only: one checkbox, two positions]
+   ---------------------------------------------------------------------------
+   Self-contained component: every rule it needs, including its own media
+   queries, lives in this block. Delete the block and the markup and nothing
+   else on the site changes.
+
+   THE MECHANISM
+   `#sidenav-toggle` is a real <input type="checkbox">. It is transparent
+   (opacity: 0) but never hidden, so it keeps native click and keyboard
+   behaviour - Tab focuses it, Space toggles it. Everything the user actually
+   sees is painted underneath it and marked aria-hidden.
+
+   The trick that makes one input serve as both Open and Close: the checkbox
+   is absolutely positioned, and `:checked` gives it a DIFFERENT position.
+   Closed, it sits exactly over the vertical edge tab. Open, it sits exactly
+   over the X in the panel's corner. Its position is not transitioned, so the
+   hit area never lags behind the visuals.
+
+   STAGGER
+   Two inherited custom properties drive the cascade instead of a wall of
+   nth-child rules: `--g` is the group index (set on each group, inherits
+   down) and `--i` is the item index within its list. Delays only exist in
+   the :checked state, so opening cascades and closing snaps shut.
+   =========================================================================== */
+
+.sidenav {
+  position: fixed;
+  inset: 0;
+  z-index: 200;                 /* above the sticky app bar, which is 50 */
+  pointer-events: none;         /* children opt back in individually */
+}
+
+/* --- the checkbox: invisible, always interactive -------------------------- */
+.sidenav__switch {
+  position: absolute;
+  z-index: 30;                  /* above the panel and the X it sits on */
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  /* Closed: parked over the edge tab. */
+  top: 50%;
+  right: 0;
+  width: 46px;
+  height: 148px;
+  transform: translateY(-50%);
+}
+/* Open: relocated over the X. Deliberately not transitioned. */
+.sidenav__switch:checked {
+  top: var(--s-5);
+  right: var(--s-5);
+  width: 48px;
+  height: 48px;
+  transform: none;
+}
+
+/* --- closed state: the vertical edge tab ---------------------------------- */
+.sidenav__tab {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  /* Width and height match .sidenav__switch exactly, so the invisible hit
+     area sits precisely on the visible tab. Change one, change the other. */
+  width: 46px;
+  height: 148px;
+  background: linear-gradient(180deg, var(--c-navy-800), var(--c-navy-900));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-right: 0;
+  border-radius: var(--r-md) 0 0 var(--r-md);
+  box-shadow: -8px 0 24px rgba(7, 27, 48, 0.26);
+  color: #fff;
+  transform: translateY(-50%);
+  transition: transform var(--sidenav-dur) var(--sidenav-ease),
+              opacity 220ms var(--ease),
+              background var(--dur) var(--ease),
+              width var(--dur) var(--ease);
+}
+.sidenav__tab-text {
+  /* Vertical lettering, bottom-to-top, so it reads naturally on a right edge. */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+/* Three bars drawn from one element, as in the mobile hamburger. */
+.sidenav__tab-bars,
+.sidenav__tab-bars::before,
+.sidenav__tab-bars::after {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--c-saffron-500);
+  border-radius: 2px;
+}
+.sidenav__tab-bars { position: relative; }
+.sidenav__tab-bars::before { content: ""; position: absolute; top: -5px; }
+.sidenav__tab-bars::after  { content: ""; position: absolute; top: 5px; width: 10px; }
+
+/* Hover and focus have to be driven from the checkbox, because the tab
+   underneath it is pointer-events: none and never sees the cursor. */
+.sidenav__switch:hover ~ .sidenav__tab { width: 52px; background: linear-gradient(180deg, var(--c-navy-700), var(--c-navy-800)); }
+.sidenav__switch:focus-visible ~ .sidenav__tab { outline: 3px solid var(--c-saffron-500); outline-offset: 3px; }
+
+/* Open: the tab slides off the right edge. */
+.sidenav__switch:checked ~ .sidenav__tab { transform: translate(110%, -50%); opacity: 0; }
+
+/* --- open state: the X ---------------------------------------------------- */
+.sidenav__close {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-5);
+  z-index: 20;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transform: scale(0.8) rotate(-60deg);
+  transition: opacity 260ms var(--sidenav-ease),
+              transform 320ms var(--sidenav-ease),
+              background var(--dur) var(--ease);
+}
+.sidenav__close::before,
+.sidenav__close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 2px;
+  margin: -1px 0 0 -8px;
+  background: #fff;
+  border-radius: 2px;
+}
+.sidenav__close::before { transform: rotate(45deg); }
+.sidenav__close::after  { transform: rotate(-45deg); }
+
+.sidenav__switch:checked ~ .sidenav__close {
+  opacity: 1;
+  transform: none;
+  transition-delay: 140ms;          /* lands after the panel has slid in */
+}
+.sidenav__switch:checked:hover ~ .sidenav__close { background: var(--c-maroon-800); border-color: var(--c-maroon-700); }
+.sidenav__switch:checked:focus-visible ~ .sidenav__close { outline: 3px solid var(--c-saffron-500); outline-offset: 3px; }
+
+/* --- backdrop ------------------------------------------------------------- */
+.sidenav__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: rgba(7, 27, 48, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--sidenav-dur) var(--sidenav-ease);
+}
+.sidenav__switch:checked ~ .sidenav__scrim { opacity: 1; pointer-events: auto; cursor: pointer; }
+
+/* --- the panel ------------------------------------------------------------ */
+.sidenav__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  width: var(--sidenav-w);
+  height: 100%;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(140, 29, 47, 0.28), transparent 60%),
+    linear-gradient(200deg, var(--c-navy-800) 0%, var(--c-navy-900) 62%);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  /* visibility (not display) so the panel can transition AND so its links
+     stay out of the tab order and the accessibility tree while closed. */
+  visibility: hidden;
+  transform: translateX(100%);
+  box-shadow: none;
+  transition: transform var(--sidenav-dur) var(--sidenav-ease),
+              visibility var(--sidenav-dur) var(--sidenav-ease),
+              box-shadow var(--sidenav-dur) var(--sidenav-ease);
+}
+.sidenav__switch:checked ~ .sidenav__panel {
+  visibility: visible;
+  transform: none;
+  box-shadow: -40px 0 80px rgba(7, 27, 48, 0.45);
+  pointer-events: auto;
+}
+
+.sidenav__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
+  padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;    /* scrolling the panel never scrolls the page */
+  /* 24 links will not fit a short laptop window, so the panel scrolls. Style
+     the bar to match the panel instead of leaving the OS default on navy. */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+.sidenav__inner::-webkit-scrollbar { width: 8px; }
+.sidenav__inner::-webkit-scrollbar-track { background: transparent; }
+.sidenav__inner::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: var(--r-pill);
+}
+.sidenav__inner::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* --- panel header --------------------------------------------------------- */
+.sidenav__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding-bottom: var(--s-5);
+  /* Only the header needs to clear the X in the corner. Padding the whole
+     column instead would steal ~50px from every link row. */
+  padding-right: 3.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  /* The crest is red-and-blue line art meant for light backgrounds, so it
+     gets a white disc to sit on rather than being dropped straight on navy. */
+}
+.sidenav__head img {
+  flex: none;
+  width: 54px;
+  height: 54px;
+  padding: 5px;
+  background: #fff;
+  border-radius: 50%;
+  object-fit: contain;
+}
+.sidenav__head strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--t-base);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+.sidenav__head em {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-saffron-500);
+}
+
+/* --- groups --------------------------------------------------------------- */
+.sidenav__groups { display: grid; gap: var(--s-7); }
+
+/* Group index, used by the stagger calc below. Inherits down to the items. */
+.sidenav__group--depts   { --g: 0; }
+.sidenav__group--quick   { --g: 1; }
+.sidenav__group--contact { --g: 2; }
+
+.sidenav__label {
+  margin: 0 0 var(--s-4);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-saffron-500);
+}
+
+.sidenav__list { display: grid; gap: 2px; }
+
+.sidenav__list a {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  margin-inline: calc(var(--s-3) * -1);
+  border-radius: var(--r-md);
+  font-family: var(--font-display);
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+  text-decoration: none;
+  transition: background var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.sidenav__list a:hover,
+.sidenav__list a:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: translateX(4px);
+}
+
+/* Department code chip - the two-to-four letter tag before each name. */
+.sidenav__code {
+  flex: none;
+  min-width: 3.4rem;
+  padding: 3px var(--s-2);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--r-sm);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: var(--c-saffron-500);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.sidenav__list a:hover .sidenav__code,
+.sidenav__list a:focus-visible .sidenav__code {
+  background: rgba(228, 163, 43, 0.16);
+  border-color: var(--c-saffron-500);
+}
+
+/* Contact rows are two-line: label above, value below, icon on the left. */
+.sidenav__list--contact a { align-items: flex-start; }
+.sidenav__icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--c-saffron-500);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sidenav__list--contact strong { display: block; font-weight: 600; }
+.sidenav__list--contact em {
+  display: block;
+  margin-top: 1px;
+  font-style: normal;
+  font-family: var(--font-body);
+  font-size: var(--t-sm);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sidenav__foot {
+  margin-top: auto;
+  padding-top: var(--s-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: var(--t-xs);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.45);
+}
+.sidenav__foot kbd {
+  padding: 1px 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- staggered reveal ------------------------------------------------------
+   Closed = offset and transparent, with NO transition-delay, so closing the
+   panel collapses everything at once instead of playing the cascade in
+   reverse. The delays are added only in the :checked state. */
+.sidenav__head,
+.sidenav__group,
+.sidenav__list li,
+.sidenav__foot {
+  opacity: 0;
+  transform: translateX(22px);
+  transition: opacity 300ms var(--sidenav-ease), transform 300ms var(--sidenav-ease);
+}
+.sidenav__list li { transform: translateX(14px); }
+
+.sidenav__switch:checked ~ .sidenav__panel :is(.sidenav__head, .sidenav__group, .sidenav__list li, .sidenav__foot) {
+  opacity: 1;
+  transform: none;
+}
+.sidenav__switch:checked ~ .sidenav__panel .sidenav__head { transition-delay: 90ms; }
+/* group base = 130ms + 70ms per group; items add 22ms each on top of that. */
+.sidenav__switch:checked ~ .sidenav__panel .sidenav__group { transition-delay: calc(130ms + var(--g) * 70ms); }
+.sidenav__switch:checked ~ .sidenav__panel .sidenav__list li { transition-delay: calc(160ms + var(--g) * 70ms + var(--i, 0) * 22ms); }
+.sidenav__switch:checked ~ .sidenav__panel .sidenav__foot { transition-delay: 480ms; }
+
+/* Item index. Ten rules instead of ten full nth-child selectors in every
+   stagger rule above; the longest list (Departments) has ten entries. */
+.sidenav__list li:nth-child(1)  { --i: 1; }
+.sidenav__list li:nth-child(2)  { --i: 2; }
+.sidenav__list li:nth-child(3)  { --i: 3; }
+.sidenav__list li:nth-child(4)  { --i: 4; }
+.sidenav__list li:nth-child(5)  { --i: 5; }
+.sidenav__list li:nth-child(6)  { --i: 6; }
+.sidenav__list li:nth-child(7)  { --i: 7; }
+.sidenav__list li:nth-child(8)  { --i: 8; }
+.sidenav__list li:nth-child(9)  { --i: 9; }
+.sidenav__list li:nth-child(10) { --i: 10; }
+
+/* Stop the page behind the panel from scrolling. Progressive enhancement:
+   browsers without :has() simply let the page scroll behind, which is not a
+   breakage. */
+body:has(.sidenav__switch:checked) { overflow: hidden; }
+
+/* --- panel responsive ------------------------------------------------------
+   >=900px: two columns inside the panel, Departments spanning both rows, so
+   26 links fit without a tall scroll and the panel reads as a designed sheet
+   rather than a long list. */
+@media (min-width: 900px) {
+  .sidenav__groups {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    column-gap: var(--s-8);
+    align-items: start;
+  }
+  .sidenav__group--depts { grid-row: span 2; }
+}
+
+/* <620px: narrower tab, lettering dropped, square 44px touch target. */
+@media (max-width: 620px) {
+  .sidenav { --sidenav-w: min(92vw, 420px); }
+  .sidenav__tab { width: 44px; height: 56px; }
+  .sidenav__tab-text { display: none; }
+  .sidenav__switch { width: 44px; height: 56px; }
+  .sidenav__close, .sidenav__switch:checked { top: var(--s-4); right: var(--s-4); }
+  /* Slightly tighter list typography so department names stay on one line
+     in a 92vw panel. */
+  .sidenav__list a { font-size: 0.9375rem; gap: var(--s-2); }
+  .sidenav__code { min-width: 2.9rem; }
+}
+
+
+/* ---------------------------------------------------------------------------
+   13  RESPONSIVE
+   Three breakpoints, all max-width (mobile styles are the base above where
+   the fluid clamp() values already handle most of the work).
+   --------------------------------------------------------------------------- */
+
+/* --- 1080px: nav needs to breathe, footer drops to two rows --------------- */
+@media (max-width: 1080px) {
+  .nav__item > a { padding-inline: var(--s-3); font-size: var(--t-base); }
+  .app-bar__aside { display: none; }        /* reachable via the Quality links in About */
+  .stats__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .academics { grid-template-columns: 1fr; }
+  .academics__figure { order: -1; }        /* photo leads on narrow screens */
+  .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand { grid-column: 1 / -1; }
+  .about { grid-template-columns: 1fr; }
+  .band__inner { grid-template-columns: 1fr; }
+}
+
+/* --- 860px: the header stacks and the nav becomes a disclosure menu ------- */
+@media (max-width: 860px) {
+
+  .site-header__inner { flex-direction: column; align-items: stretch; gap: var(--s-4); }
+  .header-cta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+  .btn { align-items: center; text-align: center; }
+
+  /*
+    TECHNIQUE 1, the working half.
+    Below 860px the hamburger label appears and the menu collapses. The
+    checkbox is the entire mechanism:
+        #nav-toggle:checked ~ .nav__menu  ->  menu visible
+    `~` (general sibling) works because the input, the label and the <ul> are
+    all children of .app-bar__inner, with the input first.
+  */
+  .app-bar__inner { flex-wrap: wrap; padding-block: var(--s-2); }
+
+  .nav-toggle__btn {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-2);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+  }
+  /* Three-line hamburger drawn with one element: the box is the middle bar,
+     the two box-shadows are the outer bars. */
+  .nav-toggle__bars,
+  .nav-toggle__bars::before,
+  .nav-toggle__bars::after {
+    display: block;
+    width: 22px; height: 2px;
+    background: #fff;
+    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+  .nav-toggle__bars { position: relative; }
+  .nav-toggle__bars::before { content: ""; position: absolute; top: -7px; }
+  .nav-toggle__bars::after  { content: ""; position: absolute; top: 7px; }
+
+  /* Open state: the middle bar fades, the outer two cross into an X. */
+  .nav-toggle:checked ~ .nav-toggle__btn .nav-toggle__bars { background: transparent; }
+  .nav-toggle:checked ~ .nav-toggle__btn .nav-toggle__bars::before { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle:checked ~ .nav-toggle__btn .nav-toggle__bars::after  { transform: translateY(-7px) rotate(-45deg); }
+  /* Focus ring lands on the label, since the input is off-screen. */
+  .nav-toggle:focus-visible ~ .nav-toggle__btn { outline: 3px solid var(--c-saffron-500); outline-offset: 2px; }
+
+  .nav__menu {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    /* Must be nowrap. The desktop rule sets `flex-wrap: wrap`, and in a
+       COLUMN flex container `wrap` combined with the max-height below makes
+       items spill into extra columns sideways instead of scrolling. */
+    flex-wrap: nowrap;
+    padding-bottom: var(--s-3);
+    /* Very long menus stay scrollable rather than pushing the page down. */
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .nav-toggle:checked ~ .nav__menu { display: flex; }
+
+  .nav__item > a { padding: var(--s-3) var(--s-2); border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+  .nav__item--has-sub > a::after { float: right; margin-top: 0.55em; }
+
+  /*
+    On touch there is no hover, so the sub-menus are always expanded inline
+    (an accordion would need a second checkbox per item, which makes the
+    markup noisy for little gain). They render as an indented block instead
+    of a floating panel.
+  */
+  .nav__sub {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    min-width: 0;
+    columns: auto;
+    padding: var(--s-2) 0 var(--s-3) var(--s-4);
+    background: transparent;
+    border: 0;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    box-shadow: none;
+    margin-left: var(--s-2);
+  }
+  .nav__sub a { color: rgba(255, 255, 255, 0.78); font-size: var(--t-base); }
+  .nav__sub a:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+  /* The desktop scrim is a left-to-right gradient, which on a narrow screen
+     covers the whole photograph in its dark end. Switch to a bottom-weighted
+     vertical gradient so the campus image is actually visible on phones. */
+  .hero__scrim {
+    background:
+      linear-gradient(to top, rgba(7, 27, 48, 0.94) 32%, rgba(7, 27, 48, 0.62) 68%, rgba(7, 27, 48, 0.34) 100%);
+  }
+
+  .hero__dots { margin-top: var(--s-6); }
+  .stat { padding: var(--s-5) var(--gutter); }
+
+  /* Interior pages: department rows go single column. */
+  .dept-detail { grid-template-columns: 1fr; }
+}
+
+/* --- 620px: single column everywhere ------------------------------------- */
+@media (max-width: 620px) {
+  :root { --wrap: 100%; }
+
+  .brand { gap: var(--s-3); }
+  .brand__mark { width: 46px; height: 46px; }
+  .brand__creds { display: none; }         /* keeps the header to two lines */
+  .header-cta { grid-template-columns: 1fr; }
+
+  .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .section__head { flex-direction: column; align-items: flex-start; }
+  .footer__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+  .footer__bar { flex-direction: column; align-items: flex-start; }
+  .helpline, .about__aside { padding: var(--s-5); }
+  .hero__actions .btn { width: 100%; }
+  .dept-detail { padding: var(--s-5); }
+  .band__actions .btn { width: 100%; }
+}
+
+
+/* ---------------------------------------------------------------------------
+   14  MOTION & PRINT
+   --------------------------------------------------------------------------- */
+
+/*
+  Respect the OS "reduce motion" setting. This is important here because the
+  hero autoplays: for these users the carousel stops on slide 1 and the dots
+  become the only way to change it, which is the accessible default.
+*/
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero__slide { opacity: 0; animation: none; }
+  .s-1 { opacity: 1; }                     /* show the first slide, hold it */
+  .d-1 { background: var(--c-saffron-500); width: 4.5rem; }
+
+  /* Side panel: keep it functional, drop the motion. It appears and
+     disappears instantly, with no slide, no stagger and no cascade. */
+  .sidenav__panel { transition: none; }
+  .sidenav__head, .sidenav__group, .sidenav__list li, .sidenav__foot {
+    transform: none;
+    transition: none;
+  }
+  .sidenav__switch:checked ~ .sidenav__panel :is(.sidenav__head, .sidenav__group, .sidenav__list li, .sidenav__foot) {
+    transition-delay: 0s;
+  }
+  .sidenav__switch:checked ~ .sidenav__close { transform: none; transition-delay: 0s; }
+  .sidenav__list a:hover { transform: none; }
+  .btn:hover, .alum-card:hover, .adm-card:hover { transform: none; }
+}
+
+@media print {
+  .app-bar, .hero__dots, .header-cta, .band, .skip-link, .sidenav { display: none; }
+  .hero { min-height: 0; }
+  .hero__slide { display: none; }
+  .hero__copy, .hero__copy h1, .hero__lede { color: #000; }
+  .panel { display: block !important; }     /* print all three notice lists */
+  body { font-size: 11pt; }
+  a { text-decoration: underline; }
+}
