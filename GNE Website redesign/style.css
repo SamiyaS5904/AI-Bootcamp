@@ -12,7 +12,7 @@
      07  Hero slideshow       [CSS-only: keyframes autoplay + radio override]
      08  Stats strip
      09  Sections & cards
-     10  Notice board tabs    [CSS-only: radio tabs]
+     10  Campus activity hub  [CSS-only: board scroll + event rotator]
      11  Duo columns, band
      11b Interior pages       (admissions.html, departments.html)
      12  Footer
@@ -38,6 +38,7 @@
   --c-maroon-800: #8C1D2F; /* secondary - accreditation, urgent flags       */
   --c-maroon-700: #A82A3E;
 
+  --c-saffron-400: #F2B33F;/* top stop of the Apply gradient                */
   --c-saffron-600: #C9821A;/* warm accent, accessible on light backgrounds  */
   --c-saffron-500: #E4A32B;/* warm accent on dark backgrounds               */
   --c-saffron-100: #FBEFD8;
@@ -98,6 +99,10 @@
   /* Hero slideshow timing. Two slides, so each holds for half the cycle.
      Change --hero-cycle and the keyframe percentages in section 07 together. */
   --hero-cycle: 18s;
+
+  /* Featured-events showcase. Deliberately slow: 30s / 3 slides = 10s each,
+     long enough to look at the photograph and read the description. */
+  --events-cycle: 30s;
 
   /* Side navigation panel (section 15). */
   --sidenav-w: min(94vw, 780px);
@@ -188,7 +193,7 @@ a:hover { color: var(--c-maroon-800); }
   padding-inline: var(--gutter);
 }
 
-.section { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5.5rem); }
+.section { padding-block: clamp(2.25rem, 1.4rem + 3.2vw, 4.25rem); }
 .section--tint { background: var(--c-bg-tint); border-block: 1px solid var(--c-line); }
 
 .section__head {
@@ -197,7 +202,7 @@ a:hover { color: var(--c-maroon-800); }
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--s-4);
-  margin-bottom: var(--s-7);
+  margin-bottom: var(--s-6);
 }
 .section__head h2 { margin-bottom: 0; }
 
@@ -251,8 +256,38 @@ a:hover { color: var(--c-maroon-800); }
 .btn--primary { background: var(--c-navy-800); color: #fff; box-shadow: var(--sh-1); }
 .btn--primary:hover { background: var(--c-navy-700); color: #fff; box-shadow: var(--sh-2); }
 
-.btn--accent { background: var(--c-saffron-500); color: var(--c-navy-900); box-shadow: var(--sh-1); }
-.btn--accent:hover { background: var(--c-saffron-600); color: var(--c-navy-900); }
+/*
+  .btn--apply is reserved for ONE thing: the admissions / apply action. It is
+  the only warm-gradient button on the site, so wherever it appears it reads
+  as the primary thing to do. Everything else that used to be flat saffron has
+  been demoted to ghost or outline, otherwise the accent stops meaning
+  anything. Premium rather than loud: a narrow gradient, a hairline inner
+  highlight and a soft warm shadow, with dark navy text for contrast.
+*/
+.btn--apply {
+  background: linear-gradient(135deg,
+              var(--c-saffron-400) 0%,
+              var(--c-saffron-500) 48%,
+              var(--c-saffron-600) 100%);
+  color: var(--c-navy-900);
+  border-color: rgba(122, 68, 4, 0.26);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 2px 6px rgba(201, 130, 26, 0.26),
+    0 8px 22px rgba(201, 130, 26, 0.20);
+}
+.btn--apply:hover {
+  color: var(--c-navy-900);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 3px 9px rgba(201, 130, 26, 0.30),
+    0 12px 30px rgba(201, 130, 26, 0.28);
+}
+.btn--apply .btn__sub { color: var(--c-navy-800); opacity: 0.7; }
+/* Directional cue on the label line only, so the two-line variant keeps the
+   arrow next to the verb rather than floating under it. */
+.btn--apply .btn__label::after,
+.btn--apply.btn--sm::after { content: " \2192"; }
 
 .btn--ghost { background: var(--c-bg); color: var(--c-navy-800); border-color: var(--c-line-strong); }
 .btn--ghost:hover { background: var(--c-navy-100); color: var(--c-navy-800); border-color: var(--c-navy-700); }
@@ -304,18 +339,7 @@ a:hover { color: var(--c-maroon-800); }
   color: var(--c-navy-900);
   line-height: 1.2;
 }
-/* The tagline is the Gurbani line inscribed over the college entrance,
-   "Vidya Vichari Ta Parupkari". Set in italic to read as a motto rather than
-   as another line of facts; the accreditation line below carries those. */
-.brand__tagline {
-  font-size: var(--t-sm);
-  color: var(--c-maroon-800);
-  font-weight: 600;
-  font-style: italic;
-}
-/* The English gloss is dropped on narrow screens so the motto stays on one
-   line and the header stays two lines tall. */
-@media (max-width: 900px) { .brand__gloss { display: none; } }
+.brand__tagline { font-size: var(--t-sm); color: var(--c-maroon-800); font-weight: 600; }
 .brand__creds { font-size: var(--t-xs); color: var(--c-muted); }
 
 .header-cta { display: flex; gap: var(--s-3); flex: none; }
@@ -456,7 +480,7 @@ a:hover { color: var(--c-maroon-800); }
   position: relative;
   isolation: isolate;
   display: grid;
-  min-height: clamp(26rem, 20rem + 26vw, 40rem);
+  min-height: clamp(23rem, 17rem + 21vw, 33rem);
   overflow: hidden;
   background: var(--c-navy-900);   /* shows while images load */
 }
@@ -540,15 +564,15 @@ a:hover { color: var(--c-maroon-800); }
 .hero__body {
   position: relative;                /* above the scrim */
   align-self: center;
-  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  padding-block: clamp(2rem, 1.4rem + 3vw, 4rem);
 }
 .hero__copy { max-width: 46rem; color: #fff; }
 .hero__copy h1 { color: #fff; margin-bottom: var(--s-4); }
 .hero__lede { font-size: var(--t-lg); color: rgba(255, 255, 255, 0.9); max-width: 40rem; }
-.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
 
 /* Dot controls -------------------------------------------------------------- */
-.hero__dots { display: flex; gap: var(--s-3); margin-top: var(--s-8); }
+.hero__dots { display: flex; gap: var(--s-3); margin-top: var(--s-6); }
 .hero__dots label {
   width: 2.75rem; height: 4px;
   border-radius: var(--r-pill);
@@ -606,7 +630,7 @@ a:hover { color: var(--c-maroon-800); }
   background: rgba(255, 255, 255, 0.12);
   padding-inline: 0;
 }
-.stat { background: var(--c-navy-900); padding: var(--s-6) var(--gutter); }
+.stat { background: var(--c-navy-900); padding: var(--s-5) var(--gutter); }
 .stat__num {
   margin: 0;
   font-family: var(--font-display);
@@ -630,22 +654,19 @@ a:hover { color: var(--c-maroon-800); }
 /* ---------------------------------------------------------------------------
    09  SECTIONS & CARDS
    --------------------------------------------------------------------------- */
-.about { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(2rem, 1rem + 4vw, 4.5rem); }
+.about { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(1.75rem, 1.2rem + 3vw, 3.5rem); }
 .about__copy h2 { max-width: 30ch; margin-bottom: var(--s-5); }
 .about__copy p { color: var(--c-muted); max-width: 62ch; }
-.about__actions { display: flex; flex-wrap: wrap; gap: var(--s-5); margin-top: var(--s-5); }
-
-/* Right-hand column of the About row: courtyard photo above the quality box. */
-.about__side { display: grid; gap: var(--s-5); align-content: start; }
 
 .about__figure {
+  align-self: start;
   margin: 0;
   border-radius: var(--r-lg);
   overflow: hidden;                 /* clips the image to the rounded corners */
   border: 1px solid var(--c-line);
   box-shadow: var(--sh-1);
 }
-.about__figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.about__figure img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 .about__figure figcaption {
   padding: var(--s-3) var(--s-4);
   background: var(--c-cream);
@@ -653,16 +674,6 @@ a:hover { color: var(--c-maroon-800); }
   font-size: var(--t-sm);
   color: var(--c-muted);
 }
-
-.about__aside {
-  padding: var(--s-6);
-  background: var(--c-cream);
-  border: 1px solid var(--c-line);
-  border-left: 4px solid var(--c-maroon-800);
-  border-radius: var(--r-lg);
-  align-self: start;
-}
-.about__aside h3 { margin-bottom: var(--s-4); }
 
 .pill-list { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .pill-list a {
@@ -692,41 +703,142 @@ a:hover { color: var(--c-maroon-800); }
 .academics__copy h2 { margin-bottom: var(--s-4); max-width: 18ch; }
 .academics__copy > p { color: var(--c-muted); max-width: 56ch; }
 
+/* Programme structure as a bordered spec list; it holds the right-hand
+   column of the academics band now that the photograph has gone. */
 .academics__facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: var(--s-3) var(--s-5);
-  margin: var(--s-5) 0;
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--c-line-strong);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-1);
 }
-.academics__facts li { font-size: var(--t-sm); color: var(--c-muted); line-height: 1.4; }
+.academics__facts li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--c-line);
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--c-muted);
+}
+.academics__facts li:last-child { border-bottom: 0; }
 .academics__facts strong {
-  display: block;
+  flex: none;
+  min-width: 3.5rem;
   font-family: var(--font-display);
   font-size: var(--t-h3);
   font-weight: 800;
+  line-height: 1;
   color: var(--c-navy-900);
 }
 
 .academics__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
-
-.academics__figure {
-  margin: 0;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  box-shadow: var(--sh-2);
-}
-.academics__figure img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 
 /* A <label> styled as a button. Labels are not focusable, so this is a
    pointer affordance only - the keyboard route to the same checkbox is the
    edge tab in section 15, which IS focusable. */
 .as-button { cursor: pointer; user-select: none; }
 
+/* Accreditation & recognition band ----------------------------------------
+   Full width under the About row. Two tiers on purpose: five headline
+   credentials as trust marks, then the compliance documents as a quiet link
+   row, so the eye lands on the distinctions rather than on twelve identical
+   pills. */
+.creds {
+  margin-top: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  padding: clamp(1.25rem, 0.9rem + 1.6vw, 2.25rem);
+  background: linear-gradient(180deg, var(--c-cream), var(--c-bg) 70%);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+}
+.creds__head { margin-bottom: var(--s-4); }
+.creds__head h3 { margin: 0; }
+
+.creds__marks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  gap: var(--s-3);
+}
+.cred {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  transition: transform var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.cred:hover { transform: translateY(-2px); border-color: var(--c-line-strong); box-shadow: var(--sh-2); }
+
+/* Monogram chip. min-width rather than width so a four-letter mark such as
+   NIRF widens the chip instead of overflowing it. */
+.cred__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  min-width: 3.1rem;
+  height: 3.1rem;
+  padding-inline: var(--s-2);
+  background: var(--c-navy-800);
+  border-radius: var(--r-md);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--c-saffron-500);
+}
+.cred__text strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--t-base);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--c-navy-900);
+}
+.cred__text em {
+  display: block;
+  margin-top: 2px;
+  font-style: normal;
+  font-size: var(--t-sm);
+  color: var(--c-muted);
+}
+
+.creds__docs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2) var(--s-5);
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--c-line);
+}
+.creds__docs-label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.creds__docs ul { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
+.creds__docs a {
+  font-size: var(--t-sm);
+  color: var(--c-navy-700);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.creds__docs a:hover { color: var(--c-maroon-800); border-bottom-color: currentColor; }
+
 /* Card grids. auto-fit + minmax means the column count adapts on its own;
    the --N classes only set the maximum. */
-.card-grid { display: grid; gap: var(--s-5); }
+.card-grid { display: grid; gap: var(--s-4); }
 .card-grid--3 { grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
 
 .alum-card, .adm-card {
@@ -779,13 +891,17 @@ a:hover { color: var(--c-maroon-800); }
 
 /* Helpline block ----------------------------------------------------------- */
 .helpline {
-  margin-top: var(--s-7);
-  padding: var(--s-6);
+  margin-top: var(--s-6);
+  padding: var(--s-5);
   background: var(--c-navy-100);
   border-radius: var(--r-lg);
 }
 .helpline h3 { margin-bottom: var(--s-4); }
-.helpline__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: var(--s-3) var(--s-6); }
+/* Explicit column counts, not auto-fit: there are six helplines, so three
+   columns give two even rows instead of a ragged 4 + 2. */
+.helpline__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3) var(--s-5); }
+@media (max-width: 900px) { .helpline__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .helpline__list { grid-template-columns: 1fr; } }
 .helpline__list li { font-size: var(--t-base); }
 .helpline__list span {
   display: block;
@@ -798,58 +914,291 @@ a:hover { color: var(--c-maroon-800); }
 }
 .helpline__list a { font-weight: 600; color: var(--c-navy-800); text-decoration: none; }
 .helpline__list a:hover { text-decoration: underline; color: var(--c-maroon-800); }
-.helpline__note { margin-top: var(--s-5); margin-bottom: 0; font-size: var(--t-sm); color: var(--c-muted); }
+.helpline__note { margin-top: var(--s-4); margin-bottom: 0; font-size: var(--t-sm); color: var(--c-muted); }
 
 
 /* ---------------------------------------------------------------------------
-   10  NOTICE BOARD TABS
+   10  CAMPUS ACTIVITY HUB   [CSS-only: internal scroll + slow event rotator]
+   ---------------------------------------------------------------------------
+   Left 33% notice board, right 67% featured-events showcase. Replaced the
+   radio-tab notice list that used to sit here.
    --------------------------------------------------------------------------- */
-.tabs { position: relative; }
 
-/* Same pattern as the hero: the radios are invisible state, placed before
-   everything they control so `:checked ~` can reach it. */
-.tabs__radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+/* 1fr / 2fr is exactly the 33 / 67 split. align-items:start stops the board
+   stretching to match a taller showcase. */
+.hub {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--s-5);
+  align-items: start;
+}
 
-.tabs__list {
+/* --- notice board --------------------------------------------------------- */
+.board {
   display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  overflow: hidden;                  /* clips the scroll area to the radius */
+}
+
+.board__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-navy-800);
+}
+.board__head h3 {
+  margin: 0;
+  font-size: var(--t-sm);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.board__count {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--c-saffron-500);
+  white-space: nowrap;
+}
+
+/* The wrapper exists only so the scroll-fade can sit outside the scrolling
+   element - inside it, the gradient would scroll away with the content. */
+.board__body { position: relative; }
+.board__body::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3rem;
+  background: linear-gradient(to top, var(--c-bg), transparent);
+  pointer-events: none;              /* never blocks a click on the last notice */
+}
+
+/*
+  The independent scroll area. A fixed max-height is what keeps twenty
+  notices from lengthening the page; `overscroll-behavior: contain` stops the
+  page scrolling once the list hits its end.
+*/
+.board__scroll {
+  max-height: 33rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-line-strong) transparent;
+}
+.board__scroll::-webkit-scrollbar { width: 8px; }
+.board__scroll::-webkit-scrollbar-track { background: transparent; }
+.board__scroll::-webkit-scrollbar-thumb { background: var(--c-line-strong); border-radius: var(--r-pill); }
+.board__scroll::-webkit-scrollbar-thumb:hover { background: var(--c-muted); }
+
+.board__list li {
+  padding: var(--s-4) var(--s-5);
+  border-bottom: 1px solid var(--c-line);
+  transition: background var(--dur) var(--ease);
+}
+.board__list li:last-child { border-bottom: 0; padding-bottom: var(--s-8); }
+.board__list li:hover { background: var(--c-bg-tint); }
+
+/* Scoped override: .notice__meta is also used on admissions.html, where it is
+   a plain uppercase kicker. Inside the board it is a tag + date row. */
+.board .notice__meta {
+  display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: var(--s-2);
-  border-bottom: 1px solid var(--c-line-strong);
-  margin-bottom: var(--s-6);
+  margin: 0 0 var(--s-2);
+  text-transform: none;
+  letter-spacing: normal;
 }
-.tabs__list label {
-  padding: var(--s-3) var(--s-5);
-  margin-bottom: -1px;                /* sit on the border */
-  border: 1px solid transparent;
-  border-bottom: 3px solid transparent;
-  border-radius: var(--r-md) var(--r-md) 0 0;
+.tag {
+  padding: 2px var(--s-2);
+  border-radius: var(--r-sm);
+  background: var(--c-navy-100);
   font-family: var(--font-display);
+  font-size: 0.625rem;
   font-weight: 700;
-  font-size: var(--t-base);
-  color: var(--c-muted);
-  cursor: pointer;
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-navy-800);
 }
-.tabs__list label:hover { color: var(--c-navy-800); background: var(--c-bg); }
+.tag--action { background: var(--c-maroon-800); color: #fff; }
+.tag--fees   { background: var(--c-navy-800);   color: #fff; }
+.tag--award  { background: var(--c-saffron-100); color: var(--c-saffron-600); }
+.notice__when { font-size: var(--t-xs); color: var(--c-muted); }
 
-/* Active tab styling, one pairing per tab. */
-#tab-campus:checked  ~ .tabs__list .t-campus,
-#tab-public:checked  ~ .tabs__list .t-public,
-#tab-student:checked ~ .tabs__list .t-student {
+.board__list a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
   color: var(--c-navy-900);
-  background: var(--c-bg);
-  border-color: var(--c-line);
-  border-bottom-color: var(--c-maroon-800);
+  text-decoration: none;
 }
-/* Focus ring for keyboard users on whichever tab holds focus. */
-.tabs__radio:focus-visible ~ .tabs__list label { outline: 2px dashed var(--c-saffron-600); outline-offset: 2px; }
+.board__list a:hover { color: var(--c-maroon-800); text-decoration: underline; }
+.notice__desc {
+  margin: var(--s-1) 0 0;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--c-muted);
+}
 
-/* Panels are hidden by default and revealed by the matching radio. With CSS
-   disabled all three simply render one after another, which is still usable. */
-.panel { display: none; }
-#tab-campus:checked  ~ .tabs__panels .panel--campus,
-#tab-public:checked  ~ .tabs__panels .panel--public,
-#tab-student:checked ~ .tabs__panels .panel--student { display: block; }
+.board__foot {
+  margin: 0;
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-bg-tint);
+  border-top: 1px solid var(--c-line);
+}
+.board__foot .link-arrow { font-size: var(--t-sm); }
+
+/* --- featured events showcase ---------------------------------------------
+   Same radio-override pattern as the hero, retimed to a 30s / 3-slide crawl.
+   The one structural difference: slides are stacked with CSS grid (every
+   slide in cell 1/1) instead of absolute positioning, so the stage sizes
+   itself to the tallest slide and no fixed height is needed. */
+.showcase { position: relative; }
+.showcase__radio { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+.showcase__stage { display: grid; }
+
+.event {
+  grid-area: 1 / 1;                  /* every slide shares one cell */
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-2);
+  opacity: 0;
+  /* linear, so the outgoing and incoming ramps stay complementary and the
+     cross-fade never dips dark. */
+  animation: eventFade var(--events-cycle) linear infinite both;
+}
+/* Direction caveat, as in the hero: a negative delay puts a slide that far
+   AHEAD on its timeline, so -1/3 of the cycle plays LAST. Hence 2 takes -2/3
+   and 3 takes -1/3, which runs them 1 -> 2 -> 3. */
+.e-1 { animation-delay: 0s; }
+.e-2 { animation-delay: calc(var(--events-cycle) / -3 * 2); }
+.e-3 { animation-delay: calc(var(--events-cycle) / -3); }
+
+/*
+  Each slide holds for ~8.8s of the 30s cycle and cross-fades over ~1.2s.
+  The fade windows are both 4% wide and the delays are exact thirds, so the
+  incoming slide's 96%->100% ramp lands on the same second as the outgoing
+  slide's 29.3%->33.3% ramp.
+*/
+@keyframes eventFade {
+  0%     { opacity: 1; }
+  29.3%  { opacity: 1; }
+  33.3%  { opacity: 0; }
+  96%    { opacity: 0; }
+  100%   { opacity: 1; }
+}
+
+/* Manual override: any checked radio stops the rotation and hides every
+   slide, then the ID pairing below reveals the chosen one. */
+.showcase__radio:checked ~ .showcase__stage .event { animation: none; opacity: 0; }
+#ev-1:checked ~ .showcase__stage .e-1,
+#ev-2:checked ~ .showcase__stage .e-2,
+#ev-3:checked ~ .showcase__stage .e-3 { opacity: 1; }
+
+.event__media { position: relative; margin: 0; }
+.event__media img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.event__badge {
+  position: absolute;
+  top: var(--s-4);
+  left: var(--s-4);
+  padding: 4px var(--s-3);
+  background: rgba(7, 27, 48, 0.82);
+  border-radius: var(--r-pill);
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.event__body { padding: var(--s-5); }
+.event__body h3 { margin-bottom: var(--s-2); }
+.event__body p { margin: 0; font-size: var(--t-base); color: var(--c-muted); }
+
+/* --- showcase controls ----------------------------------------------------- */
+.showcase__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-top: var(--s-4);
+}
+.showcase__label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.showcase__dots { display: flex; gap: var(--s-2); }
+.showcase__dots label {
+  width: 2.25rem;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--c-line-strong);
+  cursor: pointer;
+  animation: eventDot var(--events-cycle) linear infinite both;
+  transition: background var(--dur) var(--ease);
+}
+.showcase__dots label:hover { background: var(--c-muted); }
+
+/* Qualified with .showcase__dots for the same reason as the hero dots: the
+   base rule above is (0,1,1) and its `animation` shorthand resets the delay
+   to 0s, so a bare .ed-2 at (0,1,0) would lose and all three would pulse
+   together. */
+.showcase__dots .ed-1 { animation-delay: 0s; }
+.showcase__dots .ed-2 { animation-delay: calc(var(--events-cycle) / -3 * 2); }
+.showcase__dots .ed-3 { animation-delay: calc(var(--events-cycle) / -3); }
+
+/* Mirrors eventFade. Retime both together or the indicator drifts. */
+@keyframes eventDot {
+  0%,   29.3%  { background: var(--c-saffron-600); width: 3.75rem; }
+  33.3%, 96%   { background: var(--c-line-strong); width: 2.25rem; }
+  100%         { background: var(--c-saffron-600); width: 3.75rem; }
+}
+.showcase__radio:checked ~ .showcase__nav .showcase__dots label {
+  animation: none; background: var(--c-line-strong); width: 2.25rem;
+}
+#ev-1:checked ~ .showcase__nav .ed-1,
+#ev-2:checked ~ .showcase__nav .ed-2,
+#ev-3:checked ~ .showcase__nav .ed-3 { background: var(--c-saffron-600); width: 3.75rem; }
+
+.showcase__radio:focus-visible ~ .showcase__nav .showcase__dots label {
+  outline: 2px dashed var(--c-saffron-600);
+  outline-offset: 4px;
+}
+
+/* --- hub responsive --------------------------------------------------------
+   Not a squeezed desktop layout: below 980px the columns stack, the showcase
+   moves above the board because it is the visual anchor of the section, and
+   the board's scroll window shortens so it does not dominate a phone screen. */
+@media (max-width: 980px) {
+  .hub { grid-template-columns: 1fr; gap: var(--s-6); }
+  .showcase { order: -1; }
+  .board__scroll { max-height: 26rem; }
+  .event__body { padding: var(--s-5) var(--s-4); }
+}
+@media (max-width: 620px) {
+  .board__scroll { max-height: 22rem; }
+  .board__list li { padding: var(--s-3) var(--s-4); }
+  .board__head, .board__foot { padding: var(--s-3) var(--s-4); }
+  .showcase__nav { flex-direction: column; align-items: flex-start; gap: var(--s-2); }
+}
 
 .notice-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: var(--s-3); }
 .notice-list li {
@@ -877,28 +1226,35 @@ a:hover { color: var(--c-maroon-800); }
 /* ---------------------------------------------------------------------------
    11  DUO COLUMNS & PLACEMENT BAND
    --------------------------------------------------------------------------- */
-.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: clamp(2rem, 1rem + 4vw, 4rem); }
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: clamp(1.75rem, 1.2rem + 3vw, 3rem); }
 .duo h2 { margin-bottom: var(--s-5); }
 
-.tile-list { display: grid; gap: var(--s-2); }
-.tile-list a {
+/* One bordered list with hairline dividers rather than eight separate cards -
+   same eight entries, noticeably shorter, and it reads as an index. */
+.tile-list {
   display: grid;
-  gap: 2px;
-  padding: var(--s-3) var(--s-4);
   background: var(--c-bg);
   border: 1px solid var(--c-line);
-  border-radius: var(--r-md);
-  text-decoration: none;
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-1);
 }
-.tile-list a:hover { border-color: var(--c-navy-700); transform: translateX(3px); }
-.tile-list strong { font-family: var(--font-display); color: var(--c-navy-900); }
-.tile-list span { font-size: var(--t-sm); color: var(--c-muted); }
+.tile-list li + li { border-top: 1px solid var(--c-line); }
+.tile-list a {
+  display: grid;
+  gap: 1px;
+  padding: var(--s-3) var(--s-4);
+  text-decoration: none;
+  transition: background var(--dur) var(--ease), padding-left var(--dur) var(--ease);
+}
+.tile-list a:hover { background: var(--c-bg-tint); padding-left: var(--s-5); }
+.tile-list strong { font-family: var(--font-display); font-size: var(--t-base); color: var(--c-navy-900); }
+.tile-list span { font-size: var(--t-sm); line-height: 1.4; color: var(--c-muted); }
 
 .band {
   background: linear-gradient(120deg, var(--c-navy-800), var(--c-navy-700));
   color: #fff;
-  padding-block: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  padding-block: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
 }
 .band__inner { display: grid; grid-template-columns: minmax(0, 1.6fr) auto; align-items: center; gap: var(--s-6); }
 .band h2 { color: #fff; }
@@ -1018,7 +1374,7 @@ a:hover { color: var(--c-maroon-800); }
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr));
   gap: var(--s-6);
-  padding-block: var(--s-9) var(--s-7);
+  padding-block: var(--s-8) var(--s-6);
 }
 /* The crest is red-and-blue line art drawn for light backgrounds, so on the
    navy footer it sits on a white disc rather than straight on the dark. */
@@ -1507,7 +1863,6 @@ body:has(.sidenav__switch:checked) { overflow: hidden; }
   .app-bar__aside { display: none; }        /* reachable via the Quality links in About */
   .stats__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .academics { grid-template-columns: 1fr; }
-  .academics__figure { order: -1; }        /* photo leads on narrow screens */
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer__brand { grid-column: 1 / -1; }
   .about { grid-template-columns: 1fr; }
@@ -1633,7 +1988,7 @@ body:has(.sidenav__switch:checked) { overflow: hidden; }
   .section__head { flex-direction: column; align-items: flex-start; }
   .footer__grid { grid-template-columns: 1fr; gap: var(--s-6); }
   .footer__bar { flex-direction: column; align-items: flex-start; }
-  .helpline, .about__aside { padding: var(--s-5); }
+  .helpline { padding: var(--s-5); }
   .hero__actions .btn { width: 100%; }
   .dept-detail { padding: var(--s-5); }
   .band__actions .btn { width: 100%; }
@@ -1672,7 +2027,14 @@ body:has(.sidenav__switch:checked) { overflow: hidden; }
   }
   .sidenav__switch:checked ~ .sidenav__close { transform: none; transition-delay: 0s; }
   .sidenav__list a:hover { transform: none; }
-  .btn:hover, .alum-card:hover, .adm-card:hover { transform: none; }
+  .btn:hover, .alum-card:hover, .adm-card:hover, .cred:hover { transform: none; }
+
+  /* Featured events: hold on the first event instead of rotating. The dots
+     still work - the ID-paired rules outrank these on specificity. */
+  .event { animation: none; opacity: 0; }
+  .e-1 { opacity: 1; }
+  .showcase__dots label { animation: none; }
+  .showcase__dots .ed-1 { background: var(--c-saffron-600); width: 3.75rem; }
 }
 
 @media print {
@@ -1680,7 +2042,9 @@ body:has(.sidenav__switch:checked) { overflow: hidden; }
   .hero { min-height: 0; }
   .hero__slide { display: none; }
   .hero__copy, .hero__copy h1, .hero__lede { color: #000; }
-  .panel { display: block !important; }     /* print all three notice lists */
+  .board__scroll { max-height: none; overflow: visible; }  /* print every notice */
+  .showcase__nav { display: none; }
+  .event { animation: none; opacity: 1; }   /* print all featured events */
   body { font-size: 11pt; }
   a { text-decoration: underline; }
 }

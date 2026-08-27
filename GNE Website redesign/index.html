@@ -18,8 +18,10 @@
     1. Mobile nav        -> hidden checkbox + label, `#nav-toggle:checked ~ ...`
     2. Nav dropdowns     -> `li:hover > ul` plus `li:focus-within > ul`
     3. Hero slideshow    -> auto-rotating @keyframes, overridable by radio dots
-    4. Notice board tabs -> radio group + `:checked ~` sibling selectors
-    5. Smooth anchors    -> CSS `scroll-behavior: smooth`
+    4. Notice board      -> its own `overflow-y: auto` scroll area
+    5. Featured events   -> slow @keyframes rotator + radio dots to pin one
+    6. Side nav panel    -> one checkbox that CSS repositions on `:checked`
+    7. Smooth anchors    -> CSS `scroll-behavior: smooth`
   ===========================================================================
 -->
 
@@ -80,7 +82,7 @@
         <img src="images/crest-gndec.png" alt="" width="284" height="288">
         <span>
           <strong>Guru Nanak Dev Engineering College</strong>
-          <em>Vidya Vichari Ta Parupkari</em>
+          <em>Ludhiana &middot; Est. 1956</em>
         </span>
       </div>
 
@@ -180,15 +182,15 @@
       <img class="brand__mark" src="images/crest-gndec.png" alt="" width="284" height="288">
       <span class="brand__text">
         <strong class="brand__name">Guru Nanak Dev Engineering College</strong>
-        <span class="brand__tagline">Vidya Vichari Ta Parupkari<span class="brand__gloss"> &mdash; knowledge, reflected upon, becomes service</span></span>
-        <span class="brand__creds">Ludhiana, Punjab &middot; Est. 1956 &middot; UGC Autonomous &middot; NAAC &lsquo;A&rsquo; Grade &middot; IKGPTU</span>
+        <span class="brand__tagline">Ludhiana, Punjab &middot; Established 1956</span>
+        <span class="brand__creds">UGC Autonomous &middot; NAAC &lsquo;A&rsquo; Grade &middot; Affiliated to IKGPTU</span>
       </span>
     </a>
 
     <div class="header-cta">
-      <a class="btn btn--primary" href="admissions.html">
-        <span class="btn__label">Spot Counselling &amp; Notices</span>
-        <span class="btn__sub">Admissions 2026&ndash;27</span>
+      <a class="btn btn--apply" href="admissions.html">
+        <span class="btn__label">Apply Now</span>
+        <span class="btn__sub">Admissions 2026&ndash;27 are open</span>
       </a>
       <!-- Real Training &amp; Placement portal. TODO: confirm http vs https on the live host. -->
       <a class="btn btn--ghost" href="https://tnpgndec.com" target="_blank" rel="noopener">
@@ -363,12 +365,11 @@
       <p class="eyebrow">Seven decades of engineering education in Punjab</p>
       <h1>Engineers, architects and managers made in Ludhiana.</h1>
       <p class="hero__lede">
-        An autonomous, NAAC &lsquo;A&rsquo; graded institution founded in 1956 by the
-        Nankana Sahib Education Trust &mdash; ten departments, eleven postgraduate
-        programmes and an alumni network more than 37,000 strong.
+        An autonomous, NAAC &lsquo;A&rsquo; graded institution founded in 1956 &mdash;
+        ten departments, eleven postgraduate programmes and 37,000+ alumni.
       </p>
       <p class="hero__actions">
-        <a class="btn btn--accent" href="admissions.html">Apply for 2026&ndash;27</a>
+        <a class="btn btn--apply" href="admissions.html">Apply for 2026&ndash;27</a>
         <a class="btn btn--outline" href="departments.html">Explore departments</a>
       </p>
     </div>
@@ -418,31 +419,26 @@
      ABOUT
      ===================================================================== -->
 <section class="section" id="about">
-  <div class="wrap about">
-    <div class="about__copy">
-      <p class="eyebrow eyebrow--dark">About GNDEC</p>
-      <h2>A trust-run college with the freedom of an autonomous institution.</h2>
-      <p>
-        Guru Nanak Dev Engineering College grew out of the polytechnic established
-        in Ludhiana in 1953 and was founded in its own right in 1956 under the
-        Nankana Sahib Education Trust. It is approved by AICTE, affiliated to
-        I. K. Gujral Punjab Technical University, and has held UGC autonomous
-        status since 2012 &mdash; which means curriculum, examination and evaluation
-        are designed in-house rather than inherited.
-      </p>
-      <p>
-        The college has been accredited by NBA three times since 2004, holds a
-        NAAC &lsquo;A&rsquo; grade and ISO 9001:2015 certification, and has drawn
-        major competitive funding including Rs 10 crore under TEQIP-II and
-        Rs 1 crore under the DST FIST programme.
-      </p>
-      <p class="about__actions">
-        <a class="link-arrow" href="#quality">Accreditation &amp; quality documents</a>
-        <a class="link-arrow" href="#about">Read the college history</a>
-      </p>
-    </div>
+  <div class="wrap">
 
-    <div class="about__side">
+    <div class="about">
+      <div class="about__copy">
+        <p class="eyebrow eyebrow--dark">About GNDEC</p>
+        <h2>A trust-run college with the freedom of an autonomous institution.</h2>
+        <p>
+          Guru Nanak Dev Engineering College grew out of the polytechnic established
+          in Ludhiana in 1953 and was founded in its own right in 1956 under the
+          Nankana Sahib Education Trust. It is approved by AICTE, affiliated to
+          I. K. Gujral Punjab Technical University, and has held UGC autonomous
+          status since 2012 &mdash; so curriculum, examination and evaluation are
+          designed in-house rather than inherited.
+        </p>
+        <p>
+          Competitive funding includes Rs 10 crore under TEQIP-II and Rs 1 crore
+          under the DST FIST programme.
+        </p>
+      </div>
+
       <!-- Courtyard photograph. Displayed at roughly 420px wide, so the 697px
            source still has headroom on a 2x screen. -->
       <figure class="about__figure">
@@ -454,26 +450,60 @@
              alt="The landscaped central courtyard between the academic blocks">
         <figcaption>The central courtyard, between the academic blocks.</figcaption>
       </figure>
+    </div>
 
-      <aside class="about__aside" id="quality">
-      <h3>Quality &amp; accreditation</h3>
-      <!-- Mirrors the real "Quality Work" menu, which is the most-visited
-           compliance area of the current site. -->
-      <ul class="pill-list">
-        <li><a href="#quality">AICTE Approval</a></li>
-        <li><a href="#quality">UGC Autonomy</a></li>
-        <li><a href="#quality">IKGPTU Affiliation</a></li>
-        <li><a href="#quality">NBA &amp; ISO Certification</a></li>
-        <li><a href="#quality">NAAC / IQAC / AQAR</a></li>
-        <li><a href="#quality">NIRF</a></li>
-        <li><a href="#quality">NISP</a></li>
-        <li><a href="#quality">ARIIA</a></li>
-        <li><a href="#quality">IE(I) Accreditation</a></li>
-        <li><a href="#quality">TCS Accreditation</a></li>
-        <li><a href="#quality">Mandatory Disclosure</a></li>
-        <li><a href="#quality">Best Practices</a></li>
+    <!-- =================================================================
+         ACCREDITATION & RECOGNITION
+         Replaces a 12-item pill list that sat in the About sidebar and read
+         as an undifferentiated block. Now full width and split by purpose:
+         the five headline credentials get weight as trust marks, while the
+         compliance documents drop to a quiet link row underneath. Every one
+         of the original twelve entries is still here.
+         ================================================================= -->
+    <div class="creds" id="quality">
+
+      <div class="creds__head">
+        <h3>Accreditation &amp; recognition</h3>
+      </div>
+
+      <ul class="creds__marks">
+        <li class="cred">
+          <span class="cred__mark">A</span>
+          <span class="cred__text"><strong>NAAC accredited</strong><em>Grade &lsquo;A&rsquo;</em></span>
+        </li>
+        <li class="cred">
+          <span class="cred__mark">3&times;</span>
+          <span class="cred__text"><strong>NBA accredited</strong><em>Three cycles since 2004</em></span>
+        </li>
+        <li class="cred">
+          <span class="cred__mark">UGC</span>
+          <span class="cred__text"><strong>Autonomous status</strong><em>Granted 2012</em></span>
+        </li>
+        <li class="cred">
+          <span class="cred__mark">ISO</span>
+          <span class="cred__text"><strong>9001:2015 certified</strong><em>Quality management</em></span>
+        </li>
+        <li class="cred">
+          <span class="cred__mark">NIRF</span>
+          <span class="cred__text"><strong>Nationally ranked</strong><em>Band 200&ndash;250, 2021</em></span>
+        </li>
       </ul>
-      </aside>
+
+      <div class="creds__docs">
+        <p class="creds__docs-label">Public documents</p>
+        <ul>
+          <li><a href="#quality">AICTE Approval</a></li>
+          <li><a href="#quality">IKGPTU Affiliation</a></li>
+          <li><a href="#quality">IQAC &amp; AQAR</a></li>
+          <li><a href="#quality">ARIIA</a></li>
+          <li><a href="#quality">NISP</a></li>
+          <li><a href="#quality">IE(I) Accreditation</a></li>
+          <li><a href="#quality">TCS Accreditation</a></li>
+          <li><a href="#quality">Mandatory Disclosure</a></li>
+          <li><a href="#quality">Best Practices</a></li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </section>
@@ -500,13 +530,6 @@
         autonomous status rather than inherited from an affiliating university.
       </p>
 
-      <ul class="academics__facts">
-        <li><strong>6</strong> UG engineering branches</li>
-        <li><strong>11</strong> postgraduate programmes</li>
-        <li><strong>5&nbsp;yr</strong> B.Arch. professional degree</li>
-        <li><strong>Ph.D.</strong> across departments</li>
-      </ul>
-
       <p class="academics__actions">
         <a class="btn btn--primary btn--sm" href="departments.html">All departments</a>
         <!-- A second <label> for the side-panel checkbox. An input may have any
@@ -517,14 +540,14 @@
       </p>
     </div>
 
-    <figure class="academics__figure">
-      <img src="images/campus-block-915.jpg"
-           srcset="images/campus-block-800.jpg 800w,
-                   images/campus-block-915.jpg 915w"
-           sizes="(max-width: 900px) 92vw, 520px"
-           width="915" height="515" loading="lazy" decoding="async"
-           alt="An academic block at GNDEC, seen across the garden">
-    </figure>
+    <!-- Programme structure as a compact spec list, replacing the photograph
+         that used to sit here. -->
+    <ul class="academics__facts">
+      <li><strong>6</strong> UG engineering branches</li>
+      <li><strong>11</strong> postgraduate programmes</li>
+      <li><strong>5&nbsp;yr</strong> B.Arch. professional degree</li>
+      <li><strong>Ph.D.</strong> across departments</li>
+    </ul>
 
   </div>
 </section>
@@ -540,19 +563,19 @@
         <p class="eyebrow eyebrow--dark">Admissions 2026&ndash;27</p>
         <h2>Everything an applicant needs, in one place</h2>
       </div>
-      <a class="btn btn--primary btn--sm" href="admissions.html">Admissions home</a>
+      <a class="btn btn--apply btn--sm" href="admissions.html">Apply now</a>
     </header>
 
     <div class="card-grid card-grid--3">
       <a class="adm-card adm-card--urgent" href="admissions.html#spot">
         <p class="adm-card__flag">Open now</p>
         <h3>Spot Counselling 2026&ndash;27</h3>
-        <p>Schedule, reporting centre and document checklist for spot rounds.</p>
+        <p>Schedule, reporting centre and document checklist.</p>
         <span class="link-arrow">View schedule</span>
       </a>
       <a class="adm-card" href="admissions.html#waiting">
         <h3>Waiting List 2026&ndash;27</h3>
-        <p>Branch-wise waiting positions, updated after each counselling round.</p>
+        <p>Branch-wise positions, revised after each round.</p>
         <span class="link-arrow">Check your position</span>
       </a>
       <a class="adm-card" href="admissions.html#enquiry">
@@ -562,12 +585,12 @@
       </a>
       <a class="adm-card" href="admissions.html#fee">
         <h3>Fee Structure</h3>
-        <p>Programme-wise tuition, hostel and one-time charges for the session.</p>
+        <p>Programme-wise tuition, hostel and one-time charges.</p>
         <span class="link-arrow">View fee structure</span>
       </a>
       <a class="adm-card" href="admissions.html#notices">
         <h3>Important Notices</h3>
-        <p>Checklist of documents, affidavit and undertaking formats, deadlines.</p>
+        <p>Document checklist, affidavit formats and deadlines.</p>
         <span class="link-arrow">All notices</span>
       </a>
       <a class="adm-card" href="#academics">
@@ -595,140 +618,242 @@
 </section>
 
 <!-- =====================================================================
-     NOTICE BOARD (TECHNIQUE 4)
+     CAMPUS ACTIVITY HUB
      ---------------------------------------------------------------------
-     GNDEC keeps three separate notice streams - Campus News, Public Corner
-     and Student Corner. Rather than stacking three long bulleted lists, they
-     become CSS-only tabs:
+     Two columns: a 33% notice board on the left, a 67% featured-events
+     showcase on the right. This replaced a full-width tabbed notice list.
+     All twenty notices from the three original streams (Campus News, Public
+     Corner, Student Corner) are preserved, merged into one scannable board,
+     ordered with actionable items first, with the old stream names kept as
+     category tags.
 
-       * three radios named "notice" sit before the panels;
-       * the <label>s are styled as tabs;
-       * `#tab-x:checked ~ .tabs__panels .panel--x { display: block }` shows
-         the matching panel and `#tab-x:checked ~ .tabs__list label[for=tab-x]`
-         styles the active tab.
-
-     The first radio carries `checked` so a panel is always visible, including
-     with CSS disabled (all three panels simply render in sequence).
+     TWO CSS-ONLY MECHANISMS HERE
+     1. The board scrolls inside itself (max-height + `overflow-y: auto`), so
+        twenty notices never lengthen the page.
+     2. The showcase rotates on `@keyframes`, with radio dots that pin a
+        slide - the hero pattern, retimed much slower. Slides are stacked
+        with CSS grid rather than absolute positioning, so the stage
+        auto-sizes to the tallest slide instead of needing a fixed height.
      ===================================================================== -->
 <section class="section section--tint" id="notices">
   <div class="wrap">
     <header class="section__head">
       <div>
-        <p class="eyebrow eyebrow--dark">Notice board</p>
-        <h2>What is happening on campus</h2>
+        <p class="eyebrow eyebrow--dark">Campus activity</p>
+        <h2>What&rsquo;s happening on campus</h2>
       </div>
-      <a class="btn btn--outline btn--sm" href="#notices">Archive</a>
+      <a class="btn btn--outline btn--sm" href="#notices">Full archive</a>
     </header>
 
-    <div class="tabs">
-      <input class="tabs__radio" type="radio" name="notice" id="tab-campus" checked>
-      <input class="tabs__radio" type="radio" name="notice" id="tab-public">
-      <input class="tabs__radio" type="radio" name="notice" id="tab-student">
+    <div class="hub">
 
-      <div class="tabs__list" role="group" aria-label="Notice categories">
-        <label for="tab-campus" class="t-campus">Campus News</label>
-        <label for="tab-public" class="t-public">Public Corner</label>
-        <label for="tab-student" class="t-student">Student Corner</label>
+      <!-- ---------------- LEFT 33%: the notice board ---------------- -->
+      <aside class="board" aria-labelledby="board-heading">
+        <div class="board__head">
+          <h3 id="board-heading">Notice board</h3>
+          <span class="board__count">20 current</span>
+        </div>
+
+        <!-- board__body exists only to host the bottom scroll-fade, which has
+             to sit outside the scrolling element to stay put.
+             tabindex makes the scroll region reachable and scrollable by
+             keyboard, which an overflow container is not by default. -->
+        <div class="board__body">
+          <div class="board__scroll" tabindex="0">
+            <ul class="board__list">
+
+              <li>
+                <p class="notice__meta"><span class="tag tag--action">Action required</span><span class="notice__when">2026</span></p>
+                <a href="#notices">Submission of original documents by students admitted in 2026</a>
+                <p class="notice__desc">Newly admitted students must deposit original certificates with the office.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag tag--fees">Fees</span><span class="notice__when">Jul&ndash;Dec 2026</span></p>
+                <a href="#notices">Fee notice, July&ndash;December 2026 (all branches)</a>
+                <p class="notice__desc">Semester fee schedule and payment window for every programme.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag tag--fees">Fees</span><span class="notice__when">Jul&ndash;Dec 2026</span></p>
+                <a href="#notices">Fee notice, July&ndash;December 2026 (B.Architecture)</a>
+                <p class="notice__desc">Separate schedule for the five-year architecture programme.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag tag--award">Scholarship</span><span class="notice__when">2026</span></p>
+                <a href="#notices">Alumni scholarship for needy and academically sound students</a>
+                <p class="notice__desc">Funded by the alumni association; applications through the office.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag tag--award">Scholarship</span></p>
+                <a href="#notices">Sitaram Jindal Scholarship</a>
+                <p class="notice__desc">External merit-and-means scholarship open to enrolled students.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Conference</span></p>
+                <a href="#notices">12th International Conference on Advancements and Futuristic Trends in Mechanical and Materials Engineering</a>
+                <p class="notice__desc">Call for papers and registration, hosted by Mechanical &amp; Production Engineering.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">AICTE</span></p>
+                <a href="#notices">Skill testing campaign, YASHASVI scheme and internship MoUs</a>
+                <p class="notice__desc">Central schemes students can register for through the college.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Research</span></p>
+                <a href="#research">Ph.D. programme information</a>
+                <p class="notice__desc">Supervisors, entrance requirements and current vacancies.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Library</span></p>
+                <a href="#notices">Self-registration for off-campus access to the Knimbus digital library</a>
+                <p class="notice__desc">Remote access to subscribed journals and e-books.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Learning</span></p>
+                <a href="#notices">e-Content by MHRD and digital initiatives in higher education</a>
+                <p class="notice__desc">National e-learning platforms available to all students.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Publication</span><span class="notice__when">2025</span></p>
+                <a href="#notices">College Newsletter 2025 (Vol. 13)</a>
+                <p class="notice__desc">The year on campus, department by department.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Publication</span><span class="notice__when">2025</span></p>
+                <a href="#notices">Harmony 2025 &mdash; the annual college magazine</a>
+                <p class="notice__desc">Student writing, photography and artwork.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Publication</span><span class="notice__when">2024</span></p>
+                <a href="#notices">College Newsletter 2024 (Vol. 12)</a>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Events</span></p>
+                <a href="#notices">Addresses by prominent personalities</a>
+                <p class="notice__desc">The public lecture series, open to visitors.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Recognition</span></p>
+                <a href="#notices">Felicitations</a>
+                <p class="notice__desc">Staff and student achievements recognised by the college.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">App</span></p>
+                <a href="#notices">GNDEC e-Library app, on Google Play and the App Store</a>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Advisory</span></p>
+                <a href="#notices">Awareness about the National Cyber Crime Portal</a>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Alumni</span></p>
+                <a href="#alumni">GNE Alumni Australasia Inc.</a>
+                <p class="notice__desc">The Australasian chapter of the alumni association.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Procurement</span></p>
+                <a href="#notices">Quotations and tenders (CMC)</a>
+                <p class="notice__desc">Open tenders issued by the Construction &amp; Maintenance Cell.</p>
+              </li>
+              <li>
+                <p class="notice__meta"><span class="tag">Press</span></p>
+                <a href="#notices">Press releases</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+
+        <p class="board__foot"><a class="link-arrow" href="#notices">Full notice archive</a></p>
+      </aside>
+
+      <!-- ------------- RIGHT 67%: featured events showcase -------------
+           The radios come first so `#ev-N:checked ~ .showcase__stage .e-N`
+           can reach the slides and the dots. Nothing inside a slide is
+           focusable, so the two off-screen slides cannot trap the keyboard;
+           the links for these items live in the notice board on the left. -->
+      <div class="showcase">
+
+        <input class="showcase__radio" type="radio" name="event" id="ev-1">
+        <input class="showcase__radio" type="radio" name="event" id="ev-2">
+        <input class="showcase__radio" type="radio" name="event" id="ev-3">
+
+        <div class="showcase__stage">
+
+          <article class="event e-1">
+            <figure class="event__media">
+              <img src="images/campus-block-915.jpg"
+                   srcset="images/campus-block-800.jpg 800w,
+                           images/campus-block-915.jpg 915w"
+                   sizes="(max-width: 980px) 92vw, 62vw"
+                   width="915" height="515" loading="lazy" decoding="async"
+                   alt="An academic block at GNDEC seen across the garden">
+              <figcaption class="event__badge">Conference</figcaption>
+            </figure>
+            <div class="event__body">
+              <h3>12th International Conference on Advancements and Futuristic Trends in Mechanical and Materials Engineering</h3>
+              <p>
+                The department&rsquo;s long-running international conference brings
+                researchers and industry together on materials, manufacturing and
+                design. Call for papers and registration are open &mdash; details on
+                the notice board.
+              </p>
+            </div>
+          </article>
+
+          <article class="event e-2">
+            <figure class="event__media">
+              <img src="images/campus-entrance-1280.jpg"
+                   srcset="images/campus-entrance-800.jpg 800w,
+                           images/campus-entrance-1280.jpg 1280w"
+                   sizes="(max-width: 980px) 92vw, 62vw"
+                   width="1280" height="720" loading="lazy" decoding="async"
+                   alt="The main entrance porch of Guru Nanak Dev Engineering College">
+              <figcaption class="event__badge">Public lecture</figcaption>
+            </figure>
+            <div class="event__body">
+              <h3>Addresses by prominent personalities</h3>
+              <p>
+                A standing series that brings senior figures from industry,
+                government and research onto campus. Sessions are held in the main
+                block and are open to visitors as well as students.
+              </p>
+            </div>
+          </article>
+
+          <article class="event e-3">
+            <figure class="event__media">
+              <img src="images/campus-fountain-1280.jpg"
+                   srcset="images/campus-fountain-800.jpg 800w,
+                           images/campus-fountain-1280.jpg 1280w"
+                   sizes="(max-width: 980px) 92vw, 62vw"
+                   width="1280" height="720" loading="lazy" decoding="async"
+                   alt="The fountain and lawn in front of the main block at GNDEC">
+              <figcaption class="event__badge">Campus life</figcaption>
+            </figure>
+            <div class="event__body">
+              <h3>NSS and NCC on campus</h3>
+              <p>
+                Around 350 enrolled NSS volunteers, with more than a thousand
+                students taking part across a year, alongside an NCC unit of 106
+                cadets. Both run camps, drives and community work through the
+                session.
+              </p>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="showcase__nav">
+          <p class="showcase__label">Featured events</p>
+          <div class="showcase__dots" role="group" aria-label="Choose a featured event">
+            <label for="ev-1" class="ed-1"><span class="sr-only">Event 1: international conference on mechanical and materials engineering</span></label>
+            <label for="ev-2" class="ed-2"><span class="sr-only">Event 2: addresses by prominent personalities</span></label>
+            <label for="ev-3" class="ed-3"><span class="sr-only">Event 3: NSS and NCC on campus</span></label>
+          </div>
+        </div>
+
       </div>
 
-      <div class="tabs__panels">
-
-        <div class="panel panel--campus">
-          <ul class="notice-list">
-            <li>
-              <p class="notice__meta">Publication</p>
-              <a href="#notices">College Newsletter 2025 (Vol. 13)</a>
-            </li>
-            <li>
-              <p class="notice__meta">Publication</p>
-              <a href="#notices">Harmony 2025 &mdash; the annual college magazine</a>
-            </li>
-            <li>
-              <p class="notice__meta">Publication</p>
-              <a href="#notices">College Newsletter 2024 (Vol. 12)</a>
-            </li>
-            <li>
-              <p class="notice__meta">Library</p>
-              <a href="#notices">Self-registration for off-campus remote access to the Knimbus digital library</a>
-            </li>
-            <li>
-              <p class="notice__meta">Advisory</p>
-              <a href="#notices">Awareness about the National Cyber Crime Portal</a>
-            </li>
-            <li>
-              <p class="notice__meta">Alumni</p>
-              <a href="#alumni">GNE Alumni Australasia Inc.</a>
-            </li>
-            <li>
-              <p class="notice__meta">App</p>
-              <a href="#notices">GNDEC e-Library app, on Google Play and the App Store</a>
-            </li>
-            <li>
-              <p class="notice__meta">Press</p>
-              <a href="#notices">Press releases</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="panel panel--public">
-          <ul class="notice-list">
-            <li>
-              <p class="notice__meta">Conference</p>
-              <a href="#notices">12th International Conference on Advancements and Futuristic Trends in Mechanical and Materials Engineering</a>
-            </li>
-            <li>
-              <p class="notice__meta">Recognition</p>
-              <a href="#notices">Felicitations</a>
-            </li>
-            <li>
-              <p class="notice__meta">Events</p>
-              <a href="#notices">Addresses by prominent personalities</a>
-            </li>
-            <li>
-              <p class="notice__meta">Procurement</p>
-              <a href="#notices">Quotations and tenders (CMC)</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="panel panel--student">
-          <ul class="notice-list">
-            <li>
-              <p class="notice__meta">Action required</p>
-              <a href="#notices">Submission of original documents by students admitted in 2026</a>
-            </li>
-            <li>
-              <p class="notice__meta">Scholarship</p>
-              <a href="#notices">Sitaram Jindal Scholarship</a>
-            </li>
-            <li>
-              <p class="notice__meta">Fees</p>
-              <a href="#notices">Fee notice July&ndash;December 2026 (all branches)</a>
-            </li>
-            <li>
-              <p class="notice__meta">Fees</p>
-              <a href="#notices">Fee notice July&ndash;December 2026 (B.Architecture)</a>
-            </li>
-            <li>
-              <p class="notice__meta">Scholarship</p>
-              <a href="#notices">Alumni scholarship for needy and academically sound students, 2026</a>
-            </li>
-            <li>
-              <p class="notice__meta">Learning</p>
-              <a href="#notices">e-Content by MHRD and digital initiatives in higher education</a>
-            </li>
-            <li>
-              <p class="notice__meta">AICTE</p>
-              <a href="#notices">Skill testing campaign, YASHASVI scheme and internship MoUs</a>
-            </li>
-            <li>
-              <p class="notice__meta">Research</p>
-              <a href="#research">Ph.D. programme information</a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
     </div>
   </div>
 </section>
@@ -835,7 +960,7 @@
       </p>
     </div>
     <p class="band__actions">
-      <a class="btn btn--accent" href="https://tnpgndec.com" target="_blank" rel="noopener">Recruiter portal</a>
+      <a class="btn btn--ghost" href="https://tnpgndec.com" target="_blank" rel="noopener">Recruiter portal</a>
       <a class="btn btn--outline btn--on-dark" href="#contact">Talk to the T&amp;P cell</a>
     </p>
   </div>

@@ -40,10 +40,11 @@ no hex values are hard-coded below that block.
 Current palette: deep navy `#0E2A47` primary, maroon `#8C1D2F` secondary,
 saffron `#E4A32B` accent, on white and `#F7F9FC`.
 
-The tagline under the college name is *Vidya Vichari Ta Parupkari*, the
-Gurbani line inscribed over the college entrance (visible on the plaque in
-`images/originals/gne_front.jpg`). The English gloss after the em dash is
-hidden below 900px via `.brand__gloss` so the header stays two lines tall.
+**Accent policy:** saffron is reserved for the admissions / apply action.
+`.btn--apply` is the only warm-gradient button on the site and it is the only
+thing allowed to use that treatment — every other call to action is
+`--primary`, `--ghost` or `--outline`. If you give something else a saffron
+background, the Apply button stops reading as the primary step.
 
 Typography is Plus Jakarta Sans (headings) + Inter (body), loaded from Google
 Fonts via a plain `<link>`. Delete those two `<link>` tags in each HTML file to
@@ -58,7 +59,9 @@ fall back to the system font stack, which is already declared as the fallback.
 | Slide indicator dots | `@keyframes dotPulse` on the same 18s clock, so it tracks autoplay with no script | style.css §07 |
 | Nav dropdowns | `li:hover > ul` **and** `li:focus-within > ul` (the second is what makes it keyboard-accessible) | style.css §06 |
 | Mobile menu | hidden checkbox + `<label>` hamburger; `#nav-toggle:checked ~ .nav__menu` | style.css §06, §13 |
-| Notice board tabs | radio group; `#tab-x:checked ~ .tabs__panels .panel--x { display: block }` | style.css §10 |
+| Notice board scroll | `max-height` + `overflow-y: auto` + `overscroll-behavior: contain` | style.css §10 |
+| Featured-events rotator | `@keyframes eventFade` on a 30s cycle, slides stacked in one CSS-grid cell | style.css §10 |
+| Event manual control | radio dots; `#ev-N:checked ~ .showcase__stage .e-N` pins a slide and cancels the rotation | style.css §10 |
 | Smooth anchor scrolling | `scroll-behavior: smooth` + `scroll-padding-top` for the sticky bar | style.css §02 |
 | Hamburger icon → X | one element, two `::before`/`::after` bars, rotated on `:checked` | style.css §13 |
 | Side panel open/close | one checkbox that CSS **repositions** on `:checked` — over the edge tab when closed, over the X when open | style.css §12b |
@@ -113,6 +116,48 @@ single column, with the edge tab shrinking to a 44x44 touch target.
 Adding a link is just another `<li>` in the right `<ul>` — the stagger picks it
 up automatically as long as no list grows past ten items (that is the range the
 `--i` rules cover; extend them if a list gets longer).
+
+## Campus activity hub (`#notices`)
+
+The homepage section titled *What's happening on campus* is a 33 / 67 split:
+
+- **Left — notice board.** All twenty notices from the site's three original
+  streams (Campus News, Public Corner, Student Corner) merged into one list,
+  ordered actionable-first, with the old stream names kept as category tags.
+  It scrolls **inside itself** (`.board__scroll`, `max-height: 33rem` on
+  desktop / `22rem` on mobile), so adding notices never lengthens the page.
+  `overscroll-behavior: contain` stops the page scrolling when the list ends,
+  and `tabindex="0"` makes the region keyboard-scrollable.
+- **Right — featured events.** One large event at a time: image, badge, title
+  and description. Three events rotate on a deliberately slow 30s cycle
+  (~8.8s per event, ~1.2s cross-fade), with dots to pin one.
+
+Two implementation notes worth keeping:
+
+1. The slides are stacked by putting all three in **one CSS-grid cell**
+   (`grid-area: 1 / 1`) rather than absolutely positioning them. The stage
+   therefore auto-sizes to the tallest slide and needs no fixed height — so
+   editing an event description cannot clip it.
+2. Nothing inside a slide is focusable. That is deliberate: two of the three
+   slides are always at `opacity: 0`, and links inside them would be
+   tab-reachable but invisible. Each event's link lives in the notice board
+   on the left instead.
+
+To add an event: add a fourth radio, a `.e-4` article and a `.ed-4` dot, then
+change the delays from thirds to quarters and the keyframe percentages from
+`29.3 / 33.3` to `22 / 25`. The comments in section 10 spell this out, including
+the counter-intuitive delay direction.
+
+**Notice dates.** Only periods the source site actually states are shown
+(`2024`, `2025`, `Jul-Dec 2026`). The rest carry a category tag and no date
+rather than an invented one — wire real publication dates in from the CMS.
+
+## Accreditation band (`#quality`)
+
+The twelve-item pill list that used to sit in the About sidebar is now a
+full-width band split into two tiers: five headline credentials as trust marks
+(NAAC 'A', NBA 3x, UGC autonomy, ISO 9001:2015, NIRF) and nine compliance
+documents as a quiet link row. All twelve original entries are still present.
 
 ## Content status
 
