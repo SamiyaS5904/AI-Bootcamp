@@ -1,0 +1,5 @@
+node_modules
+dist
+*.md
+supabase/migrations
+package-lock.json
