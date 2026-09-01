@@ -70,7 +70,7 @@ export function Footer() {
             <FooterLink to={routes.shopCategory('knitwear')}>Knitwear</FooterLink>
             <FooterLink to={routes.shopCategory('shirts')}>Shirts</FooterLink>
             <FooterLink to={routes.shopCategory('trousers')}>Trousers</FooterLink>
-            <FooterLink to={routes.styleAssistant}>Style Assistant</FooterLink>
+            <FooterLink to={routes.styleAssistant}>Find your fit</FooterLink>
             <FooterLink to={routes.sizeGuide}>Size Guide</FooterLink>
           </FooterColumn>
 

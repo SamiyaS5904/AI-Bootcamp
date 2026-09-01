@@ -1,10 +1,13 @@
 /**
  * Editorial imagery — CLAUDE.md §3 Imagery.
  *
- * Downloaded from the brand's own site, so these are Saints Crew's real
- * lifestyle photography rather than stock. Used for the homepage hero, the
- * category covers and the About page, where §3 asks for moody editorial shots
- * instead of white-background product cut-outs.
+ * The brand's own lifestyle photography, downloaded from saintscrew.co.in, so
+ * these are real Saints Crew shots rather than stock.
+ *
+ * The hero is art-directed per breakpoint rather than resized: the source is a
+ * 2.2:1 banner, and letting `object-cover` crop that into a tall phone viewport
+ * loses the subject entirely. `hero-portrait` is a dedicated 4:5 cut framed on
+ * the model; `hero-landscape` is the wide frame for desktop.
  */
 
 export type EditorialImage = {
@@ -12,35 +15,32 @@ export type EditorialImage = {
   alt: string
 }
 
-/**
- * The hero slideshow, in order. Landscape crops only — anything portrait
- * letterboxes badly behind the headline.
- *
- * The first frame is what most visitors will actually see, so it loads eagerly
- * and the rest are fetched after mount (see HeroSlideshow).
- */
-export const heroSlides: EditorialImage[] = [
-  {
-    url: '/images/editorial/banner-wide.jpeg',
-    alt: 'A Saints Crew shirt worn open against a painted brick wall',
-  },
-  {
-    url: '/images/editorial/look-01.jpg',
-    alt: 'Saints Crew knitwear worn layered',
-  },
-  {
-    url: '/images/editorial/look-03.jpg',
-    alt: 'Saints Crew trousers photographed full length',
-  },
-  {
-    url: '/images/editorial/look-04.jpg',
-    alt: 'Saints Crew pieces styled together',
-  },
-]
+export const hero = {
+  landscape: '/images/editorial/hero-landscape.jpg',
+  portrait: '/images/editorial/hero-portrait.jpg',
+  alt: 'A Saints Crew shirt worn open, photographed against a painted brick wall',
+}
+
+/** Full-bleed image for the mid-page editorial break. */
+export const editorialBreak: EditorialImage = {
+  url: '/images/editorial/look-04.jpg',
+  alt: 'Saints Crew pieces styled together in natural light',
+}
+
+/** Portrait shot beside the brand philosophy copy. */
+export const philosophyImage: EditorialImage = {
+  url: '/images/editorial/look-02.jpg',
+  alt: 'A Saints Crew shirt worn open over a tee',
+}
+
+export const aboutImage: EditorialImage = {
+  url: '/images/editorial/look-01.jpg',
+  alt: 'Saints Crew knitwear worn layered',
+}
 
 /**
  * Category covers — a real product photograph per category, so the block shows
- * what you would actually be buying rather than a mood shot.
+ * the garment rather than a mood.
  */
 export const categoryCovers: Record<string, EditorialImage> = {
   knitwear: {
@@ -55,9 +55,4 @@ export const categoryCovers: Record<string, EditorialImage> = {
     url: '/images/products/khaki-cargo-trouser.jpg',
     alt: 'Saints Crew khaki cargo trouser',
   },
-}
-
-export const aboutImage: EditorialImage = {
-  url: '/images/editorial/look-02.jpg',
-  alt: 'A Saints Crew shirt worn open over a tee',
 }

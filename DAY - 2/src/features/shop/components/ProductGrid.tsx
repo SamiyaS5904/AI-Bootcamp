@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { ProductCard } from '@/features/shop/components/ProductCard'
-import { Reveal } from '@/components/common/Reveal'
 import { Button } from '@/components/ui/button'
 import { routes } from '@/config/routes'
 import type { Product } from '@/types/models'
@@ -43,11 +42,8 @@ export function ProductGrid({
 
   return (
     <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-8 lg:gap-x-10">
-      {products.map((product, index) => (
-        // Cap the stagger so a long grid's last card isn't left waiting.
-        <Reveal key={product.id} delay={Math.min(index, 5) * 60}>
-          <ProductCard product={product} />
-        </Reveal>
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   )

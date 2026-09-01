@@ -28,7 +28,11 @@ export function ProductGallery({
   }
 
   return (
-    <div>
+    // min-w-0 matters: this sits in a grid, and a grid item defaults to
+    // `min-width: auto`, which lets the swipe track below grow to its content
+    // width instead of scrolling inside itself — putting a sideways scrollbar
+    // on the whole page.
+    <div className="min-w-0">
       {/* Mobile: swipeable track */}
       <div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 md:hidden">
         {ordered.map((image) => (

@@ -10,14 +10,20 @@ import type { Product } from '@/types/models'
 /**
  * Product card — CLAUDE.md §5.1.
  *
- * Image-forward, minimal text: name, price, category tag. Sizes are shown at a
- * glance, or a "Sold out" state replaces them.
+ * Art direction notes, since this is the most-repeated element on the site:
  *
- * The only badge is the sale percentage, and only when there is a genuine
- * markdown (§3: "No cluttered badges/ribbons unless it's a genuine sale").
- *
- * Hover-to-second-image is wired but currently inert: only one photograph
- * exists per product. It activates as soon as a second shot is added.
+ *  - 3:4 imagery, square corners, no card chrome. The photograph is the card;
+ *    a border or shadow around it reads as a UI component rather than a
+ *    garment.
+ *  - Hover swaps to the second shot with a cross-fade and a 1.02 scale over
+ *    900ms — slow enough to feel deliberate, small enough that the product
+ *    never appears to jump.
+ *  - The wishlist control only appears on hover or keyboard focus, so a grid at
+ *    rest is nothing but clothes. It stays reachable by keyboard at all times.
+ *  - Price is set in the body colour, not the accent. A grid of clay prices
+ *    turns the page into a sale rail.
+ *  - Sizes are shown at rest because knowing your size is stocked is the whole
+ *    premise of the store (§1).
  */
 export function ProductCard({ product, className }: { product: Product; className?: string }) {
   const [hovered, setHovered] = useState(false)
@@ -25,7 +31,6 @@ export function ProductCard({ product, className }: { product: Product; classNam
 
   const primary = product.images.find((image) => image.position === 0)
   const secondary = product.images.find((image) => image.position === 1)
-  const shown = hovered && secondary ? secondary : primary
 
   const soldOut = isSoldOut(product)
   const sizes = inStockSizes(product)
@@ -33,47 +38,60 @@ export function ProductCard({ product, className }: { product: Product; classNam
   const discount = discountPercent(product)
 
   return (
-    <div className={cn('group relative', className)}>
-      <Link
-        to={routes.product(product.slug)}
-        className="block"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        <div className="bg-bone-sunk relative aspect-4/5 overflow-hidden rounded-md">
-          {shown && (
+    <div
+      className={cn('group relative', className)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <Link to={routes.product(product.slug)} className="block">
+        <div className="bg-bone-sunk relative aspect-3/4 overflow-hidden">
+          {/* Both frames are stacked and cross-faded, so the swap has no gap
+              and no reflow. */}
+          {primary && (
             <img
-              src={shown.url}
-              alt={shown.alt_text}
+              src={primary.url}
+              alt={primary.alt_text}
               loading="lazy"
               className={cn(
-                'size-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]',
-                soldOut && 'opacity-60',
+                'absolute inset-0 size-full object-cover transition-[opacity,transform] duration-[900ms] ease-out',
+                secondary && hovered ? 'opacity-0' : 'opacity-100',
+                hovered && 'scale-[1.02]',
+                soldOut && 'opacity-55',
+              )}
+            />
+          )}
+          {secondary && (
+            <img
+              src={secondary.url}
+              alt=""
+              loading="lazy"
+              aria-hidden
+              className={cn(
+                'absolute inset-0 size-full object-cover transition-[opacity,transform] duration-[900ms] ease-out',
+                hovered ? 'scale-[1.02] opacity-100' : 'opacity-0',
+                soldOut && 'opacity-0',
               )}
             />
           )}
 
           {soldOut ? (
-            <span className="bg-ink/85 text-bone eyebrow absolute top-3 left-3 rounded-sm px-2.5 py-1.5">
+            <span className="text-bone bg-ink/80 eyebrow absolute top-4 left-4 px-2.5 py-1.5">
               Sold out
             </span>
           ) : (
             discount !== null && (
-              <span className="bg-clay text-bone eyebrow absolute top-3 left-3 rounded-sm px-2.5 py-1.5">
+              <span className="text-ink bg-bone/90 eyebrow absolute top-4 left-4 px-2.5 py-1.5">
                 {discount}% off
               </span>
             )
           )}
         </div>
 
-        <div className="mt-4">
-          <p className="eyebrow text-muted-foreground">{product.category.name}</p>
-          <h3 className="group-hover:text-clay mt-2 font-sans text-sm leading-snug font-medium transition-colors">
-            {product.name}
-          </h3>
+        <div className="mt-5">
+          <h3 className="text-sm leading-snug font-medium">{product.name}</h3>
 
-          <p className="mt-1.5 flex items-baseline gap-2 text-sm">
-            <span className="text-clay">{formatPrice(product.price)}</span>
+          <p className="mt-2 flex items-baseline gap-2.5 text-sm">
+            <span>{formatPrice(product.price)}</span>
             {product.compare_at_price !== null && product.compare_at_price > product.price && (
               <span className="text-muted-foreground text-xs line-through">
                 {formatPrice(product.compare_at_price)}
@@ -81,25 +99,27 @@ export function ProductCard({ product, className }: { product: Product; classNam
             )}
           </p>
 
-          <p className="text-muted-foreground mt-2 text-xs">
-            {soldOut ? 'Back in stock soon' : sizes.join(' · ')}
+          <p className="text-muted-foreground mt-3 text-xs tracking-wide">
+            {soldOut ? 'Back in stock soon' : sizes.join('  ·  ')}
           </p>
         </div>
       </Link>
 
-      {/* Wishlist toggle sits outside the Link so it doesn't navigate. */}
+      {/* Outside the Link so it never navigates. Hidden at rest, but always
+          focusable — `opacity-0` keeps it in the tab order, `hidden` would not. */}
       <button
         type="button"
         onClick={() => wishlist.toggle(product.id)}
-        aria-label={saved ? `Remove ${product.name} from wishlist` : `Save ${product.name}`}
+        aria-label={saved ? `Remove ${product.name} from saved` : `Save ${product.name}`}
         aria-pressed={saved}
-        className="bg-background/85 hover:text-clay absolute top-3 right-3 rounded-sm p-2 backdrop-blur-sm transition-colors"
+        className={cn(
+          'absolute top-4 right-4 p-2 transition-opacity duration-300',
+          'group-hover:opacity-100 focus-visible:opacity-100',
+          saved ? 'opacity-100' : 'opacity-0',
+        )}
       >
         <Heart
-          className={cn(
-            'size-4 transition-transform duration-200',
-            saved ? 'fill-clay text-clay scale-110' : 'scale-100',
-          )}
+          className={cn('size-4', saved ? 'fill-bone text-bone' : 'text-bone drop-shadow-sm')}
           strokeWidth={1.5}
           aria-hidden
         />

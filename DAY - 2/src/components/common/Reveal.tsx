@@ -2,16 +2,21 @@ import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 /**
- * Fades and lifts its children into view once, when they first scroll into
- * frame.
+ * Fades its children up once, the first time they scroll into view.
  *
- * CLAUDE.md §3 asks for motion that feels "precise, not fun" — so this is a
- * short fade with a small 12px lift, no bounce, no scale. Once revealed it
- * never animates again (the observer disconnects), because content that
- * re-animates on every scroll-past reads as a gimmick.
+ * FAIL-VISIBLE BY DESIGN. An earlier version started at `opacity-0` and waited
+ * for an IntersectionObserver to grant visibility. That inverts the risk: any
+ * environment where the observer or the transition doesn't run leaves real
+ * content — including the product grid — permanently invisible, which was
+ * observed in practice (elements carrying `opacity-100` still computing to 0).
  *
- * `prefers-reduced-motion` is handled globally in index.css, which collapses
- * every transition to ~0ms — the content still ends up visible.
+ * So the default is visible. We only hide an element after confirming, in a
+ * layout effect before paint, that it is genuinely below the fold AND that an
+ * observer exists to bring it back. Anything unexpected leaves the content on
+ * screen, which is the correct way for a decorative effect to fail.
+ *
+ * Motion is a 450ms fade with a 12px lift, once — no bounce, no scale, and it
+ * never replays. `prefers-reduced-motion` is collapsed globally in index.css.
  */
 export function Reveal({
   children,
@@ -26,18 +31,20 @@ export function Reveal({
   as?: 'div' | 'section' | 'li'
 }) {
   const ref = useRef<HTMLElement | null>(null)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const node = ref.current
     if (!node) return
+    if (typeof IntersectionObserver === 'undefined') return
 
-    // If IntersectionObserver is unavailable, show immediately rather than
-    // leaving content permanently invisible.
-    if (typeof IntersectionObserver === 'undefined') {
-      setVisible(true)
-      return
-    }
+    // Only worth animating if it starts off screen. Anything already in view
+    // stays as it is — fading in content the visitor is already looking at is
+    // the "unstable page" feeling we're trying to remove.
+    const box = node.getBoundingClientRect()
+    if (box.top < window.innerHeight * 0.92) return
+
+    setVisible(false)
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -48,20 +55,13 @@ export function Reveal({
           }
         }
       },
-      // Fire slightly before the element reaches the viewport edge, so the
-      // motion has finished by the time it's properly in view.
       { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
     )
-
     observer.observe(node)
 
-    /**
-     * Failsafe. This component starts its children at `opacity-0`, so anything
-     * that stops the observer from ever firing would hide real content — and
-     * this wraps the product grid, which is the page's whole point. Reveal
-     * unconditionally after a second, whatever the observer did.
-     */
-    const failsafe = window.setTimeout(() => setVisible(true), 1000)
+    // Backstop: whatever the observer does or doesn't do, the content is on
+    // screen shortly after mount.
+    const failsafe = window.setTimeout(() => setVisible(true), 1200)
 
     return () => {
       observer.disconnect()

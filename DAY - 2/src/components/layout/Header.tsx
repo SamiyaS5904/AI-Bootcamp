@@ -138,7 +138,8 @@ export function Header() {
             )}
           </div>
 
-          <TopNavLink to={routes.styleAssistant}>Style Assistant</TopNavLink>
+          {/* Labelled as the service it performs, not the technology behind it. */}
+          <TopNavLink to={routes.styleAssistant}>Find your fit</TopNavLink>
           <TopNavLink to={routes.about}>About</TopNavLink>
         </nav>
 
@@ -206,7 +207,7 @@ export function Header() {
                 </MobileLink>
               ))}
               <div className="bg-border mx-3 my-3 h-px" />
-              <MobileLink to={routes.styleAssistant}>Style Assistant</MobileLink>
+              <MobileLink to={routes.styleAssistant}>Find your fit</MobileLink>
               <MobileLink to={routes.sizeGuide}>Size Guide</MobileLink>
               <MobileLink to={routes.about}>About</MobileLink>
               <MobileLink to={routes.contact}>Contact</MobileLink>
