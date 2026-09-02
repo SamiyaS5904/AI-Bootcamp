@@ -1,0 +1,637 @@
+/* ------------------------------------------------------------------
+   Responsive — the same story restacked, not squeezed down.
+   Folds in the 375px mobile artboard.
+   ------------------------------------------------------------------ */
+
+/* Horizontal rails: category cards and the product grid on small screens. */
+.pk-rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 6px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+}
+
+.pk-rail > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+.pk-rail::-webkit-scrollbar {
+  height: 4px;
+}
+
+.pk-rail::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 2px;
+}
+
+.pk-rail__hint {
+  font: 400 11px/1 var(--font-mono);
+  color: var(--text-faint);
+  letter-spacing: 0.12em;
+  margin-top: 12px;
+}
+
+/* --------------------------- <= 1180px ---------------------------- */
+
+@media (max-width: 1180px) {
+  .pk-hero__grid {
+    min-height: 560px;
+  }
+
+  .pk-nav {
+    gap: 18px;
+  }
+
+  .pk-nav a {
+    font-size: 13px;
+  }
+
+  .pk-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pk-footer__grid {
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: var(--s-7);
+  }
+
+  .pk-footer__col:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --------------------------- <= 1024px ---------------------------- */
+
+@media (max-width: 1024px) {
+  .pk-nav,
+  .pk-header__actions {
+    display: none;
+  }
+
+  /* The wordmark yields first, so the quote button and menu always fit. */
+  .pk-wordmark {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .pk-wordmark__name,
+  .pk-wordmark__sub {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .pk-burger {
+    display: flex;
+    margin-left: auto;
+    position: relative;
+  }
+
+  .pk-header__quote {
+    display: inline-flex;
+  }
+
+  .pk-header__inner {
+    gap: var(--s-3);
+  }
+
+  /* Hero restacks: the photograph sits on top and dissolves downward into the
+     copy, so the two never meet at a hard edge on any width. */
+  .pk-hero {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pk-hero__photo {
+    position: relative;
+    left: 0;
+    height: clamp(250px, 46vw, 390px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 52%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 52%, transparent 100%);
+  }
+
+  .pk-hero__photo img {
+    object-position: 68% 42%;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .pk-hero__inner {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    margin-top: -54px;
+  }
+
+  .pk-hero__copy {
+    padding-block: 0 var(--section-y);
+  }
+
+  .pk-hero__seam {
+    max-width: none;
+  }
+
+  .pk-hero__caption {
+    display: none;
+  }
+
+  /* Stacked, the photo has its own fade — the horizontal veil would only
+     grey it out. */
+  .pk-hero__glow {
+    background: radial-gradient(
+      120% 60% at 50% 100%,
+      rgba(74, 37, 69, 0.3) 0%,
+      rgba(20, 19, 26, 0) 60%
+    );
+  }
+
+  .pk-hero__cue {
+    display: none;
+  }
+
+  .pk-wordmark__name {
+    font-size: 16px;
+  }
+
+  .pk-wordmark__sub {
+    font-size: 8px;
+    letter-spacing: 0.24em;
+  }
+
+  .pk-cats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pk-brands {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-brand {
+    min-height: 340px;
+  }
+
+  .pk-private__grid,
+  .pk-about__grid,
+  .pk-enquiry__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-evidence {
+    padding-bottom: 90px;
+    max-width: 620px;
+  }
+
+  .pk-contactcard {
+    position: static;
+  }
+
+  .pk-why {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pk-fabrics__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-cat-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-filters {
+    position: static;
+    max-height: none;
+  }
+
+  .pk-modal__panel {
+    grid-template-columns: 1fr;
+    max-height: 94vh;
+  }
+
+  .pk-modal__media {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
+
+  .pk-modal__body {
+    padding: 26px var(--gutter) 30px;
+  }
+}
+
+/* ---------------------------- <= 860px ---------------------------- */
+
+@media (max-width: 860px) {
+  .pk-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pk-timeline {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pk-timeline__step {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pk-crops {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pk-capacity {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* ---------------------------- <= 760px ---------------------------- */
+/* The mobile artboard proper. */
+
+@media (max-width: 760px) {
+  /* Room for the fixed action bar. */
+  body {
+    padding-bottom: 72px;
+  }
+
+  .pk-hero__eyebrow .pk-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+
+  .pk-hero__punjab {
+    display: none;
+  }
+
+  .pk-section {
+    padding-block: var(--s-7);
+  }
+
+  .pk-head {
+    gap: var(--s-4);
+  }
+
+  .pk-head h2 {
+    max-width: none;
+  }
+
+  .pk-section-num {
+    top: 16px;
+    font-size: clamp(4.5rem, 22vw, 7rem);
+  }
+
+  /* Proof strip: 2 x 2 */
+  .pk-proof__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    padding-inline: 0;
+  }
+
+  .pk-proof__item {
+    background: var(--ink-raised);
+    padding: 22px var(--gutter);
+    border-right: none;
+  }
+
+  .pk-proof__item:first-child,
+  .pk-proof__item:last-child {
+    padding-inline: var(--gutter);
+  }
+
+  /* Category cards become a snap rail. */
+  .pk-cats {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    background: transparent;
+    border: none;
+    margin-top: 28px;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 6px;
+  }
+
+  .pk-cat {
+    flex: 0 0 232px;
+    scroll-snap-align: start;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .pk-cat__body {
+    padding: 18px 18px 22px;
+  }
+
+  /* Product grid becomes a snap rail. */
+  .pk-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 6px;
+    margin-top: 24px;
+  }
+
+  .pk-grid > * {
+    flex: 0 0 214px;
+    scroll-snap-align: start;
+  }
+
+  /* On the catalogue the grid stays a grid — buyers are browsing all 29. */
+  .pk-grid--wrap {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .pk-grid--wrap > * {
+    flex: initial;
+  }
+
+  .pk-showcase__bar {
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+
+  .pk-showcase__bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pk-showcase__count {
+    display: none;
+  }
+
+  .pk-brand {
+    padding: 28px var(--gutter);
+    min-height: 300px;
+  }
+
+  .pk-brand--zonixa {
+    padding-top: 120px;
+  }
+
+  .pk-brand__range {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pk-brand__foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pk-fabric {
+    padding: 18px 0;
+    gap: 16px;
+  }
+
+  .pk-fabric__gsm {
+    min-width: 86px;
+  }
+
+  .pk-crops {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .pk-why {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-why__item {
+    padding: 22px var(--gutter);
+  }
+
+  /* Timeline as a rail. */
+  .pk-timeline {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    border-top: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 6px;
+  }
+
+  .pk-timeline__step {
+    flex: 0 0 190px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px !important;
+  }
+
+  .pk-form {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pk-form__foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pk-form__foot .pk-btn {
+    width: 100%;
+  }
+
+  .pk-contactcard {
+    padding: 26px var(--gutter);
+  }
+
+  .pk-footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+
+  .pk-footer__col:last-child {
+    grid-column: auto;
+  }
+
+  .pk-footer__bottom {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pk-evidence {
+    padding-bottom: 70px;
+  }
+
+  /* Desktop cluster off, bottom bar on. */
+  .pk-fab {
+    display: none;
+  }
+
+  .pk-mobilebar {
+    display: grid;
+  }
+
+  .pk-basket {
+    bottom: 84px;
+    right: var(--gutter);
+    left: var(--gutter);
+    justify-content: center;
+  }
+
+  /* ---- The production line rotates vertical: a scroll-progress spine ---- */
+
+  .pk-mfg__wrap {
+    height: 300vh;
+  }
+
+  .pk-mfg__stage {
+    height: auto;
+    min-height: 0;
+    top: calc(var(--header-h) + 8px);
+    padding: 12px 0 20px;
+    align-items: flex-start;
+  }
+
+  .pk-thread {
+    padding-left: 26px;
+    margin-top: 24px;
+  }
+
+  .pk-thread__track {
+    left: 0;
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: 3px;
+    height: 100%;
+    background: repeating-linear-gradient(180deg, var(--line-loud) 0 12px, transparent 12px 22px);
+  }
+
+  .pk-thread__line {
+    width: 3px;
+    height: 0%;
+    background: repeating-linear-gradient(180deg, var(--amber) 0 12px, transparent 12px 22px);
+    transition: height 180ms linear;
+  }
+
+  .pk-thread__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 0;
+  }
+
+  .pk-step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    align-items: baseline;
+    gap: 12px;
+    padding: 9px 0;
+    border-right: none;
+  }
+
+  .pk-step:first-child,
+  .pk-step:last-child {
+    padding-inline: 0;
+  }
+
+  .pk-step__num {
+    font-size: 1.25rem;
+    grid-row: span 2;
+  }
+
+  .pk-step__label {
+    margin-top: 0;
+    font-size: 15px;
+  }
+
+  /* Collapse, rather than sitting invisible and leaving a dead row. */
+  .pk-step__desc {
+    grid-column: 2;
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 600ms var(--settle), max-height 600ms var(--settle),
+      margin-top 600ms var(--settle);
+  }
+
+  .pk-step[data-state="done"] .pk-step__desc,
+  .pk-step[data-state="active"] .pk-step__desc {
+    max-height: 90px;
+    margin-top: 4px;
+  }
+
+  .pk-mfg__foot {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Catalogue */
+  .pk-cat-hero__row {
+    gap: var(--s-5);
+  }
+
+  .pk-moq {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .pk-results__bar {
+    gap: 12px;
+  }
+
+  .pk-results__hint {
+    display: none;
+  }
+
+  .pk-modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .pk-modal__panel {
+    max-height: 92vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: none;
+  }
+}
+
+/* ---------------------------- <= 420px ---------------------------- */
+
+@media (max-width: 420px) {
+  .pk-hero__facts {
+    gap: 10px 18px;
+    font-size: 12px;
+  }
+
+  .pk-hero__ctas {
+    flex-direction: column;
+  }
+
+  .pk-hero__ctas .pk-btn {
+    width: 100%;
+  }
+
+  .pk-grid--wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-brand__range {
+    grid-template-columns: 1fr;
+  }
+
+  .pk-listings span:not(.pk-label) {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Wide screens: the showcase can breathe. */
+@media (min-width: 1500px) {
+  .pk-grid {
+    gap: 24px;
+  }
+}

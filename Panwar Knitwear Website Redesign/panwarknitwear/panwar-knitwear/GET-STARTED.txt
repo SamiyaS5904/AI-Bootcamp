@@ -1,0 +1,31 @@
+PANWAR KNITWEAR — how to run this
+=================================
+
+1. Install Node.js 18 or newer if you don't have it:  https://nodejs.org
+2. Unzip this folder anywhere you like, e.g.
+      Windows:  C:\Users\<you>\Desktop\panwar-knitwear
+      Mac:      ~/Desktop/panwar-knitwear
+3. Open a terminal in that folder and run:
+
+      npm install
+      npm run dev
+
+4. Open the address it prints (usually http://localhost:5173).
+
+To build the production files:
+
+      npm run build
+
+...which writes a `dist/` folder. That folder is the whole website — upload it
+to any static host (Netlify, Vercel, Hostinger, cPanel, S3). Nothing else is
+needed; there is no server to run.
+
+BEFORE IT GOES LIVE
+-------------------
+- The enquiry form does not deliver anywhere yet. Copy `.env.example` to `.env`
+  and set VITE_ENQUIRY_ENDPOINT to your form endpoint. WhatsApp works already.
+- Replace the bracketed placeholders — {{MOQ}}, {{lead time}},
+  {{monthly capacity}}, {{email}}, {{street address}} — in
+  src/data/company.js.
+
+Full notes are in README.md.

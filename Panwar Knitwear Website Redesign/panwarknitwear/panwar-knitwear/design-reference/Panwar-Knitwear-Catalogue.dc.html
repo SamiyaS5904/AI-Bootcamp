@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  body { margin: 0; background: #14131A; -webkit-font-smoothing: antialiased; }
+  a { color: #D98324; text-decoration: none; }
+  a:hover { color: #E8A055; }
+  input, select, textarea, button { font-family: Inter, sans-serif; }
+</style>
+</helmet>
+<div style="background:#14131A;font-family:Inter,sans-serif;color:#F5F2ED;min-width:1180px;min-height:100vh">
+
+  <header style="position:sticky;top:0;z-index:60;background:rgba(20,19,26,.94);backdrop-filter:blur(10px);border-bottom:1px solid #2A2830">
+    <div style="max-width:1320px;margin:0 auto;padding:0 40px;height:74px;display:flex;align-items:center;gap:40px">
+      <a href="Panwar-Knitwear-Home.dc.html" style="display:block;color:#F5F2ED">
+        <div style="font:700 19px/1 'Space Grotesk',sans-serif;letter-spacing:.02em">Panwar Knitwear</div>
+        <div style="font:500 9px/1 'IBM Plex Mono',monospace;letter-spacing:.28em;color:#8A8378;margin-top:5px">ZONIXA · MSP SPORTS · LUDHIANA</div>
+      </a>
+      <nav style="display:flex;gap:26px;margin-left:auto;align-items:center;white-space:nowrap">
+        <a href="Panwar-Knitwear-Home.dc.html#products" style="font:500 14px/1 Inter,sans-serif;color:#D98324">Products</a>
+        <a href="Panwar-Knitwear-Home.dc.html#fabrics" style="font:500 14px/1 Inter,sans-serif;color:#C9C3B8">Fabrics</a>
+        <a href="Panwar-Knitwear-Home.dc.html#manufacturing" style="font:500 14px/1 Inter,sans-serif;color:#C9C3B8">Manufacturing</a>
+        <a href="Panwar-Knitwear-Home.dc.html#private-label" style="font:500 14px/1 Inter,sans-serif;color:#C9C3B8">Private label</a>
+        <a href="Panwar-Knitwear-Home.dc.html#about" style="font:500 14px/1 Inter,sans-serif;color:#C9C3B8">About</a>
+        <a href="Panwar-Knitwear-Home.dc.html#enquiry" style="font:500 14px/1 Inter,sans-serif;color:#C9C3B8">Contact</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:16px;padding-left:24px;border-left:1px solid #2A2830">
+        <a href="tel:+919876045457" style="font:500 14px/1.2 'IBM Plex Mono',monospace;color:#F5F2ED;white-space:nowrap">+91 98760 45457</a>
+        <a href="Panwar-Knitwear-Home.dc.html#enquiry" style="background:#D98324;color:#14131A;font:600 14px/1 Inter,sans-serif;padding:13px 20px;border-radius:4px;white-space:nowrap">Get a quote</a>
+      </div>
+    </div>
+  </header>
+
+  <section style="padding:64px 40px 0">
+    <div style="max-width:1320px;margin:0 auto">
+      <div style="font:400 13px/1 'IBM Plex Mono',monospace;color:#8A8378"><a href="Panwar-Knitwear-Home.dc.html" style="color:#8A8378">Home</a> / Product catalogue</div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-top:28px">
+        <div>
+          <h1 style="font:600 56px/1.02 'Space Grotesk',sans-serif;letter-spacing:-.03em;color:#F5F2ED;margin:0">Product catalogue</h1>
+          <p style="font:400 17px/1.6 Inter,sans-serif;color:#A8A29A;margin:18px 0 0;max-width:620px">All 29 styles we currently run, photographed as they ship: hero garment plus the colour run available on each style. Enquire on any style and the name travels to the enquiry form.</p>
+        </div>
+        <div style="border:1px solid #2A2830;border-radius:4px;padding:22px 26px;min-width:230px">
+          <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">MINIMUM ORDER</div>
+          <div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED;margin-top:12px">{{ ph.moq }}</div>
+          <div style="font:400 13px/1.5 Inter,sans-serif;color:#A8A29A;margin-top:8px">Per style, per colourway.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:44px 40px 96px">
+    <div style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:236px 1fr;gap:48px;align-items:start">
+
+      <aside style="position:sticky;top:106px;border:1px solid #2A2830;border-radius:4px;padding:24px 22px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">FILTERS</div>
+          <button onClick="{{ reset }}" style="background:none;border:none;padding:0;font:500 12px/1 Inter,sans-serif;color:#D98324;cursor:pointer">Reset</button>
+        </div>
+        <div style="margin-top:24px;font:500 13px/1 Inter,sans-serif;color:#F5F2ED">Category</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+          <sc-for list="{{ catChips }}" as="chip" hint-placeholder-count="5">
+            <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+          </sc-for>
+        </div>
+        <div style="margin-top:26px;padding-top:22px;border-top:1px solid #2A2830;font:500 13px/1 Inter,sans-serif;color:#F5F2ED">Fabric</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+          <sc-for list="{{ fabChips }}" as="chip" hint-placeholder-count="6">
+            <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+          </sc-for>
+        </div>
+        <div style="margin-top:26px;padding-top:22px;border-top:1px solid #2A2830;font:500 13px/1 Inter,sans-serif;color:#F5F2ED">GSM</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+          <sc-for list="{{ gsmChips }}" as="chip" hint-placeholder-count="3">
+            <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+          </sc-for>
+        </div>
+        <div style="margin-top:26px;padding-top:22px;border-top:1px solid #2A2830;font:400 12px/1.55 'IBM Plex Mono',monospace;color:#8A8378">Styles marked {{ ph.gsm }} are pending a confirmed weight from the mill.</div>
+        <a href="https://wa.me/919876045457?text=Hello%20Panwar%20Knitwear%2C%20I%20would%20like%20a%20bulk%20quote." style="display:block;text-align:center;background:#25D366;color:#14131A;font:600 14px/1 Inter,sans-serif;padding:15px 0;border-radius:4px;margin-top:26px">WhatsApp us</a>
+      </aside>
+
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:20px;border-bottom:1px solid #2A2830">
+          <div style="font:400 14px/1 'IBM Plex Mono',monospace;color:#C9C3B8">{{ resultLine }}</div>
+          <div style="font:400 13px/1 Inter,sans-serif;color:#8A8378">Click any style for full specifications</div>
+        </div>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px">
+            <sc-for list="{{ shown }}" as="c" hint-placeholder-count="9">
+              <div onMouseEnter="{{ c.onEnter }}" onMouseLeave="{{ c.onLeave }}" style="border:1px solid #2A2830;background:#191820;border-radius:4px;overflow:hidden">
+                <div onClick="{{ c.open }}" role="img" aria-label="{{ c.name }}" style="position:relative;aspect-ratio:982/1147;overflow:hidden;background:{{ c.bg }};cursor:pointer">
+                  <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:16px;background:linear-gradient(to top,rgba(20,19,26,.95) 4%,rgba(20,19,26,.1) 60%);transition:opacity .18s ease;opacity:{{ c.reveal }}">
+                    <span style="width:100%;text-align:center;border:1px solid #F5F2ED;color:#F5F2ED;font:600 14px/1 Inter,sans-serif;padding:13px 0;border-radius:4px">Quick view</span>
+                  </div>
+                </div>
+                <div style="padding:16px 16px 18px">
+                  <div style="font:500 15px/1.35 Inter,sans-serif;color:#F5F2ED;min-height:40px">{{ c.name }}</div>
+                  <div style="display:flex;justify-content:space-between;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid #2A2830;font:400 12px/1 'IBM Plex Mono',monospace;color:#8A8378">
+                    <span>{{ c.fabric }}</span><span style="color:#D98324">{{ c.gsm }}</span>
+                  </div>
+                  <button onClick="{{ c.enquire }}" style="width:100%;margin-top:14px;background:transparent;border:1px solid #3A3742;color:#F5F2ED;font:600 13px/1 Inter,sans-serif;padding:12px 0;border-radius:4px;cursor:pointer" style-hover="background:#D98324;border-color:#D98324;color:#14131A">Enquire</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:28px;border:1px dashed #3A3742;border-radius:4px;padding:88px 40px;text-align:center;background:repeating-linear-gradient(135deg,#1C1B22 0 9px,#191820 9px 18px)">
+            <div style="font:600 26px/1.2 'Space Grotesk',sans-serif;color:#F5F2ED">No styles match this combination.</div>
+            <p style="font:400 16px/1.6 Inter,sans-serif;color:#A8A29A;margin:14px auto 0;max-width:460px">We manufacture to spec, so a style you cannot see here can still be made. Clear the filters, or tell us what you need.</p>
+            <div style="display:flex;gap:12px;justify-content:center;margin-top:28px">
+              <button onClick="{{ reset }}" style="background:#D98324;color:#14131A;border:none;font:600 14px/1 Inter,sans-serif;padding:15px 24px;border-radius:4px;cursor:pointer">Reset all filters</button>
+              <a href="Panwar-Knitwear-Home.dc.html#enquiry" style="border:1px solid #4A4650;color:#F5F2ED;font:600 14px/1 Inter,sans-serif;padding:14px 24px;border-radius:4px">Send a custom enquiry</a>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:90;background:rgba(10,9,13,.82);display:flex;align-items:center;justify-content:center;padding:40px">
+      <div style="background:#191820;border:1px solid #2A2830;border-radius:6px;width:100%;max-width:1020px;max-height:86vh;overflow:auto;display:grid;grid-template-columns:.9fr 1.1fr">
+        <div role="img" aria-label="{{ modal.name }}" style="background:{{ modalBg }}"></div>
+        <div style="padding:36px 36px 34px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px">
+            <div>
+              <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#D98324">{{ modal.cat }} · ZONIXA</div>
+              <h2 style="font:600 30px/1.15 'Space Grotesk',sans-serif;letter-spacing:-.02em;color:#F5F2ED;margin:14px 0 0">{{ modal.name }}</h2>
+            </div>
+            <button onClick="{{ close }}" style="background:transparent;border:1px solid #3A3742;color:#C9C3B8;font:400 18px/1 Inter,sans-serif;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0">×</button>
+          </div>
+          <div style="margin-top:28px;border-top:1px solid #2A2830">
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Fabric</span><span style="color:#F5F2ED">{{ modal.fabric }}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>GSM</span><span style="color:#F5F2ED">{{ modal.gsm }}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Fit</span><span style="color:#F5F2ED">{{ ph.fit }}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Sizes</span><span style="color:#F5F2ED">{{ ph.sizes }}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Colourways</span><span style="color:#F5F2ED">Colour run as photographed</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Branding options</span><span style="color:#F5F2ED;text-align:right;max-width:280px">Embroidery, screen, digital and DTF print, woven labels, hang tags</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Minimum order</span><span style="color:#F5F2ED">{{ ph.moq }}</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #2A2830;font:400 15px/1 Inter,sans-serif;color:#A8A29A"><span>Packing</span><span style="color:#F5F2ED">Branded poly bag with wash care</span></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:28px">
+            <a href="Panwar-Knitwear-Home.dc.html#enquiry" style="background:#D98324;color:#14131A;font:600 15px/1 Inter,sans-serif;padding:16px 24px;border-radius:4px">Enquire about this style</a>
+            <a href="https://wa.me/919876045457?text=Hello%20Panwar%20Knitwear%2C%20I%20would%20like%20a%20quote%20for%20a%20style%20from%20your%20catalogue." style="border:1px solid #4A4650;color:#F5F2ED;font:600 15px/1 Inter,sans-serif;padding:15px 24px;border-radius:4px">WhatsApp</a>
+          </div>
+          <div style="font:400 12px/1.55 'IBM Plex Mono',monospace;color:#8A8378;margin-top:18px">Bracketed values are awaiting confirmed figures from the client.</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <footer style="border-top:1px solid #2A2830;padding:36px 40px">
+    <div style="max-width:1320px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;font:400 13px/1 Inter,sans-serif;color:#8A8378">
+      <span>© {{ year }} Panwar Knitwear, Ludhiana.</span>
+      <div style="display:flex;gap:22px">
+        <a href="tel:+919876045457" style="color:#C9C3B8;font-family:'IBM Plex Mono',monospace">+91 98760 45457</a>
+        <a href="tel:+919815703769" style="color:#C9C3B8;font-family:'IBM Plex Mono',monospace">+91 98157 03769</a>
+        <a href="tel:+919999982998" style="color:#C9C3B8;font-family:'IBM Plex Mono',monospace">+91 99999 82998</a>
+        <a href="Panwar-Knitwear-Home.dc.html">Back to the main page</a>
+      </div>
+    </div>
+  </footer>
+
+  <div style="position:fixed;right:24px;bottom:24px;z-index:80;display:flex;flex-direction:column;gap:12px;align-items:flex-end">
+    <a href="https://wa.me/919876045457?text=Hello%20Panwar%20Knitwear%2C%20I%20would%20like%20a%20bulk%20quote." style="background:#25D366;color:#14131A;font:600 14px/1 Inter,sans-serif;padding:15px 20px;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.45)">WhatsApp</a>
+    <a href="tel:+919876045457" style="background:#D98324;color:#14131A;font:600 14px/1 Inter,sans-serif;padding:15px 20px;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.45)">Call now</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const PRODUCTS = [
+  { id: 1,  img: "img/p01.jpg", name: "320 GSM round-neck hoodie, embroidered logo", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 2,  img: "img/p02.jpg", name: "320 GSM round-neck hoodie, print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 3,  img: "img/p03.jpg", name: "320 GSM heavy round-neck hoodie, chest print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 4,  img: "img/p04.jpg", name: "320 GSM round-neck hoodie, chest and sleeve print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 5,  img: "img/p05.jpg", name: "320 GSM heavy zip hoodie", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 6,  img: "img/p06.jpg", name: "320 GSM heavy round-neck filice hood", cat: "Hoodies", fabric: "Russian Fleece", gsm: "320 GSM", g: "320" },
+  { id: 7,  img: "img/p07.jpg", name: "Shape swead 320 GSM round-neck hoodie", cat: "Hoodies", fabric: "NS Bonded", gsm: "320 GSM", g: "320" },
+  { id: 8,  img: "img/p08.jpg", name: "Two-thread filice round-neck hoodie", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 9,  img: "img/p09.jpg", name: "Two-thread filice round-neck hoodie II", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 10, img: "img/p10.jpg", name: "Two-thread round-neck hoodie, chest print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 11, img: "img/p11.jpg", name: "Two-thread round-neck hoodie, chest print II", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 12, img: "img/p12.jpg", name: "Two-thread logo filice hood", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 13, img: "img/p13.jpg", name: "Two-thread hood logo sweatshirt", cat: "Sweatshirts", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 14, img: "img/p14.jpg", name: "Round-neck hood-cut sweatshirt", cat: "Sweatshirts", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 15, img: "img/p15.jpg", name: "Round-neck filice sweatshirt", cat: "Sweatshirts", fabric: "Russian Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 16, img: "img/p16.jpg", name: "Feather bonding sweatshirt", cat: "Sweatshirts", fabric: "NS Bonded", gsm: "{{GSM}}", g: "tbc" },
+  { id: 17, img: "img/p17.jpg", name: "Shape bonding Ben-collar jacket", cat: "Jackets", fabric: "NS Bonded", gsm: "{{GSM}}", g: "tbc" },
+  { id: 18, img: "img/p18.jpg", name: "Dry-fit Ben-collar half-sleeve T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 19, img: "img/p19.jpg", name: "Full-sleeve Ben-collar button T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 20, img: "img/p20.jpg", name: "Dry-fit matty round-neck T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 21, img: "img/p21.jpg", name: "Dry-fit matty lining double-gulla T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 22, img: "img/p22.jpg", name: "Dry-fit matty collar half-sleeve cut-gulla T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 23, img: "img/p23.jpg", name: "Dry-fit matty collar half-sleeve D-gulla T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 24, img: "img/p24.jpg", name: "Round-neck half-sleeve T-shirt, chest print", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 25, img: "img/p25.jpg", name: "Digital print T-shirt", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 26, img: "img/p26.jpg", name: "Bird-eye cotton half-sleeve 2-piece collar T-shirt", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 27, img: "img/p27.jpg", name: "Bird-eye cotton half-sleeve T-shirt", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 28, img: "img/p28.jpg", name: "PC cotton half-sleeve T-shirt", cat: "T-shirts", fabric: "PC Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 29, img: "img/p29.jpg", name: "PC colour dora pocket half-sleeve T-shirt", cat: "T-shirts", fabric: "PC Cotton", gsm: "{{GSM}}", g: "tbc" }
+];
+
+const PH = { moq: "{{MOQ}}", lead: "{{lead time}}", cap: "{{monthly capacity}}", email: "{{email}}", gsm: "{{GSM}}", gsmRange: "{{GSM range}}", addr: "{{street address}}", fit: "{{fit}}", sizes: "{{size range}}" };
+
+class Component extends DCLogic {
+  state = { products: PRODUCTS, cat: "All", fabric: "All", gsm: "All", hover: null, open: null };
+
+  chipStyle(active, wide) {
+    const base = "font:500 13px/1 Inter,sans-serif;padding:10px 14px;border-radius:4px;cursor:pointer;text-align:left;";
+    return (wide ? base + "width:100%;" : base) + (active
+      ? "background:#D98324;color:#14131A;border:1px solid #D98324"
+      : "background:transparent;color:#C9C3B8;border:1px solid #3A3742");
+  }
+
+  chips(key, values) {
+    return values.map(v => ({
+      label: v,
+      style: this.chipStyle(this.state[key] === v),
+      onClick: () => this.setState({ [key]: v })
+    }));
+  }
+
+  renderVals() {
+    const all = this.state.products;
+    const { cat, fabric, gsm } = this.state;
+    const list = all.filter(p =>
+      (cat === "All" || p.cat === cat) &&
+      (fabric === "All" || p.fabric === fabric) &&
+      (gsm === "All" || (gsm === "320 GSM" ? p.g === "320" : p.g === "tbc")));
+    const open = all.find(p => p.id === this.state.open) || null;
+    return {
+      year: new Date().getFullYear(),
+      ph: PH,
+      catChips: this.chips("cat", ["All", "Hoodies", "Sweatshirts", "T-shirts", "Jackets"]),
+      fabChips: this.chips("fabric", ["All", "Spun Fleece", "Russian Fleece", "NS Bonded", "Dry Fit", "100% Cotton", "PC Cotton"]),
+      gsmChips: this.chips("gsm", ["All", "320 GSM", "Weight to confirm"]),
+      reset: () => this.setState({ cat: "All", fabric: "All", gsm: "All" }),
+      resultLine: all.length ? list.length + " of " + all.length + " styles" : "Loading catalogue",
+      hasResults: list.length > 0,
+      empty: all.length > 0 && list.length === 0,
+      modalOpen: !!open,
+      modal: open || {},
+      modalBg: open ? "#14131A center 50%/cover no-repeat url('" + open.img + "')" : "#14131A",
+      close: () => this.setState({ open: null }),
+      shown: list.map(p => ({
+        bg: "#14131A center 50%/cover no-repeat url('" + p.img + "')", name: p.name, fabric: p.fabric, gsm: p.gsm,
+        reveal: this.state.hover === p.id ? 1 : 0,
+        onEnter: () => this.setState({ hover: p.id }),
+        onLeave: () => this.setState({ hover: null }),
+        open: () => this.setState({ open: p.id }),
+        enquire: () => this.setState({ open: p.id })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

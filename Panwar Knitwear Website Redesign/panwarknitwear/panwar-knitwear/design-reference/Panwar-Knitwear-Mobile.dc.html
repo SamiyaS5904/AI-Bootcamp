@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Gurmukhi:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #14131A; -webkit-font-smoothing: antialiased; }
+  a { color: #D98324; text-decoration: none; }
+  a:hover { color: #E8A055; }
+  input, select, textarea, button { font-family: Inter, sans-serif; }
+  ::placeholder { color: #A8A29A; }
+  .rail::-webkit-scrollbar { height: 0; }
+  @keyframes pk-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes pk-ring { 0% { transform: scale(1); opacity: .5; } 70% { transform: scale(1.9); opacity: 0; } 100% { transform: scale(1.9); opacity: 0; } }
+  @keyframes pk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+  @keyframes pk-drift { from { transform: scale(1.005); } to { transform: scale(1.045); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</helmet>
+<div style="position:relative;width:375px;margin:0 auto;background:#14131A;font-family:Inter,sans-serif;color:#F5F2ED;overflow-x:hidden;padding-bottom:88px">
+
+  <div style="position:fixed;inset:0;z-index:70;pointer-events:none;opacity:.055;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+
+  <header style="position:sticky;top:0;z-index:60;background:rgba(20,19,26,.96);backdrop-filter:blur(10px);border-bottom:1px solid #2A2830">
+    <div style="height:60px;padding:0 16px;display:flex;align-items:center;gap:12px">
+      <a href="#top" style="color:#F5F2ED;flex:1">
+        <div style="font:700 16px/1 'Space Grotesk',sans-serif">Panwar Knitwear</div>
+        <div style="font:500 8px/1 'IBM Plex Mono',monospace;letter-spacing:.24em;color:#8A8378;margin-top:4px">ZONIXA · MSP SPORTS</div>
+      </a>
+      <a href="#enquiry" style="background:#D98324;color:#14131A;font:600 13px/1 Inter,sans-serif;padding:14px 13px;border-radius:4px;white-space:nowrap">Get a quote</a>
+      <button onClick="{{ toggleMenu }}" aria-label="Menu" style="width:46px;height:46px;background:transparent;border:1px solid #3A3742;border-radius:4px;color:#F5F2ED;font:400 12px/1.6 'IBM Plex Mono',monospace;cursor:pointer">≡</button>
+    </div>
+    <div style="border-top:1px solid #2A2830;overflow:hidden;transition:max-height .22s ease;max-height:{{ menuHeight }}">
+      <div style="display:flex;flex-direction:column">
+        <a href="#products" onClick="{{ closeMenu }}" style="padding:16px;border-bottom:1px solid #2A2830;font:500 16px/1 Inter,sans-serif;color:#F5F2ED">Products</a>
+        <a href="#fabrics" onClick="{{ closeMenu }}" style="padding:16px;border-bottom:1px solid #2A2830;font:500 16px/1 Inter,sans-serif;color:#F5F2ED">Fabrics</a>
+        <a href="#manufacturing" onClick="{{ closeMenu }}" style="padding:16px;border-bottom:1px solid #2A2830;font:500 16px/1 Inter,sans-serif;color:#F5F2ED">Manufacturing</a>
+        <a href="#private-label" onClick="{{ closeMenu }}" style="padding:16px;border-bottom:1px solid #2A2830;font:500 16px/1 Inter,sans-serif;color:#F5F2ED">Private label</a>
+        <a href="#about" onClick="{{ closeMenu }}" style="padding:16px;border-bottom:1px solid #2A2830;font:500 16px/1 Inter,sans-serif;color:#F5F2ED">About</a>
+        <a href="#enquiry" onClick="{{ closeMenu }}" style="padding:16px;font:500 16px/1 Inter,sans-serif;color:#F5F2ED">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="top" style="border-bottom:1px solid #2A2830">
+    <div style="position:relative;height:300px;overflow:hidden">
+      <img data-anim="drift" src="img/p01.jpg" alt="ZONIXA 320 GSM round-neck hoodie with a six-colour run and branded poly bag" style="width:100%;height:100%;object-fit:cover;object-position:70% 40%;display:block;animation:pk-drift 20s ease-in-out infinite alternate"/>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,19,26,.35),rgba(20,19,26,.2) 40%,#14131A 98%)"></div>
+    </div>
+    <div style="padding:0 16px 32px;margin-top:-28px;position:relative">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D98324">Knitwear manufacturing · Ludhiana</span>
+        <span style="font:400 12px/1 'Noto Sans Gurmukhi',sans-serif;color:#8A8378">ਲੁਧਿਆਣਾ</span>
+      </div>
+      <h1 style="font:600 38px/1.02 'Space Grotesk',sans-serif;letter-spacing:-.03em;margin:16px 0 0">
+        <span style="display:block;overflow:hidden;padding-bottom:2px"><span data-line="1" style="display:block">Knitwear manufacturing</span></span>
+        <span style="display:block;overflow:hidden;padding-bottom:2px"><span data-line="2" style="display:block">from Ludhiana,</span></span>
+        <span style="display:block;overflow:hidden;padding-bottom:2px"><span data-line="3" style="display:block">since 2016.</span></span>
+      </h1>
+      <p style="font:400 16px/1.6 Inter,sans-serif;color:#A8A29A;margin:16px 0 0">Hoodies, sweatshirts and T-shirts under ZONIXA. Lowers, track pants and shorts under MSP Sports. Made in bulk for wholesalers, retailers and institutional buyers.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:24px">
+        <a href="#enquiry" style="text-align:center;background:#D98324;color:#14131A;font:600 16px/1 Inter,sans-serif;padding:18px 0;border-radius:4px">Request a quote</a>
+        <a href="#products" style="text-align:center;border:1px solid #4A4650;color:#F5F2ED;font:600 16px/1 Inter,sans-serif;padding:17px 0;border-radius:4px">See our products</a>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal-stagger="1" style="border-bottom:1px solid #2A2830;background:#191820;display:grid;grid-template-columns:1fr 1fr;gap:1px;background-color:#2A2830">
+    <div style="background:#191820;padding:22px 16px"><div style="font:600 32px/1 'Space Grotesk',sans-serif;color:#D98324"><span data-countup="2016" data-countup-from="1990">2016</span></div><div style="font:400 13px/1.4 Inter,sans-serif;color:#A8A29A;margin-top:8px">Established in Ludhiana</div></div>
+    <div style="background:#191820;padding:22px 16px"><div style="font:600 32px/1 'Space Grotesk',sans-serif;color:#D98324"><span data-countup="26">26</span>–<span data-countup="50">50</span></div><div style="font:400 13px/1.4 Inter,sans-serif;color:#A8A29A;margin-top:8px">People on the floor</div></div>
+    <div style="background:#191820;padding:22px 16px"><div style="font:600 32px/1 'Space Grotesk',sans-serif;color:#D98324"><span data-countup="320">320</span><span style="font-size:15px"> GSM</span></div><div style="font:400 13px/1.4 Inter,sans-serif;color:#A8A29A;margin-top:8px">Heavy knit hoodies</div></div>
+    <div style="background:#191820;padding:22px 16px"><div style="font:600 22px/1.1 'Space Grotesk',sans-serif;color:#D98324">Private label</div><div style="font:400 13px/1.4 Inter,sans-serif;color:#A8A29A;margin-top:8px">Your brand, in-house</div></div>
+  </section>
+
+  <section id="categories" style="scroll-margin-top:60px;padding:44px 0;border-bottom:1px solid #2A2830">
+    <div data-reveal="1" style="padding:0 16px">
+      <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D98324">What we make</div>
+      <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">Six categories, made to your spec.</h2>
+    </div>
+    <div class="rail" style="display:flex;gap:12px;overflow-x:auto;padding:24px 16px 6px;scroll-snap-type:x mandatory">
+      <div style="flex:0 0 232px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#191820;overflow:hidden">
+        <div style="height:150px;overflow:hidden;background:#14131A"><img src="img/p05.jpg" alt="320 GSM zip hoodie" style="width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block"/></div>
+        <div style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 19px/1 'Space Grotesk',sans-serif">Hoodies</div><span style="font:500 11px/1 'IBM Plex Mono',monospace;color:#D98324">320 GSM</span></div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:10px 0 0">Round-neck and zip, in two-thread and heavy fleece.</p></div>
+      </div>
+      <div style="flex:0 0 232px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#191820;overflow:hidden">
+        <div style="height:150px;overflow:hidden;background:#14131A"><img src="img/p13.jpg" alt="Two-thread hooded sweatshirt" style="width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block"/></div>
+        <div style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 19px/1 'Space Grotesk',sans-serif">Sweatshirts</div><span style="font:500 11px/1 'IBM Plex Mono',monospace;color:#D98324">320 GSM</span></div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:10px 0 0">Round-neck, hood-cut and bonded fleece.</p></div>
+      </div>
+      <div style="flex:0 0 232px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#191820;overflow:hidden">
+        <div style="height:150px;overflow:hidden;background:#14131A"><img src="img/p20.jpg" alt="Dry-fit matty round-neck T-shirts" style="width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block"/></div>
+        <div style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 19px/1 'Space Grotesk',sans-serif">T-shirts</div><span style="font:500 11px/1 'IBM Plex Mono',monospace;color:#D98324;white-space:nowrap">{{ ph.gsm }}</span></div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:10px 0 0">Round-neck, collar and Ben-collar, cotton and dry fit.</p></div>
+      </div>
+      <div style="flex:0 0 232px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#191820;overflow:hidden">
+        <div style="height:150px;overflow:hidden;background:#14131A"><img src="img/p17.jpg" alt="Shape-bonded Ben-collar jacket" style="width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block"/></div>
+        <div style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:600 19px/1 'Space Grotesk',sans-serif">Jackets</div><span style="font:500 11px/1 'IBM Plex Mono',monospace;color:#D98324;white-space:nowrap">{{ ph.gsm }}</span></div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:10px 0 0">Bonded shells with Ben collar, Sherpa lining on request.</p></div>
+      </div>
+      <div style="flex:0 0 232px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#191820;overflow:hidden">
+        <div style="height:150px;background:repeating-linear-gradient(135deg,#1C1B22 0 9px,#191820 9px 18px);display:flex;align-items:center;justify-content:center;padding:14px;border-bottom:1px solid #2A2830"><div style="border:1px dashed #4A4650;border-radius:4px;padding:12px;text-align:center;font:400 10px/1.6 'IBM Plex Mono',monospace;color:#8A8378">IMAGE SLOT<br/>track pant flat lay</div></div>
+        <div style="padding:16px"><div style="font:600 19px/1 'Space Grotesk',sans-serif">Track pants &amp; lowers</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:10px 0 0">Men's and boys' lowers and capri, MSP Sports.</p></div>
+      </div>
+      <div style="flex:0 0 232px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#191820;overflow:hidden">
+        <div style="height:150px;background:repeating-linear-gradient(135deg,#1C1B22 0 9px,#191820 9px 18px);display:flex;align-items:center;justify-content:center;padding:14px;border-bottom:1px solid #2A2830"><div style="border:1px dashed #4A4650;border-radius:4px;padding:12px;text-align:center;font:400 10px/1.6 'IBM Plex Mono',monospace;color:#8A8378">IMAGE SLOT<br/>shorts / nikkar</div></div>
+        <div style="padding:16px"><div style="font:600 19px/1 'Space Grotesk',sans-serif">Shorts</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:10px 0 0">Men's shorts and nikkar in cotton and cotton lycra.</p></div>
+      </div>
+    </div>
+    <div style="padding:12px 16px 0;font:400 11px/1 'IBM Plex Mono',monospace;color:#8A8378">Swipe for all six →</div>
+  </section>
+
+  <section id="brands" style="scroll-margin-top:60px;border-bottom:1px solid #2A2830">
+    <div style="position:relative;min-height:300px;overflow:hidden">
+      <img src="img/p03.jpg" alt="ZONIXA 320 GSM hoodie with chest print and colour run" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%"/>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(20,19,26,.97) 12%,rgba(20,19,26,.3))"></div>
+      <div style="position:relative;padding:120px 16px 28px">
+        <div style="font:700 28px/1 'Space Grotesk',sans-serif;letter-spacing:.06em">ZONIXA</div>
+        <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#D98324;margin-top:10px">TOP WEAR</div>
+        <p style="font:400 15px/1.6 Inter,sans-serif;color:#C9C3B8;margin:14px 0 0">T-shirts, sweatshirts and hoodies, including the 320 GSM heavy fleece line, packed in branded poly bags.</p>
+        <a href="https://zonixa.com" style="display:inline-block;margin-top:16px;font:600 14px/1 Inter,sans-serif;color:#D98324">zonixa.com →</a>
+      </div>
+    </div>
+    <div style="background:#4A2545;padding:28px 16px">
+      <div style="font:700 28px/1 'Space Grotesk',sans-serif;letter-spacing:.04em">MSP SPORTS</div>
+      <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#E8A055;margin-top:10px">BOTTOM WEAR</div>
+      <p style="font:400 15px/1.6 Inter,sans-serif;color:#E4D8E0;margin:14px 0 0">Lowers, track pants, shorts, nikkar and capri for men and boys, in cotton, cotton lycra and dry fit.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,242,237,.18);margin-top:20px">
+        <div style="background:#4A2545;padding:12px 0;font:500 15px/1 'Space Grotesk',sans-serif">Lowers</div>
+        <div style="background:#4A2545;padding:12px 0 12px 12px;font:500 15px/1 'Space Grotesk',sans-serif">Track pants</div>
+        <div style="background:#4A2545;padding:12px 0;font:500 15px/1 'Space Grotesk',sans-serif">Shorts</div>
+        <div style="background:#4A2545;padding:12px 0 12px 12px;font:500 15px/1 'Space Grotesk',sans-serif">Nikkar</div>
+        <div style="background:#4A2545;padding:12px 0;font:500 15px/1 'Space Grotesk',sans-serif">Capri</div>
+        <div style="background:#4A2545;padding:12px 0 12px 12px;font:500 15px/1 'Space Grotesk',sans-serif">Custom fits</div>
+      </div>
+      <div style="border:1px dashed rgba(245,242,237,.35);border-radius:4px;padding:14px;margin-top:20px;font:400 11px/1.6 'IBM Plex Mono',monospace;color:#E4D8E0">IMAGE SLOT — no MSP Sports photography exists yet. Flat lays on the same charcoal ground drop in here.</div>
+      <a href="https://mspsports.in" style="display:inline-block;margin-top:16px;font:600 14px/1 Inter,sans-serif;color:#E8A055">mspsports.in →</a>
+    </div>
+  </section>
+
+  <section id="products" style="scroll-margin-top:60px;padding:44px 0;border-bottom:1px solid #2A2830;background:#191820">
+    <div data-reveal="1" style="padding:0 16px">
+      <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D98324">Product showcase</div>
+      <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">Styles we are running now.</h2>
+    </div>
+    <div class="rail" style="display:flex;gap:8px;overflow-x:auto;padding:22px 16px 4px">
+      <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="5">
+        <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+      </sc-for>
+    </div>
+    <div class="rail" style="display:flex;gap:12px;overflow-x:auto;padding:18px 16px 6px;scroll-snap-type:x mandatory">
+      <sc-for list="{{ shown }}" as="c" hint-placeholder-count="6">
+        <div style="flex:0 0 214px;scroll-snap-align:start;border:1px solid #2A2830;border-radius:4px;background:#14131A;overflow:hidden">
+          <div role="img" aria-label="{{ c.name }}" style="aspect-ratio:982/1147;overflow:hidden;background:{{ c.bg }}"></div>
+          <div style="padding:14px">
+            <div style="font:500 14px/1.35 Inter,sans-serif;min-height:38px">{{ c.name }}</div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid #2A2830;font:400 11px/1 'IBM Plex Mono',monospace;color:#8A8378"><span>{{ c.fabric }}</span><span style="color:#D98324">{{ c.gsm }}</span></div>
+            <button onClick="{{ c.enquire }}" style="width:100%;margin-top:12px;background:#D98324;color:#14131A;border:none;font:600 14px/1 Inter,sans-serif;padding:14px 0;border-radius:4px;cursor:pointer">Enquire</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:20px 16px 0"><a href="Panwar-Knitwear-Catalogue.dc.html" style="display:block;text-align:center;border:1px solid #4A4650;color:#F5F2ED;font:600 15px/1 Inter,sans-serif;padding:17px 0;border-radius:4px">View all 29 products</a></div>
+  </section>
+
+  <section id="fabrics" style="scroll-margin-top:60px;background:#F5F2ED;color:#14131A;padding:44px 16px">
+    <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#B06A15">Our fabrics</div>
+    <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">Eight knitted fabrics.</h2>
+    <div style="margin-top:26px;border-top:1px solid #C9C0B2">
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:600 30px/1 'Space Grotesk',sans-serif;min-width:86px"><span data-countup="320">320</span><span style="font-size:12px;color:#8A8378"> GSM</span></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Spun Fleece</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Brushed inner face. Our heavy winter hoodies.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Dry Fit</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Moisture-wicking polyester. Sports tees and team kit.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Honeycomb Lycra</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Textured knit with stretch. Collared tees.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">100% Cotton</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Single jersey and bird eye. Everyday round necks.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Cotton Lycra</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Cotton with elastane. Fitted tees, lowers, capri.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">NS Bonded</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Two bonded layers. Jackets and structured tops.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Russian Fleece</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">Dense winter fleece with a fuller pile.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #C9C0B2;display:flex;gap:16px;align-items:baseline"><div style="font:400 15px/2 'IBM Plex Mono',monospace;color:#8A8378;min-width:86px">{{ ph.gsm }}</div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Sherpa</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#6E675C;margin:5px 0 0">High-pile lining for jackets and hoods.</p></div></div>
+    </div>
+    <p style="font:400 12px/1.5 'IBM Plex Mono',monospace;color:#8A8378;margin:18px 0 0">GSM ranges marked {{ ph.gsm }} are pending confirmation from the mill.</p>
+  </section>
+
+  <div style="overflow:hidden;background:#191820;border-top:1px solid #2A2830;border-bottom:1px solid #2A2830;padding:18px 0">
+    <div data-anim="marquee" style="display:flex;width:max-content;animation:pk-marquee 46s linear infinite">
+      <div style="display:flex;gap:26px;padding-right:26px;font:600 34px/1 'Space Grotesk',sans-serif;color:transparent;-webkit-text-stroke:1px #4A4650;white-space:nowrap"><span>SPUN FLEECE</span><span>·</span><span>DRY FIT</span><span>·</span><span>HONEYCOMB LYCRA</span><span>·</span><span>100% COTTON</span><span>·</span><span>COTTON LYCRA</span><span>·</span><span>NS BONDED</span><span>·</span><span>RUSSIAN FLEECE</span><span>·</span><span>SHERPA</span><span>·</span></div>
+      <div aria-hidden="true" style="display:flex;gap:26px;padding-right:26px;font:600 34px/1 'Space Grotesk',sans-serif;color:transparent;-webkit-text-stroke:1px #4A4650;white-space:nowrap"><span>SPUN FLEECE</span><span>·</span><span>DRY FIT</span><span>·</span><span>HONEYCOMB LYCRA</span><span>·</span><span>100% COTTON</span><span>·</span><span>COTTON LYCRA</span><span>·</span><span>NS BONDED</span><span>·</span><span>RUSSIAN FLEECE</span><span>·</span><span>SHERPA</span><span>·</span></div>
+    </div>
+  </div>
+
+  <section id="manufacturing" style="scroll-margin-top:60px;padding:44px 16px;border-bottom:1px solid #2A2830">
+    <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D98324">How we manufacture</div>
+    <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">Nine steps, yarn to dispatch.</h2>
+    <div id="m-thread-wrap" style="position:relative;height:300vh;margin-top:24px">
+      <div id="m-thread-stage" style="position:sticky;top:70px;padding-bottom:20px">
+        <div style="position:relative;padding-left:26px">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:repeating-linear-gradient(180deg,#4A4650 0 12px,transparent 12px 22px)"></div>
+          <div id="m-thread-line" style="position:absolute;left:0;top:0;width:3px;height:0%;background:repeating-linear-gradient(180deg,#D98324 0 12px,transparent 12px 22px)"></div>
+          <div data-step="0" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">01</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Fabric sourcing</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Yarn and knitted fabric sourced to your spec.</div></div>
+          </div>
+          <div data-step="1" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">02</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Knitting</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Fleece, jersey and bonded fabric knitted to weight.</div></div>
+          </div>
+          <div data-step="2" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">03</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Dyeing</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Shade matched to your card and checked for fastness.</div></div>
+          </div>
+          <div data-step="3" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">04</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Cutting</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Layers cut to the approved pattern and size set.</div></div>
+          </div>
+          <div data-step="4" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">05</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Stitching</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Assembled on our own line, seam by seam.</div></div>
+          </div>
+          <div data-step="5" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">06</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Printing & embroidery</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Chest, sleeve and hood branding applied in-house.</div></div>
+          </div>
+          <div data-step="6" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">07</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Quality check</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Finish, measurement and shade checked piece by piece.</div></div>
+          </div>
+          <div data-step="7" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">08</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Packing</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Folded, tagged and sealed in branded poly bags.</div></div>
+          </div>
+          <div data-step="8" style="display:flex;gap:14px;align-items:baseline;padding:8px 0">
+            <div data-step-num="1" style="font:600 20px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:34px;transition:color 500ms cubic-bezier(.16,1,.3,1)">09</div>
+            <div><div data-step-label="1" style="font:500 15px/1.3 Inter,sans-serif;color:#F5F2ED;opacity:.3;transition:opacity 500ms cubic-bezier(.16,1,.3,1)">Dispatch</div><div data-step-desc="1" style="font:400 12px/1.45 Inter,sans-serif;color:#8A8378;margin-top:4px;opacity:0;transition:opacity 600ms cubic-bezier(.16,1,.3,1)">Loaded and dispatched to your city on the agreed date.</div></div>
+          </div>
+        </div>
+        <div id="m-thread-readout" style="font:400 11px/1 'IBM Plex Mono',monospace;color:#D98324;margin-top:16px;padding-left:26px">STEP 01 / 09</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:28px">
+      <div style="border:1px solid #2A2830;border-radius:4px;padding:20px;background:#191820"><div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">MONTHLY CAPACITY</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">{{ ph.cap }}</div></div>
+      <div style="border:1px solid #2A2830;border-radius:4px;padding:20px;background:#191820"><div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">MINIMUM ORDER</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">{{ ph.moq }}</div></div>
+      <div style="border:1px solid #2A2830;border-radius:4px;padding:20px;background:#191820"><div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">LEAD TIME</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">{{ ph.lead }}</div></div>
+    </div>
+    <div style="font:400 11px/1.5 'IBM Plex Mono',monospace;color:#8A8378;margin-top:16px">No factory photography exists yet. This section stays diagrammatic until real shots are supplied.</div>
+  </section>
+
+  <section id="private-label" style="scroll-margin-top:60px;background:#4A2545;padding:44px 16px">
+    <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E8A055">Private label &amp; OEM</div>
+    <h2 style="font:600 32px/1.05 'Space Grotesk',sans-serif;letter-spacing:-.025em;margin:14px 0 0">We manufacture under your brand.</h2>
+    <p style="font:400 16px/1.6 Inter,sans-serif;color:#E4D8E0;margin:14px 0 0">Your labels, your tags, your packaging. Sampling first, bulk after approval.</p>
+    <div style="display:grid;gap:1px;background:rgba(245,242,237,.18);margin-top:24px">
+      <div style="background:#4A2545;padding:16px 0"><div style="font:600 16px/1.3 'Space Grotesk',sans-serif">Your brand, your labels</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#D3C3CE;margin:6px 0 0">Woven labels, neck prints, care labels, hang tags.</p></div>
+      <div style="background:#4A2545;padding:16px 0"><div style="font:600 16px/1.3 'Space Grotesk',sans-serif">Printing</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#D3C3CE;margin:6px 0 0">Screen, digital and DTF on chest, back and sleeve.</p></div>
+      <div style="background:#4A2545;padding:16px 0"><div style="font:600 16px/1.3 'Space Grotesk',sans-serif">Embroidery</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#D3C3CE;margin:6px 0 0">Logos on chest, sleeve and hood, in-house.</p></div>
+      <div style="background:#4A2545;padding:16px 0"><div style="font:600 16px/1.3 'Space Grotesk',sans-serif">Custom GSM and fabric</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#D3C3CE;margin:6px 0 0">Set the weight and hand feel you sell at.</p></div>
+      <div style="background:#4A2545;padding:16px 0"><div style="font:600 16px/1.3 'Space Grotesk',sans-serif">Sampling before bulk</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#D3C3CE;margin:6px 0 0">Approve a physical sample, then we run the order.</p></div>
+      <div style="background:#4A2545;padding:16px 0"><div style="font:600 16px/1.3 'Space Grotesk',sans-serif">Branded poly-bag packing</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#D3C3CE;margin:6px 0 0">Printed bags with wash care, ready for retail.</p></div>
+    </div>
+    <div class="rail" style="display:flex;gap:10px;overflow-x:auto;margin-top:24px">
+      <div style="flex:0 0 180px;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:4px"><img src="img/p01.jpg" alt="Branded ZONIXA poly bag with printed wash care" style="width:100%;height:100%;object-fit:cover;object-position:70% 82%;display:block"/><div style="position:absolute;left:8px;bottom:8px;font:500 9px/1 'IBM Plex Mono',monospace;background:rgba(20,19,26,.75);color:#F5F2ED;padding:6px 8px;border-radius:4px">Branded poly bag</div></div>
+      <div style="flex:0 0 180px;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:4px"><img src="img/p12.jpg" alt="Embroidered logo and woven label" style="width:100%;height:100%;object-fit:cover;object-position:35% 40%;display:block"/><div style="position:absolute;left:8px;bottom:8px;font:500 9px/1 'IBM Plex Mono',monospace;background:rgba(20,19,26,.75);color:#F5F2ED;padding:6px 8px;border-radius:4px">Embroidered logo</div></div>
+      <div style="flex:0 0 180px;position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:4px"><img src="img/p04.jpg" alt="Chest and sleeve print with hang tag" style="width:100%;height:100%;object-fit:cover;object-position:45% 42%;display:block"/><div style="position:absolute;left:8px;bottom:8px;font:500 9px/1 'IBM Plex Mono',monospace;background:rgba(20,19,26,.75);color:#F5F2ED;padding:6px 8px;border-radius:4px">Hang tag &amp; print</div></div>
+    </div>
+    <a href="#enquiry" style="display:block;text-align:center;background:#D98324;color:#14131A;font:600 16px/1 Inter,sans-serif;padding:18px 0;border-radius:4px;margin-top:24px">Start a private-label enquiry</a>
+  </section>
+
+  <section style="padding:44px 16px;border-bottom:1px solid #2A2830">
+    <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D98324">Why buyers work with us</div>
+    <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">Six reasons orders come back.</h2>
+    <div style="margin-top:24px;border-top:1px solid #2A2830">
+      <div style="padding:18px 0;border-bottom:1px solid #2A2830;display:flex;gap:14px"><div style="width:10px;height:10px;background:#D98324;margin-top:6px;flex-shrink:0"></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Transparent dealings</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:6px 0 0">Specs, fabric and rates confirmed in writing.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #2A2830;display:flex;gap:14px"><div style="width:10px;height:10px;border:2px solid #D98324;margin-top:6px;flex-shrink:0"></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Customised options</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:6px 0 0">Fabric, GSM, fit, colourways and branding to order.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #2A2830;display:flex;gap:14px"><div style="width:10px;height:10px;background:#D98324;transform:rotate(45deg);margin-top:6px;flex-shrink:0"></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Prompt delivery</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:6px 0 0">Dispatch dates agreed up front and tracked.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #2A2830;display:flex;gap:14px"><div style="width:10px;height:10px;border:2px solid #D98324;border-radius:50%;margin-top:6px;flex-shrink:0"></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">In-house quality checks</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:6px 0 0">Smooth texture, skin-friendly, colourfast.</p></div></div>
+      <div style="padding:18px 0;border-bottom:1px solid #2A2830;display:flex;gap:14px"><div style="width:10px;height:10px;background:#D98324;border-radius:50%;margin-top:6px;flex-shrink:0"></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Well-equipped warehouse</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:6px 0 0">Stock held and packed in-house for bulk dispatch.</p></div></div>
+      <div style="padding:18px 0;display:flex;gap:14px"><div style="width:10px;height:10px;border:2px solid #D98324;transform:rotate(45deg);margin-top:6px;flex-shrink:0"></div><div><div style="font:600 17px/1.2 'Space Grotesk',sans-serif">Wide distribution network</div><p style="font:400 14px/1.5 Inter,sans-serif;color:#A8A29A;margin:6px 0 0">Supplying wholesalers and retailers since 2016.</p></div></div>
+    </div>
+  </section>
+
+  <section id="about" style="scroll-margin-top:60px;padding:44px 16px;border-bottom:1px solid #2A2830;background:#191820">
+    <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D98324">About Panwar Knitwear</div>
+    <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">A family-run knitwear unit in Ludhiana.</h2>
+    <p style="font:400 16px/1.65 Inter,sans-serif;color:#A8A29A;margin:16px 0 0">Set up in 2016 as a sole proprietorship, GST registered in 2017. A team of 26 to 50 people runs knitting, stitching, printing, embroidery and packing under two brands.</p>
+    <div class="rail" style="display:flex;gap:12px;overflow-x:auto;margin-top:26px;padding-bottom:4px">
+      <div style="flex:0 0 150px;border-top:1px solid #4A4650;padding-top:16px"><div style="font:600 24px/1 'Space Grotesk',sans-serif;color:#D98324"><span data-countup="2016" data-countup-from="1990">2016</span></div><div style="font:500 14px/1.4 Inter,sans-serif;margin-top:10px">Founded in Ludhiana</div></div>
+      <div style="flex:0 0 150px;border-top:1px solid #4A4650;padding-top:16px"><div style="font:600 24px/1 'Space Grotesk',sans-serif;color:#8A8378">2017</div><div style="font:500 14px/1.4 Inter,sans-serif;margin-top:10px">GST registered</div></div>
+      <div style="flex:0 0 150px;border-top:1px solid #4A4650;padding-top:16px"><div style="font:600 24px/1 'Space Grotesk',sans-serif;color:#8A8378">ZONIXA</div><div style="font:500 14px/1.4 Inter,sans-serif;margin-top:10px">Top-wear brand launched</div></div>
+      <div style="flex:0 0 150px;border-top:1px solid #4A4650;padding-top:16px"><div style="font:600 24px/1 'Space Grotesk',sans-serif;color:#8A8378">MSP</div><div style="font:500 14px/1.4 Inter,sans-serif;margin-top:10px">Bottom wear added</div></div>
+      <div style="flex:0 0 150px;border-top:1px solid #4A4650;padding-top:16px"><div style="font:600 24px/1 'Space Grotesk',sans-serif;color:#D98324">Today</div><div style="font:500 14px/1.4 Inter,sans-serif;margin-top:10px">29 styles, 8 fabrics</div></div>
+    </div>
+    <div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378;margin-top:32px">LEADERSHIP</div>
+    <div style="margin-top:14px;border-top:1px solid #2A2830">
+      <div style="padding:16px 0;border-bottom:1px solid #2A2830"><div style="font:600 21px/1.1 'Space Grotesk',sans-serif">Mohar Singh Panwar</div><div style="font:400 13px/1 Inter,sans-serif;color:#8A8378;margin-top:6px">Founder</div></div>
+      <div style="padding:16px 0;border-bottom:1px solid #2A2830"><div style="font:600 21px/1.1 'Space Grotesk',sans-serif">Prabhu Panwar</div><div style="font:400 13px/1 Inter,sans-serif;color:#8A8378;margin-top:6px">Co-founder &amp; CEO</div></div>
+      <div style="padding:16px 0;border-bottom:1px solid #2A2830"><div style="font:600 21px/1.1 'Space Grotesk',sans-serif">Bhala Ram Panwar</div><div style="font:400 13px/1 Inter,sans-serif;color:#8A8378;margin-top:6px">Co-founder &amp; CEO</div></div>
+    </div>
+    <div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378;margin-top:26px">LISTED ON</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <span style="border:1px solid #2A2830;border-radius:4px;padding:10px 14px;font:500 13px/1 Inter,sans-serif;color:#C9C3B8">JustDial</span>
+      <span style="border:1px solid #2A2830;border-radius:4px;padding:10px 14px;font:500 13px/1 Inter,sans-serif;color:#C9C3B8">IndiaMART</span>
+      <span style="border:1px solid #2A2830;border-radius:4px;padding:10px 14px;font:500 13px/1 Inter,sans-serif;color:#C9C3B8">TradeIndia</span>
+      <span style="border:1px solid #2A2830;border-radius:4px;padding:10px 14px;font:500 13px/1 Inter,sans-serif;color:#C9C3B8">Google Business</span>
+      <span style="border:1px solid #2A2830;border-radius:4px;padding:10px 14px;font:500 13px/1 Inter,sans-serif;color:#C9C3B8">LinkedIn</span>
+    </div>
+  </section>
+
+  <section id="enquiry" style="scroll-margin-top:60px;background:#F5F2ED;color:#14131A;padding:44px 16px">
+    <div style="font:600 10px/1 Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#B06A15">Request a quote</div>
+    <h2 style="font:600 28px/1.1 'Space Grotesk',sans-serif;letter-spacing:-.02em;margin:14px 0 0">Tell us what you need made.</h2>
+    <p style="font:400 16px/1.6 Inter,sans-serif;color:#6E675C;margin:14px 0 0">We reply with fabric options, a rate and a dispatch date.</p>
+    <div style="display:flex;flex-direction:column;gap:18px;margin-top:26px">
+      <label><span style="font:500 13px/1 Inter,sans-serif">Your name</span><input type="text" placeholder="Full name" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Company</span><input type="text" placeholder="Firm or shop name" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Phone or WhatsApp</span><input type="tel" placeholder="+91" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Email</span><input type="email" placeholder="name@company.com" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Product interest</span><input type="text" value="{{ enquiry }}" onChange="{{ setEnquiry }}" placeholder="e.g. 320 GSM hoodies" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Quantity</span><input type="text" placeholder="Pieces per style" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <div>
+        <span style="font:500 13px/1 Inter,sans-serif">Branding required</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+          <label style="display:flex;align-items:center;gap:8px;border:1px solid #C9C0B2;border-radius:4px;padding:14px 16px;background:#FFFDFA;font:400 14px/1 Inter,sans-serif"><input type="checkbox" style="accent-color:#D98324;margin:0"/>Printing</label>
+          <label style="display:flex;align-items:center;gap:8px;border:1px solid #C9C0B2;border-radius:4px;padding:14px 16px;background:#FFFDFA;font:400 14px/1 Inter,sans-serif"><input type="checkbox" style="accent-color:#D98324;margin:0"/>Embroidery</label>
+          <label style="display:flex;align-items:center;gap:8px;border:1px solid #C9C0B2;border-radius:4px;padding:14px 16px;background:#FFFDFA;font:400 14px/1 Inter,sans-serif"><input type="checkbox" style="accent-color:#D98324;margin:0"/>Labels &amp; tags</label>
+          <label style="display:flex;align-items:center;gap:8px;border:1px solid #C9C0B2;border-radius:4px;padding:14px 16px;background:#FFFDFA;font:400 14px/1 Inter,sans-serif"><input type="checkbox" style="accent-color:#D98324;margin:0"/>None</label>
+        </div>
+      </div>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Delivery city</span><input type="text" placeholder="City and state" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"/></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Timeline</span><select style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:16px 14px;font:400 16px/1 Inter,sans-serif;color:#14131A" style-focus="border-color:#D98324;outline:2px solid rgba(217,131,36,.25)"><option>Select a timeline</option><option>As soon as possible</option><option>Within a month</option><option>Next season</option><option>Just comparing suppliers</option></select></label>
+      <label><span style="font:500 13px/1 Inter,sans-serif">Message</span><textarea rows="4" placeholder="Sizes, colourways, packing" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;background:#FFFDFA;border:1px solid #C9C0B2;border-radius:4px;padding:14px;font:400 16px/1.5 Inter,sans-serif;color:#14131A;resize:vertical"></textarea></label>
+      <button style="background:#D98324;color:#14131A;border:none;font:600 16px/1 Inter,sans-serif;padding:19px 0;border-radius:4px;cursor:pointer">Send enquiry</button>
+    </div>
+    <div style="margin-top:32px;padding-top:24px;border-top:1px solid #C9C0B2">
+      <div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">CALL US DIRECTLY</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+        <a href="tel:+919876045457" style="display:flex;justify-content:space-between;align-items:center;border:1px solid #C9C0B2;border-radius:4px;padding:16px;color:#14131A;font:500 17px/1 'IBM Plex Mono',monospace">+91 98760 45457<span style="font:400 11px/1 Inter,sans-serif;color:#B06A15">WhatsApp</span></a>
+        <a href="tel:+919815703769" style="display:block;border:1px solid #C9C0B2;border-radius:4px;padding:16px;color:#14131A;font:500 17px/1 'IBM Plex Mono',monospace">+91 98157 03769</a>
+        <a href="tel:+919999982998" style="display:block;border:1px solid #C9C0B2;border-radius:4px;padding:16px;color:#14131A;font:500 17px/1 'IBM Plex Mono',monospace">+91 99999 82998</a>
+      </div>
+      <div style="font:400 15px/1.7 Inter,sans-serif;color:#6E675C;margin-top:18px">{{ ph.email }}<br/>Monday to Saturday, 10:00–19:00 IST<br/>{{ ph.addr }}, Ludhiana, Punjab</div>
+    </div>
+  </section>
+
+  <footer style="padding:36px 16px 40px;border-top:1px solid #2A2830">
+    <div style="font:700 18px/1 'Space Grotesk',sans-serif">Panwar Knitwear</div>
+    <div style="font:500 8px/1 'IBM Plex Mono',monospace;letter-spacing:.24em;color:#8A8378;margin-top:6px">ZONIXA · MSP SPORTS</div>
+    <p style="font:400 14px/1.6 Inter,sans-serif;color:#A8A29A;margin:14px 0 0">Knitwear manufacturer in Ludhiana, Punjab, established 2016. Bulk manufacturing with private-label branding.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-top:24px">
+      <a href="#products" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Products</a>
+      <a href="#fabrics" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Fabrics</a>
+      <a href="#manufacturing" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Manufacturing</a>
+      <a href="#private-label" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Private label</a>
+      <a href="#about" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">About</a>
+      <a href="#enquiry" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Contact</a>
+      <a href="Panwar-Knitwear-Catalogue.dc.html" style="font:400 15px/1 Inter,sans-serif;color:#D98324">All 29 products</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-top:24px;padding-top:20px;border-top:1px solid #2A2830">
+      <a href="https://zonixa.com" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">zonixa.com</a>
+      <a href="https://mspsports.in" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">mspsports.in</a>
+      <a href="https://instagram.com/panwarknitwear" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Instagram</a>
+      <a href="https://facebook.com/Panwarknitwear1" style="font:400 15px/1 Inter,sans-serif;color:#C9C3B8">Facebook</a>
+    </div>
+    <div style="font:400 13px/1.7 Inter,sans-serif;color:#8A8378;margin-top:24px;padding-top:20px;border-top:1px solid #2A2830">Listed on JustDial, IndiaMART, TradeIndia, Google and LinkedIn.<br/>© {{ year }} Panwar Knitwear, Ludhiana. GST registered 2017.</div>
+  </footer>
+
+  <div id="m-bar" style="position:fixed;left:50%;transform:translateX(-50%) translateY(0);bottom:0;width:375px;z-index:90;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#2A2830;border-top:1px solid #2A2830;box-shadow:0 -8px 24px rgba(0,0,0,.4);transition:transform 600ms cubic-bezier(.16,1,.3,1)">
+    <a href="https://wa.me/919876045457?text=Hello%20Panwar%20Knitwear%2C%20I%20would%20like%20a%20bulk%20quote." style="position:relative;background:#25D366;color:#14131A;font:600 16px/1 Inter,sans-serif;padding:22px 0 30px;text-align:center"><span data-anim="ring" style="position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;border:1px solid rgba(20,19,26,.5);animation:pk-ring 3s ease-out infinite;pointer-events:none"></span>WhatsApp</a>
+    <a href="tel:+919876045457" style="background:#D98324;color:#14131A;font:600 16px/1 Inter,sans-serif;padding:22px 0 30px;text-align:center">Call now</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:375,&quot;height&quot;:812},&quot;reducedMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+const PRODUCTS = [
+  { id: 1,  img: "img/p01.jpg", name: "320 GSM round-neck hoodie, embroidered logo", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 2,  img: "img/p02.jpg", name: "320 GSM round-neck hoodie, print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 3,  img: "img/p03.jpg", name: "320 GSM heavy round-neck hoodie, chest print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 4,  img: "img/p04.jpg", name: "320 GSM round-neck hoodie, chest and sleeve print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 5,  img: "img/p05.jpg", name: "320 GSM heavy zip hoodie", cat: "Hoodies", fabric: "Spun Fleece", gsm: "320 GSM", g: "320" },
+  { id: 6,  img: "img/p06.jpg", name: "320 GSM heavy round-neck filice hood", cat: "Hoodies", fabric: "Russian Fleece", gsm: "320 GSM", g: "320" },
+  { id: 7,  img: "img/p07.jpg", name: "Shape swead 320 GSM round-neck hoodie", cat: "Hoodies", fabric: "NS Bonded", gsm: "320 GSM", g: "320" },
+  { id: 8,  img: "img/p08.jpg", name: "Two-thread filice round-neck hoodie", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 9,  img: "img/p09.jpg", name: "Two-thread filice round-neck hoodie II", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 10, img: "img/p10.jpg", name: "Two-thread round-neck hoodie, chest print", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 11, img: "img/p11.jpg", name: "Two-thread round-neck hoodie, chest print II", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 12, img: "img/p12.jpg", name: "Two-thread logo filice hood", cat: "Hoodies", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 13, img: "img/p13.jpg", name: "Two-thread hood logo sweatshirt", cat: "Sweatshirts", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 14, img: "img/p14.jpg", name: "Round-neck hood-cut sweatshirt", cat: "Sweatshirts", fabric: "Spun Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 15, img: "img/p15.jpg", name: "Round-neck filice sweatshirt", cat: "Sweatshirts", fabric: "Russian Fleece", gsm: "{{GSM}}", g: "tbc" },
+  { id: 16, img: "img/p16.jpg", name: "Feather bonding sweatshirt", cat: "Sweatshirts", fabric: "NS Bonded", gsm: "{{GSM}}", g: "tbc" },
+  { id: 17, img: "img/p17.jpg", name: "Shape bonding Ben-collar jacket", cat: "Jackets", fabric: "NS Bonded", gsm: "{{GSM}}", g: "tbc" },
+  { id: 18, img: "img/p18.jpg", name: "Dry-fit Ben-collar half-sleeve T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 19, img: "img/p19.jpg", name: "Full-sleeve Ben-collar button T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 20, img: "img/p20.jpg", name: "Dry-fit matty round-neck T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 21, img: "img/p21.jpg", name: "Dry-fit matty lining double-gulla T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 22, img: "img/p22.jpg", name: "Dry-fit matty collar half-sleeve cut-gulla T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 23, img: "img/p23.jpg", name: "Dry-fit matty collar half-sleeve D-gulla T-shirt", cat: "T-shirts", fabric: "Dry Fit", gsm: "{{GSM}}", g: "tbc" },
+  { id: 24, img: "img/p24.jpg", name: "Round-neck half-sleeve T-shirt, chest print", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 25, img: "img/p25.jpg", name: "Digital print T-shirt", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 26, img: "img/p26.jpg", name: "Bird-eye cotton half-sleeve 2-piece collar T-shirt", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 27, img: "img/p27.jpg", name: "Bird-eye cotton half-sleeve T-shirt", cat: "T-shirts", fabric: "100% Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 28, img: "img/p28.jpg", name: "PC cotton half-sleeve T-shirt", cat: "T-shirts", fabric: "PC Cotton", gsm: "{{GSM}}", g: "tbc" },
+  { id: 29, img: "img/p29.jpg", name: "PC colour dora pocket half-sleeve T-shirt", cat: "T-shirts", fabric: "PC Cotton", gsm: "{{GSM}}", g: "tbc" }
+];
+
+const PH = { moq: "{{MOQ}}", lead: "{{lead time}}", cap: "{{monthly capacity}}", email: "{{email}}", gsm: "{{GSM}}", gsmRange: "{{GSM range}}", addr: "{{street address}}", fit: "{{fit}}", sizes: "{{size range}}" };
+
+const SETTLE = "cubic-bezier(.16,1,.3,1)";
+
+class Component extends DCLogic {
+  state = { products: PRODUCTS, filter: "All", menu: false, enquiry: "" };
+
+  get reduced() {
+    return this.props.reducedMotion === true ||
+      (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
+  componentDidMount() {
+    this.initReveals();
+    this.initHeadline();
+    this.initCounters();
+    this.initThread();
+    this.initBar();
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener("scroll", this._onScroll);
+  }
+
+  initReveals() {
+    const items = [];
+    document.querySelectorAll("[data-reveal]").forEach(el => items.push([el, 0]));
+    document.querySelectorAll("[data-reveal-stagger]").forEach(g => {
+      Array.prototype.forEach.call(g.children, (c, i) => items.push([c, i * 110]));
+    });
+    const show = el => { el.style.opacity = "1"; el.style.transform = "none"; };
+    if (this.reduced) { items.forEach(([el]) => show(el)); return; }
+    items.forEach(([el, d]) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(18px)";
+      el.style.transition = "opacity 900ms " + SETTLE + " " + d + "ms, transform 900ms " + SETTLE + " " + d + "ms";
+    });
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
+    }), { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+    items.forEach(([el]) => io.observe(el));
+    setTimeout(() => items.forEach(([el]) => show(el)), 7000);
+  }
+
+  initHeadline() {
+    const lines = document.querySelectorAll("[data-line]");
+    if (this.reduced) { lines.forEach(l => { l.style.transform = "none"; }); return; }
+    lines.forEach((l, i) => {
+      l.style.transform = "translateY(104%)";
+      l.style.transition = "transform 1100ms " + SETTLE + " " + (i * 120 + 120) + "ms";
+    });
+    requestAnimationFrame(() => lines.forEach(l => { l.style.transform = "translateY(0)"; }));
+  }
+
+  initCounters() {
+    document.querySelectorAll("[data-countup]").forEach(el => {
+      const to = parseInt(el.getAttribute("data-countup"), 10);
+      const from = parseInt(el.getAttribute("data-countup-from") || "0", 10);
+      if (this.reduced || !isFinite(to)) { el.textContent = String(to); return; }
+      const io = new IntersectionObserver(es => es.forEach(e => {
+        if (!e.isIntersecting) return;
+        io.unobserve(el);
+        const t0 = performance.now();
+        const tick = now => {
+          const p = Math.min(1, (now - t0) / 1800);
+          el.textContent = String(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }), { threshold: 0.4 });
+      io.observe(el);
+    });
+  }
+
+  initThread() {
+    const wrap = document.getElementById("m-thread-wrap");
+    const stage = document.getElementById("m-thread-stage");
+    const line = document.getElementById("m-thread-line");
+    const readout = document.getElementById("m-thread-readout");
+    if (!wrap || !line) return;
+    const steps = Array.prototype.slice.call(document.querySelectorAll("[data-step]"));
+    const paint = p => {
+      line.style.height = (p * 100).toFixed(2) + "%";
+      const active = Math.min(steps.length - 1, Math.floor(p * steps.length + 0.0001));
+      steps.forEach((s, i) => {
+        const num = s.querySelector("[data-step-num]");
+        const label = s.querySelector("[data-step-label]");
+        const desc = s.querySelector("[data-step-desc]");
+        const lit = i <= active;
+        num.style.color = lit ? (i === active ? "#D98324" : "#F5F2ED") : "#4A4650";
+        num.style.animation = (i === active && !this.reduced) ? "pk-pulse 2.4s ease-in-out infinite" : "none";
+        label.style.opacity = lit ? "1" : ".3";
+        desc.style.opacity = i === active ? "1" : (lit ? ".5" : "0");
+      });
+      if (readout) readout.textContent = "STEP 0" + (active + 1) + " / 09";
+    };
+    if (this.reduced) {
+      wrap.style.height = "auto";
+      stage.style.position = "static";
+      paint(1);
+      steps.forEach(s => { s.querySelector("[data-step-desc]").style.opacity = ".8"; });
+      return;
+    }
+    line.style.transition = "height 180ms linear";
+    this._paintThread = paint;
+    paint(0);
+  }
+
+  initBar() {
+    const bar = document.getElementById("m-bar");
+    const form = document.getElementById("enquiry");
+    const wrap = document.getElementById("m-thread-wrap");
+    let queued = false;
+    const run = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        if (this._paintThread && wrap) {
+          const span = wrap.offsetHeight - window.innerHeight;
+          const p = Math.max(0, Math.min(1, -wrap.getBoundingClientRect().top / (span || 1)));
+          this._paintThread(p);
+        }
+        if (bar && form) {
+          const r = form.getBoundingClientRect();
+          const inView = r.top < window.innerHeight * 0.75 && r.bottom > 120;
+          bar.style.transform = "translateX(-50%) translateY(" + (inView ? "110%" : "0") + ")";
+        }
+      });
+    };
+    this._onScroll = run;
+    window.addEventListener("scroll", run, { passive: true });
+    run();
+  }
+
+  chipStyle(active) {
+    const base = "font:500 14px/1 Inter,sans-serif;padding:13px 18px;border-radius:4px;cursor:pointer;white-space:nowrap;flex:0 0 auto;";
+    return active
+      ? base + "background:#D98324;color:#14131A;border:1px solid #D98324"
+      : base + "background:transparent;color:#C9C3B8;border:1px solid #3A3742";
+  }
+
+  renderVals() {
+    const f = this.state.filter;
+    const list = (f === "All" ? this.state.products : this.state.products.filter(p => p.cat === f)).slice(0, 8);
+    return {
+      year: new Date().getFullYear(),
+      ph: PH,
+      menuHeight: this.state.menu ? "340px" : "0px",
+      toggleMenu: () => this.setState({ menu: !this.state.menu }),
+      closeMenu: () => this.setState({ menu: false }),
+      enquiry: this.state.enquiry,
+      setEnquiry: e => this.setState({ enquiry: e.target.value }),
+      chips: ["All", "Hoodies", "Sweatshirts", "T-shirts", "Jackets"].map(c => ({
+        label: c,
+        style: this.chipStyle(c === f),
+        onClick: () => this.setState({ filter: c })
+      })),
+      shown: list.map(p => ({
+        bg: "#14131A center 50%/cover no-repeat url('" + p.img + "')", name: p.name, fabric: p.fabric, gsm: p.gsm,
+        enquire: () => {
+          this.setState({ enquiry: p.name });
+          const el = document.getElementById("enquiry");
+          if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: "smooth" });
+        }
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

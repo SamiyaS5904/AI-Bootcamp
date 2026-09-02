@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  body { margin: 0; background: #14131A; -webkit-font-smoothing: antialiased; }
+  a { color: #D98324; text-decoration: none; }
+  a:hover { color: #E8A055; }
+  @keyframes pk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+</style>
+</helmet>
+<div style="background:#14131A;color:#F5F2ED;font-family:Inter,sans-serif;min-width:1180px;padding:64px 40px 96px">
+  <div style="max-width:1320px;margin:0 auto">
+
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding-bottom:32px;border-bottom:1px solid #2A2830">
+      <div>
+        <div style="font:600 11px/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#D98324">Artboard 5 · storyboard</div>
+        <h1 style="font:600 48px/1.03 'Space Grotesk',sans-serif;letter-spacing:-.03em;margin:18px 0 0">The production line, frame by frame</h1>
+        <p style="font:400 17px/1.6 Inter,sans-serif;color:#A8A29A;margin:16px 0 0;max-width:680px">A running-stitch thread advances through the nine steps while the section is pinned. One scroll gesture, nine activations, no flick-through. Frames below are the same section at four points in the scroll, plus the reduced-motion state.</p>
+      </div>
+      <div style="font:400 13px/1.8 'IBM Plex Mono',monospace;color:#8A8378;text-align:right">Pinned height 360vh<br/>Thread easing linear (scroll-bound)<br/>Step activation 500ms settle</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:28px;margin-top:48px">
+
+      <div style="border:1px solid #2A2830;border-radius:6px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:18px 24px;background:#191820;border-bottom:1px solid #2A2830">
+          <div style="font:600 18px/1 'Space Grotesk',sans-serif">Frame 01 — scroll 0%</div>
+          <div style="font:400 12px/1 'IBM Plex Mono',monospace;color:#8A8378">SECTION ENTERS · THREAD AT ORIGIN · STEP 01 ACTIVE</div>
+        </div>
+        <div style="padding:34px 24px 30px;background-image:repeating-linear-gradient(45deg,rgba(245,242,237,.03) 0 2px,transparent 2px 7px),repeating-linear-gradient(-45deg,rgba(245,242,237,.03) 0 2px,transparent 2px 7px);background-size:14px 14px">
+          <div style="position:relative">
+            <div style="position:absolute;left:0;right:0;top:0;height:3px;background:repeating-linear-gradient(90deg,#4A4650 0 12px,transparent 12px 22px)"></div>
+            <div style="position:absolute;left:0;top:0;height:3px;width:2%;background:repeating-linear-gradient(90deg,#D98324 0 12px,transparent 12px 22px)"></div>
+            <div style="display:grid;grid-template-columns:repeat(9,1fr);padding-top:26px;gap:0">
+              <div style="padding-right:12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#D98324;animation:pk-pulse 2.4s ease-in-out infinite">01</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Fabric sourcing</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px">Yarn and knitted fabric sourced to your spec.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">02</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Knitting</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">03</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Dyeing</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">04</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Cutting</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">05</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Stitching</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">06</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Printing &amp; embroidery</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">07</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Quality check</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">08</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Packing</div></div>
+              <div style="padding-left:12px"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">09</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Dispatch</div></div>
+            </div>
+          </div>
+          <div style="margin-top:26px;padding-top:18px;border-top:1px solid #2A2830;display:flex;gap:32px;font:400 12px/1.6 'IBM Plex Mono',monospace;color:#8A8378">
+            <span style="color:#D98324">ANIMATING</span><span>Section header fades up 900ms · thread width 0 → 2% · numeral 01 warm grey → amber, 500ms</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #2A2830;border-radius:6px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:18px 24px;background:#191820;border-bottom:1px solid #2A2830">
+          <div style="font:600 18px/1 'Space Grotesk',sans-serif">Frame 02 — scroll 25%</div>
+          <div style="font:400 12px/1 'IBM Plex Mono',monospace;color:#8A8378">THREAD PAST STEP 03 · STEPS 01–02 STAY LIT</div>
+        </div>
+        <div style="padding:34px 24px 30px">
+          <div style="position:relative">
+            <div style="position:absolute;left:0;right:0;top:0;height:3px;background:repeating-linear-gradient(90deg,#4A4650 0 12px,transparent 12px 22px)"></div>
+            <div style="position:absolute;left:0;top:0;height:3px;width:25%;background:repeating-linear-gradient(90deg,#D98324 0 12px,transparent 12px 22px)"></div>
+            <div style="display:grid;grid-template-columns:repeat(9,1fr);padding-top:26px">
+              <div style="padding-right:12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">01</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Fabric sourcing</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.5">Yarn and knitted fabric sourced to your spec.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">02</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Knitting</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.5">Fleece, jersey and bonded fabric knitted to weight.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#D98324;animation:pk-pulse 2.4s ease-in-out infinite">03</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Dyeing</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px">Shade matched to your card and checked for fastness.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">04</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Cutting</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">05</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Stitching</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">06</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Printing &amp; embroidery</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">07</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Quality check</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">08</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Packing</div></div>
+              <div style="padding-left:12px"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">09</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Dispatch</div></div>
+            </div>
+          </div>
+          <div style="margin-top:26px;padding-top:18px;border-top:1px solid #2A2830;display:flex;gap:32px;font:400 12px/1.6 'IBM Plex Mono',monospace;color:#8A8378">
+            <span style="color:#D98324">ANIMATING</span><span>Thread width tracks scroll, linear · active numeral pulses 2.4s · completed descriptions hold at 50% opacity</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #2A2830;border-radius:6px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:18px 24px;background:#191820;border-bottom:1px solid #2A2830">
+          <div style="font:600 18px/1 'Space Grotesk',sans-serif">Frame 03 — scroll 60%</div>
+          <div style="font:400 12px/1 'IBM Plex Mono',monospace;color:#8A8378">BRANDING STAGE ACTIVE · CAPACITY CARDS REVEALED</div>
+        </div>
+        <div style="padding:34px 24px 30px">
+          <div style="position:relative">
+            <div style="position:absolute;left:0;right:0;top:0;height:3px;background:repeating-linear-gradient(90deg,#4A4650 0 12px,transparent 12px 22px)"></div>
+            <div style="position:absolute;left:0;top:0;height:3px;width:60%;background:repeating-linear-gradient(90deg,#D98324 0 12px,transparent 12px 22px)"></div>
+            <div style="display:grid;grid-template-columns:repeat(9,1fr);padding-top:26px">
+              <div style="padding-right:12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">01</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Fabric sourcing</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">02</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Knitting</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">03</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Dyeing</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">04</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Cutting</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">05</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Stitching</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#D98324;animation:pk-pulse 2.4s ease-in-out infinite">06</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Printing &amp; embroidery</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px">Chest, sleeve and hood branding applied in-house.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">07</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Quality check</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">08</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Packing</div></div>
+              <div style="padding-left:12px"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#4A4650">09</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px;opacity:.3">Dispatch</div></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px">
+            <div style="border:1px solid #2A2830;border-radius:4px;padding:18px 20px;background:#191820;box-shadow:0 18px 40px rgba(0,0,0,.28)"><div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">MONTHLY CAPACITY</div><div style="font:600 26px/1 'Space Grotesk',sans-serif;margin-top:12px">{{ ph.cap }}</div></div>
+            <div style="border:1px solid #2A2830;border-radius:4px;padding:18px 20px;background:#191820;box-shadow:0 18px 40px rgba(0,0,0,.28)"><div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">MINIMUM ORDER</div><div style="font:600 26px/1 'Space Grotesk',sans-serif;margin-top:12px">{{ ph.moq }}</div></div>
+            <div style="border:1px solid #2A2830;border-radius:4px;padding:18px 20px;background:#191820;box-shadow:0 18px 40px rgba(0,0,0,.28)"><div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">LEAD TIME</div><div style="font:600 26px/1 'Space Grotesk',sans-serif;margin-top:12px">{{ ph.lead }}</div></div>
+          </div>
+          <div style="margin-top:26px;padding-top:18px;border-top:1px solid #2A2830;display:flex;gap:32px;font:400 12px/1.6 'IBM Plex Mono',monospace;color:#8A8378">
+            <span style="color:#D98324">ANIMATING</span><span>Capacity cards fade up 900ms with 110ms stagger, once · step readout updates to STEP 06 / 09</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #2A2830;border-radius:6px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:18px 24px;background:#191820;border-bottom:1px solid #2A2830">
+          <div style="font:600 18px/1 'Space Grotesk',sans-serif">Frame 04 — scroll 100%</div>
+          <div style="font:400 12px/1 'IBM Plex Mono',monospace;color:#8A8378">SEAM COMPLETE · SECTION UNPINS · THIS IS THE SCROLL-BACK STATE</div>
+        </div>
+        <div style="padding:34px 24px 30px">
+          <div style="position:relative">
+            <div style="position:absolute;left:0;right:0;top:0;height:3px;background:repeating-linear-gradient(90deg,#4A4650 0 12px,transparent 12px 22px)"></div>
+            <div style="position:absolute;left:0;top:0;height:3px;width:100%;background:repeating-linear-gradient(90deg,#D98324 0 12px,transparent 12px 22px)"></div>
+            <div style="display:grid;grid-template-columns:repeat(9,1fr);padding-top:26px">
+              <div style="padding-right:12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">01</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Fabric sourcing</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Yarn and knitted fabric sourced to your spec.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">02</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Knitting</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Fleece, jersey and bonded fabric knitted to weight.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">03</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Dyeing</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Shade matched to your card and checked for fastness.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">04</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Cutting</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Layers cut to the approved pattern and size set.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">05</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Stitching</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Assembled on our own line, seam by seam.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">06</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Printing &amp; embroidery</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Chest, sleeve and hood branding applied in-house.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">07</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Quality check</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Finish, measurement and shade checked piece by piece.</div></div>
+              <div style="padding:0 12px;border-right:1px solid #2A2830"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#F5F2ED">08</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Packing</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px;opacity:.8">Folded, tagged and sealed in branded poly bags.</div></div>
+              <div style="padding-left:12px"><div style="font:600 30px/1 'Space Grotesk',sans-serif;color:#D98324;animation:pk-pulse 2.4s ease-in-out infinite">09</div><div style="font:500 13px/1.3 Inter,sans-serif;margin-top:12px">Dispatch</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:8px">Loaded and dispatched to your city on the agreed date.</div></div>
+            </div>
+          </div>
+          <div style="margin-top:26px;padding-top:18px;border-top:1px solid #2A2830;display:flex;gap:32px;font:400 12px/1.6 'IBM Plex Mono',monospace;color:#8A8378">
+            <span style="color:#D98324">HOLDS</span><span>Nothing re-animates on scroll back. Every step stays lit, descriptions at 80% opacity, thread at full length.</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:28px">
+        <div style="border:1px solid #2A2830;border-radius:6px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:18px 24px;background:#191820;border-bottom:1px solid #2A2830">
+            <div style="font:600 18px/1 'Space Grotesk',sans-serif">Frame 05 — reduced motion</div>
+            <div style="font:400 12px/1 'IBM Plex Mono',monospace;color:#8A8378">NO PIN · NO SCROLL BINDING · ALL PRESENT</div>
+          </div>
+          <div style="padding:34px 24px 30px">
+            <div style="position:relative">
+              <div style="position:absolute;left:0;right:0;top:0;height:3px;background:repeating-linear-gradient(90deg,#D98324 0 12px,transparent 12px 22px)"></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-top:26px">
+                <div><div style="font:600 26px/1 'Space Grotesk',sans-serif;color:#F5F2ED">01–03</div><div style="font:400 13px/1.6 Inter,sans-serif;color:#A8A29A;margin-top:10px">Fabric sourcing · knitting · dyeing</div></div>
+                <div><div style="font:600 26px/1 'Space Grotesk',sans-serif;color:#F5F2ED">04–06</div><div style="font:400 13px/1.6 Inter,sans-serif;color:#A8A29A;margin-top:10px">Cutting · stitching · printing and embroidery</div></div>
+                <div><div style="font:600 26px/1 'Space Grotesk',sans-serif;color:#F5F2ED">07–09</div><div style="font:400 13px/1.6 Inter,sans-serif;color:#A8A29A;margin-top:10px">Quality check · packing · dispatch</div></div>
+              </div>
+            </div>
+            <div style="margin-top:26px;padding-top:18px;border-top:1px solid #2A2830;font:400 12px/1.6 'IBM Plex Mono',monospace;color:#8A8378">The section becomes a normal-height block, the thread is drawn in full, every numeral is lit and every description is visible. No pulse, no pinning, no transitions beyond opacity.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid #2A2830;border-radius:6px;overflow:hidden">
+          <div style="padding:18px 24px;background:#191820;border-bottom:1px solid #2A2830;font:600 18px/1 'Space Grotesk',sans-serif">Mobile — the same line, rotated</div>
+          <div style="padding:30px 24px">
+            <div style="position:relative;padding-left:24px">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:repeating-linear-gradient(180deg,#4A4650 0 12px,transparent 12px 22px)"></div>
+              <div style="position:absolute;left:0;top:0;height:44%;width:3px;background:repeating-linear-gradient(180deg,#D98324 0 12px,transparent 12px 22px)"></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#F5F2ED;min-width:30px">01</div><div style="font:500 14px/1.3 Inter,sans-serif">Fabric sourcing</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#F5F2ED;min-width:30px">02</div><div style="font:500 14px/1.3 Inter,sans-serif">Knitting</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#F5F2ED;min-width:30px">03</div><div style="font:500 14px/1.3 Inter,sans-serif">Dyeing</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#D98324;min-width:30px;animation:pk-pulse 2.4s ease-in-out infinite">04</div><div><div style="font:500 14px/1.3 Inter,sans-serif">Cutting</div><div style="font:400 11px/1.4 Inter,sans-serif;color:#8A8378;margin-top:4px">Layers cut to the approved pattern and size set.</div></div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:30px">05</div><div style="font:500 14px/1.3 Inter,sans-serif;opacity:.3">Stitching</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:30px">06</div><div style="font:500 14px/1.3 Inter,sans-serif;opacity:.3">Printing &amp; embroidery</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:30px">07</div><div style="font:500 14px/1.3 Inter,sans-serif;opacity:.3">Quality check</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:30px">08</div><div style="font:500 14px/1.3 Inter,sans-serif;opacity:.3">Packing</div></div>
+              <div style="display:flex;gap:12px;align-items:baseline;padding:6px 0"><div style="font:600 18px/1 'Space Grotesk',sans-serif;color:#4A4650;min-width:30px">09</div><div style="font:500 14px/1.3 Inter,sans-serif;opacity:.3">Dispatch</div></div>
+            </div>
+            <div style="font:400 11px/1.6 'IBM Plex Mono',monospace;color:#8A8378;margin-top:18px">The thread becomes a scroll-progress spine down the left edge. Pin height 300vh, same 500ms activations, readout pinned beneath.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:44px;border:1px solid #2A2830;border-radius:6px;padding:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px">
+      <div><div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">PIN LENGTH</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">360vh</div><div style="font:400 13px/1.5 Inter,sans-serif;color:#A8A29A;margin-top:8px">Roughly 400–600ms of scroll per step. Never a flick.</div></div>
+      <div><div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">THREAD</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">12 / 10</div><div style="font:400 13px/1.5 Inter,sans-serif;color:#A8A29A;margin-top:8px">Running stitch: 12px dash, 10px gap, 3px weight, amber on warm-grey track.</div></div>
+      <div><div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">ACTIVATION</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">500ms</div><div style="font:400 13px/1.5 Inter,sans-serif;color:#A8A29A;margin-top:8px">Numeral colour, label opacity and description, all on the settle curve.</div></div>
+      <div><div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#8A8378">ACTIVE PULSE</div><div style="font:600 30px/1 'Space Grotesk',sans-serif;margin-top:12px">2.4s</div><div style="font:400 13px/1.5 Inter,sans-serif;color:#A8A29A;margin-top:8px">Opacity 1 → 0.55 → 1 on the live numeral only.</div></div>
+    </div>
+
+    <div style="margin-top:32px;font:400 13px/1.6 Inter,sans-serif;color:#8A8378">See it running on the live page: <a href="Panwar-Knitwear-Home.dc.html#manufacturing">the production line section</a> · <a href="Panwar-Knitwear-Motion-Spec.dc.html">motion specification</a></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PH = { moq: "{{MOQ}}", lead: "{{lead time}}", cap: "{{monthly capacity}}", email: "{{email}}", gsm: "{{GSM}}", gsmRange: "{{GSM range}}", addr: "{{street address}}" };
+
+class Component extends DCLogic {
+  renderVals() { return { ph: PH }; }
+}
+</script>
+</body>
+</html>
