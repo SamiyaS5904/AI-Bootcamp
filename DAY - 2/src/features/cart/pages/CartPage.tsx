@@ -5,6 +5,7 @@ import { CartLineItem } from '@/features/cart/components/CartLineItem'
 import { FreeShippingProgress } from '@/features/cart/components/FreeShippingProgress'
 import { cartTotals } from '@/features/cart/lib/pricing'
 import { Seo } from '@/components/common/Seo'
+import { ProductRail } from '@/features/shop/components/ProductRail'
 import { Button } from '@/components/ui/button'
 import { routes } from '@/config/routes'
 import { formatPrice } from '@/lib/utils'
@@ -28,20 +29,28 @@ export function CartPage() {
         </h1>
 
         {cart.lines.length === 0 ? (
-          <div className="mt-8 max-w-lg">
-            <p className="text-muted-foreground text-base leading-relaxed">
-              Nothing in here yet. If you are not sure where to start, the Style Assistant asks five
-              questions and points you at specific pieces.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Button asChild>
-                <Link to={routes.shop}>Browse the shop</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to={routes.styleAssistant}>Ask the Style Assistant</Link>
-              </Button>
+          <>
+            <div className="mt-8 max-w-lg">
+              <p className="text-muted-foreground text-base leading-relaxed">
+                Nothing in here yet. If you are not sure where to start, answer five quick questions
+                and we will point you at specific pieces.
+              </p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Button asChild>
+                  <Link to={routes.shop}>Browse the shop</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to={routes.styleAssistant}>Find your fit</Link>
+                </Button>
+              </div>
             </div>
-          </div>
+
+            <ProductRail
+              title="Just in"
+              subtitle="In stock across most sizes."
+              className="mt-16 md:mt-20"
+            />
+          </>
         ) : (
           <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16">
             <ul className="divide-border border-border divide-y border-t">

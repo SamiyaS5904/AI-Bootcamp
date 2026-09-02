@@ -4,6 +4,7 @@ import { useSiteSettings } from '@/data/siteSettings'
 import { useCart } from '@/features/cart/CartContext'
 import { cartTotals } from '@/features/cart/lib/pricing'
 import { Seo } from '@/components/common/Seo'
+import { ProductRail } from '@/features/shop/components/ProductRail'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { routes } from '@/config/routes'
@@ -85,6 +86,8 @@ export function CheckoutPage() {
               <Link to={routes.shop}>Browse the shop</Link>
             </Button>
           </div>
+
+          <ProductRail title="In stock now" className="mt-16 md:mt-20" />
         </div>
       </>
     )

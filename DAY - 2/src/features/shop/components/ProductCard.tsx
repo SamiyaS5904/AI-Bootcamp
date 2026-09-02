@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Heart } from 'lucide-react'
-import { discountPercent, inStockSizes, isSoldOut } from '@/data/catalog'
+import { inStockSizes, isSoldOut } from '@/data/catalog'
 import { useWishlist } from '@/features/wishlist/WishlistContext'
 import { routes } from '@/config/routes'
 import { cn, formatPrice } from '@/lib/utils'
@@ -35,7 +35,6 @@ export function ProductCard({ product, className }: { product: Product; classNam
   const soldOut = isSoldOut(product)
   const sizes = inStockSizes(product)
   const saved = wishlist.has(product.id)
-  const discount = discountPercent(product)
 
   return (
     <div
@@ -74,16 +73,14 @@ export function ProductCard({ product, className }: { product: Product; classNam
             />
           )}
 
-          {soldOut ? (
+          {/* Sold out is the only badge. A "68% OFF" flash on every card turns
+              a considered rail into a clearance bin — the markdown is already
+              legible from the struck-through price below, which is how a
+              premium label states it. */}
+          {soldOut && (
             <span className="text-bone bg-ink/80 eyebrow absolute top-4 left-4 px-2.5 py-1.5">
               Sold out
             </span>
-          ) : (
-            discount !== null && (
-              <span className="text-ink bg-bone/90 eyebrow absolute top-4 left-4 px-2.5 py-1.5">
-                {discount}% off
-              </span>
-            )
           )}
         </div>
 

@@ -29,18 +29,21 @@ export function AboutPage() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-20">
           <div className="max-w-xl">
             <p className="eyebrow text-clay">About</p>
-            <h1 className="text-display mt-4">Made to be understood</h1>
+            <h1 className="text-display mt-4">A short line, made properly</h1>
 
             <p className="mt-6 text-base leading-relaxed">
-              Most menswear sites give you a photograph and a size chart nobody trusts. You guess,
-              you order, and you find out whether it fits when the parcel arrives. That guessing is
-              why people default to marketplaces instead of buying from a small label.
+              Saints Crew makes knitwear, shirts and trousers. Three categories, a handful of pieces
+              in each, and nothing we could not stand behind.
             </p>
             <p className="text-muted-foreground mt-5 text-base leading-relaxed">
-              So this store is built the other way round. Every product page states its fabric, its
-              cut and the sizes actually in stock. The Size Finder maps your own measurement onto
-              our chart and shows you the arithmetic. The Style Assistant asks five questions and
-              names specific pieces, with a reason for each. Nothing is hidden behind a tab.
+              Buying clothes online is mostly guesswork. You get a photograph and a size chart
+              nobody trusts, and you find out how it fits when the parcel lands. We would rather you
+              knew first — so every piece here carries its cloth, its cut and the sizes actually
+              left on the rail, and the fit guide shows its working rather than asking you to take
+              our word for it.
+            </p>
+            <p className="text-muted-foreground mt-5 text-base leading-relaxed">
+              Less a philosophy than a habit. It is simply how we would want to be sold to.
             </p>
 
             <div className="border-border mt-12 space-y-8 border-t pt-10">

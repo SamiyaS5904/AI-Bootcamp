@@ -1,7 +1,11 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
-import { categories, getCategoryBySlug, products as allProducts } from '@/data/catalog'
+import {
+  categories,
+  categoryIntros,
+  getCategoryBySlug,
+  products as allProducts,
+} from '@/data/catalog'
 import { categoryCovers } from '@/data/editorial'
 import { ProductGrid } from '@/features/shop/components/ProductGrid'
 import { ShopFilters } from '@/features/shop/components/ShopFilters'
@@ -65,7 +69,7 @@ export function CategoryPage() {
         <p className="eyebrow text-clay">Shop</p>
         <h1 className="text-display mt-4">{category.name}</h1>
         <p className="text-muted-foreground mt-4 max-w-xl text-base leading-relaxed">
-          {`{{TODO: copy needed — category intro for ${category.name}: fabric and fit philosophy}}`}
+          {categoryIntros[category.slug]}
         </p>
 
         <div className="mt-12">
@@ -93,12 +97,12 @@ export function CategoryPage() {
         )}
 
         {/* Somewhere to go next, rather than a dead end at the bottom of a
-            short grid. */}
-        <section className="border-border mt-16 border-t pt-16">
-          <p className="eyebrow text-clay">Keep looking</p>
-          <h2 className="font-display mt-4 text-2xl md:text-3xl">The rest of the collection</h2>
+            short grid. Styled to match the homepage category blocks: the
+            garment, then its name — no gradient overlay, no hover arrow. */}
+        <section className="border-border mt-20 border-t pt-16 md:mt-28">
+          <p className="eyebrow text-muted-foreground">Keep looking</p>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 md:gap-6">
+          <div className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 md:mt-12">
             {others.map((other) => {
               const cover = categoryCovers[other.slug]
               const inCategory = allProducts.filter((p) => p.category.slug === other.slug)
@@ -108,35 +112,24 @@ export function CategoryPage() {
                 <Link
                   key={other.slug}
                   to={`/shop/${other.slug}`}
-                  className="group focus-visible:ring-ring block rounded-md focus-visible:ring-2 focus-visible:ring-offset-4"
+                  className="group focus-visible:ring-ring block focus-visible:ring-2 focus-visible:ring-offset-4"
                 >
-                  <div className="bg-bone-sunk relative aspect-16/10 overflow-hidden rounded-md">
+                  <div className="bg-bone-sunk aspect-16/10 overflow-hidden">
                     {cover && (
                       <img
                         src={cover.url}
                         alt={cover.alt}
                         loading="lazy"
-                        className="size-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                        className="size-full object-cover object-top transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
                       />
                     )}
-                    <div
-                      className="from-ink/80 absolute inset-0 bg-gradient-to-t to-transparent"
-                      aria-hidden
-                    />
-                    <div className="absolute inset-x-0 bottom-0 p-5">
-                      <p className="text-bone/70 eyebrow">
-                        {inCategory.length} {inCategory.length === 1 ? 'piece' : 'pieces'} · from{' '}
-                        {formatPrice(from)}
-                      </p>
-                      <h3 className="text-bone font-display mt-1.5 flex items-center gap-2 text-xl">
-                        {other.name}
-                        <ArrowRight
-                          className="size-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-                          strokeWidth={1.5}
-                          aria-hidden
-                        />
-                      </h3>
-                    </div>
+                  </div>
+                  <div className="mt-5 flex items-baseline justify-between gap-4">
+                    <h2 className="font-display text-xl md:text-2xl">{other.name}</h2>
+                    <p className="text-muted-foreground text-xs">
+                      {inCategory.length} {inCategory.length === 1 ? 'piece' : 'pieces'} · from{' '}
+                      {formatPrice(from)}
+                    </p>
                   </div>
                 </Link>
               )

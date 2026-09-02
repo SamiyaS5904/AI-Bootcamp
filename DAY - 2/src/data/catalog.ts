@@ -315,3 +315,21 @@ export function discountPercent(product: Pick<Product, 'price' | 'compare_at_pri
   if (!product.compare_at_price || product.compare_at_price <= product.price) return null
   return Math.round((1 - product.price / product.compare_at_price) * 100)
 }
+
+/**
+ * Short intro line per category.
+ *
+ * Deliberately descriptive rather than promotional: each states what the
+ * category contains and how it is graded, both of which are checkable against
+ * the catalogue itself. Brand claims — sourcing, philosophy, provenance — stay
+ * on /about behind {{TODO}} markers, because those are facts only the brand can
+ * supply (§8).
+ */
+export const categoryIntros: Record<string, string> = {
+  knitwear:
+    'The layer you reach for without thinking. Crew necks, polos and cardigans in mid-weight knits, XS to XXL, slim through relaxed.',
+  shirts:
+    'A short rail, kept short on purpose. Cut clean through the body and graded on the chest, XS to XXL.',
+  trousers:
+    'Chinos, cargos and a tapered wool. Graded on the waist from 28 to 38, inseam held steady across the run.',
+}

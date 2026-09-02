@@ -3,6 +3,7 @@ import { inStockSizes, isSoldOut } from '@/data/catalog'
 import { useWishlist } from '@/features/wishlist/WishlistContext'
 import { ProductCard } from '@/features/shop/components/ProductCard'
 import { Seo } from '@/components/common/Seo'
+import { ProductRail } from '@/features/shop/components/ProductRail'
 import { Button } from '@/components/ui/button'
 import { routes } from '@/config/routes'
 
@@ -28,20 +29,28 @@ export function WishlistPage() {
         </h1>
 
         {wishlist.count === 0 ? (
-          <div className="mt-12 max-w-lg">
-            <p className="text-muted-foreground text-base leading-relaxed">
-              Tap the heart on any piece to keep it here. We will show you whether it is still
-              available in your size.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Button asChild>
-                <Link to={routes.shop}>Browse the shop</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to={routes.styleAssistant}>Ask the Style Assistant</Link>
-              </Button>
+          <>
+            <div className="mt-8 max-w-lg">
+              <p className="text-muted-foreground text-base leading-relaxed">
+                Tap the heart on anything you like the look of. We will keep an eye on your size for
+                you.
+              </p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Button asChild>
+                  <Link to={routes.shop}>Browse the shop</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to={routes.styleAssistant}>Find your fit</Link>
+                </Button>
+              </div>
             </div>
-          </div>
+
+            <ProductRail
+              title="Worth a look"
+              subtitle="A place to start."
+              className="mt-16 md:mt-20"
+            />
+          </>
         ) : (
           <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-8">
             {wishlist.items.map((product) => {

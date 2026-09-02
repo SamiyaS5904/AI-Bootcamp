@@ -26,9 +26,9 @@ export const siteConfig = {
   name: 'Saints Crew',
   /** Used in <title> as "Page — Saints Crew". */
   titleSuffix: 'Saints Crew',
-  tagline: 'Considered menswear',
+  tagline: 'Menswear, considered',
   description:
-    "Knitwear, shirts and trousers with real fit and fabric guidance, so you know what you're buying before it arrives.",
+    'A short line of menswear from India. Knitwear, shirts and trousers — and not much else.',
 
   contact: {
     /**

@@ -28,11 +28,25 @@ import { formatPrice } from '@/lib/utils'
 export function HomePage() {
   const inStock = products.filter((product) => !isSoldOut(product))
   const featured = inStock[0]
-  const selected = [...inStock].sort((a, b) => b.created_at.localeCompare(a.created_at)).slice(0, 3)
+
+  /**
+   * One piece per category, newest first, and never the piece already featured
+   * above. Sorting the whole catalogue by date returned three near-identical
+   * sweaters — and repeated the featured product as the first of them, so the
+   * same garment appeared twice on one page.
+   */
+  const selected = categories
+    .map((category) =>
+      [...inStock]
+        .filter((product) => product.category.slug === category.slug && product.id !== featured?.id)
+        .sort((a, b) => b.created_at.localeCompare(a.created_at))
+        .at(0),
+    )
+    .filter((product): product is (typeof inStock)[number] => Boolean(product))
 
   return (
     <>
-      <Seo title="Considered menswear" />
+      <Seo title="Menswear, considered" />
 
       {/* ═══════════════════════════════════════════════════════════ HERO
           One still photograph, art-directed per breakpoint. Minimal copy,
@@ -62,12 +76,12 @@ export function HomePage() {
           <h1 className="font-display max-w-4xl text-[clamp(2.5rem,7.5vw,6rem)] leading-[0.94] tracking-[-0.035em]">
             <span className="line-mask">
               <span className="line-rise block" style={{ animationDelay: '120ms' }}>
-                Considered
+                Dressed like
               </span>
             </span>
             <span className="line-mask">
               <span className="line-rise block" style={{ animationDelay: '240ms' }}>
-                menswear.
+                you mean it.
               </span>
             </span>
           </h1>
@@ -94,8 +108,8 @@ export function HomePage() {
       <section className="container-page py-32 md:py-48">
         <Reveal>
           <p className="font-display max-w-4xl text-[clamp(1.5rem,3.4vw,2.75rem)] leading-[1.28] tracking-[-0.015em] text-balance">
-            We tell you the fabric, the cut, and what is actually left in your size —
-            <span className="text-muted-foreground"> before you spend anything.</span>
+            Nobody notices a good shirt.
+            <span className="text-muted-foreground"> That is rather the point.</span>
           </p>
         </Reveal>
       </section>
@@ -121,7 +135,7 @@ export function HomePage() {
               </Link>
 
               <div className="flex flex-col justify-end md:col-span-4 md:col-start-9 md:pb-6">
-                <p className="eyebrow text-muted-foreground">Featured</p>
+                <p className="eyebrow text-muted-foreground">On our mind</p>
                 <h2 className="font-display mt-5 text-3xl leading-tight md:text-4xl">
                   {featured.name}
                 </h2>
@@ -144,7 +158,7 @@ export function HomePage() {
       {/* ═════════════════════════════════════════════════════ CATEGORY */}
       <section className="container-page pb-32 md:pb-48">
         <Reveal>
-          <p className="eyebrow text-muted-foreground">The collection</p>
+          <p className="eyebrow text-muted-foreground">What we make</p>
         </Reveal>
 
         <div className="mt-12 grid gap-x-6 gap-y-14 md:mt-16 md:grid-cols-3">
@@ -208,24 +222,23 @@ export function HomePage() {
           </Reveal>
 
           <Reveal delay={80} className="flex flex-col justify-center md:col-span-6 md:col-start-7">
-            <p className="eyebrow text-muted-foreground">Our approach</p>
+            <p className="eyebrow text-muted-foreground">How we work</p>
             <h2 className="font-display mt-6 text-3xl leading-tight md:text-4xl">
-              Fewer things, cut properly
+              We make very little
             </h2>
             <p className="text-muted-foreground mt-8 max-w-md text-base leading-relaxed">
-              Knitwear, shirts and trousers. That is the whole range, and it stays that way on
-              purpose — a short line we can get right beats a long one we cannot.
+              Three categories. A handful of pieces in each. A short line we can stand behind beats
+              a long one we cannot, and we have no interest in filling a catalogue.
             </p>
             <p className="text-muted-foreground mt-5 max-w-md text-base leading-relaxed">
-              Every product page carries its fabric, its cut and the sizes genuinely in stock. If
-              you are between two, our fit guide maps your own measurement onto the chart and shows
-              you the arithmetic.
+              Everything here carries its cloth, its cut and the sizes actually left on the rail.
+              The only surprise should be how it wears.
             </p>
             <Link
               to={routes.about}
               className="eyebrow text-clay mt-10 self-start border-b border-current pb-1 transition-opacity hover:opacity-70"
             >
-              More about us
+              Read more
             </Link>
           </Reveal>
         </div>
@@ -235,7 +248,7 @@ export function HomePage() {
       <section className="container-page pb-32 md:pb-48">
         <Reveal>
           <div className="flex items-baseline justify-between gap-6">
-            <p className="eyebrow text-muted-foreground">Recently added</p>
+            <p className="eyebrow text-muted-foreground">Just in</p>
             <Link
               to={routes.shop}
               className="eyebrow text-clay border-b border-current pb-1 transition-opacity hover:opacity-70"
@@ -258,7 +271,7 @@ export function HomePage() {
       <section className="dark bg-ink text-bone">
         <div className="container-page py-28 md:py-36">
           <div className="mx-auto max-w-md text-center">
-            <h2 className="font-display text-2xl md:text-3xl">First access to new pieces</h2>
+            <h2 className="font-display text-2xl md:text-3xl">First look</h2>
             <div className="mt-10 flex justify-center">
               <NewsletterForm align="center" />
             </div>

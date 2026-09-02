@@ -27,15 +27,22 @@ export const editorialBreak: EditorialImage = {
   alt: 'Saints Crew pieces styled together in natural light',
 }
 
-/** Portrait shot beside the brand philosophy copy. */
+/**
+ * Portrait slots.
+ *
+ * These use `*-portrait.jpg` crops rather than the wide originals. The source
+ * frames put the subject well right of centre with a flat wall filling the left
+ * 60%, so an `object-cover` crop into a tall box returned an empty grey
+ * rectangle. The crops are cut around the busiest region of each frame.
+ */
 export const philosophyImage: EditorialImage = {
-  url: '/images/editorial/look-02.jpg',
+  url: '/images/editorial/look-02-portrait.jpg',
   alt: 'A Saints Crew shirt worn open over a tee',
 }
 
 export const aboutImage: EditorialImage = {
-  url: '/images/editorial/look-01.jpg',
-  alt: 'Saints Crew knitwear worn layered',
+  url: '/images/editorial/look-03-portrait.jpg',
+  alt: 'Saints Crew trousers photographed full length',
 }
 
 /**

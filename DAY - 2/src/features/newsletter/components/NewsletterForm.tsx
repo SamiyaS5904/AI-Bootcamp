@@ -38,13 +38,11 @@ export function NewsletterForm({
 
   return (
     <div className={cn('w-full max-w-sm', centered && 'text-center', className)}>
-      <p className="text-sm leading-relaxed">
-        First access to new drops — before they go live to everyone else.
-      </p>
+      <p className="text-sm leading-relaxed">New pieces before they go up. We write rarely.</p>
 
       {state === 'acknowledged' ? (
         <p className="text-moss mt-5 text-sm leading-relaxed" role="status">
-          You&apos;re on the list. We&apos;ll be in touch before the next drop.
+          You&apos;re in. We&apos;ll write before the next one lands.
         </p>
       ) : (
         <form className="mt-5 flex flex-col gap-2 sm:flex-row" onSubmit={handleSubmit} noValidate>
