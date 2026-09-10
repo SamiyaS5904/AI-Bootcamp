@@ -34,12 +34,12 @@ These are **estimates unless marked "measured"**. Exact per-turn token counts an
 
 | Metric | Value |
 |---|---|
-| Prompts logged | 4 |
-| Total duration (est.) | ~22 min |
-| Total tokens (est.) | ~114,000 |
-| Files created | 5 (+ 33 images downloaded) |
+| Prompts logged | 6 |
+| Total duration (est.) | ~1 h 25 min |
+| Total tokens (est.) | ~560,000 |
+| Files created | 11 (+ 33 images downloaded) |
 | Claude Design prompts produced | 2 |
-| Lines of code written | 0 (design phase) |
+| Lines of code written | ~7,100 (app built after Entry 05; audited and revised in Entry 06) |
 
 **Numbering note:** documentation entries count *user prompts*; Claude Design prompts are numbered separately. Design Prompt 01 came out of Entry 01 (revised in Entry 03); Design Prompt 02 came out of Entry 04.
 
@@ -340,6 +340,144 @@ New, for after the canvas is reviewed:
 
 ---
 
+## Entry 05 — Vercel deployment returns 404, not a blank page
+
+**Date:** 2 September 2026, ~09:35–09:55 IST
+**Prompt:** "https://panwarknitwear-sigma.vercel.app/ see i deployed this , nothing is visible on page why? improve this properly please and help me"
+
+### Purpose
+
+Diagnose why the deployed site shows nothing.
+
+### What was done
+
+1. Loaded the deployed URL in a browser and read its console and page text. It is **not** a blank React app — the page is Vercel's own error page: `404: NOT_FOUND`, code `NOT_FOUND`. No application JavaScript or CSS is served at all.
+2. Checked the repository layout. The git root is `D:/AI Bootcamp` (the whole bootcamp repo). The Vite app lives four levels down, at `Panwar Knitwear Website Redesign/panwarknitwear/panwar-knitwear/`. All 85 app files, including all 29 product images in `public/img/`, are committed.
+3. Ran `npm run build` locally — succeeds in 5.1s, 66 modules, `dist/index.html` + 54 kB CSS + 226 kB JS.
+4. Served the production build with `vite preview` and screenshotted it. The home page renders correctly: header, anchor nav, phone number, "Get a quote" CTA, and the full hero.
+
+**Conclusion: the code and the build are fine. The deployment is misconfigured.** Vercel is building from the repository root, where there is no `package.json`, so it publishes nothing and every path 404s.
+
+### Deliverables
+
+| File | What it is |
+|---|---|
+| `panwarknitwear/panwar-knitwear/vercel.json` | Framework, build command, output directory, and an SPA rewrite so `/catalogue` survives a refresh or a direct link |
+
+### Decisions
+
+| Decision | Reasoning |
+|---|---|
+| **Fix via Vercel's Root Directory setting, not a repo-root `vercel.json`** | Root Directory is the supported way to deploy a subfolder of a monorepo. A root-level config that `cd`s into a path containing spaces is fragile. |
+| **Add the SPA rewrite now** | Even once the root directory is corrected, `/catalogue` would 404 on refresh without it, because React Router handles that path client-side only. This is a second, independent bug that would have surfaced immediately after the first fix. |
+| **No code changes to the site itself** | The build is verified working. Changing anything else would have obscured the actual cause. |
+
+### Open questions
+
+Unchanged from Entry 03 — real email, MSP Sports photos, factory photos, MOQ, lead time, capacity, address, certifications.
+
+### Estimates
+
+Duration ≈ 20 minutes. Tokens ≈ 35k. **Both estimated, not measured.**
+
+---
+
+## Entry 06 — Independent audit of the deployed redesign, and seven fixes
+
+**Date:** 10 September 2026
+**Prompt:** A full product/UX/conversion/technical audit of the deployed redesign against the original site, acting as senior product designer, UX auditor, frontend engineer and conversion consultant — then, after approval, implementation. Explicit standing constraint restated: **do not touch GitHub.**
+
+### Purpose
+
+Stop treating the redesign as finished. Audit it as a real business website, find what it got wrong and what it *lost* relative to the site it replaces, and fix the highest-value items.
+
+### What was done
+
+Audited both sites live (browser automation: DOM, accessibility tree, computed styles, network, console, mobile emulation) and read the whole source tree. Then implemented items 1–7 of the approved plan.
+
+**Five defects found that made the site undeliverable:**
+
+1. **The enquiry form claimed success and sent nothing.** `submitEnquiry.js` resolved `{delivered:false}` when no endpoint was configured; `EnquiryForm.jsx` set state `"sent"` regardless and showed *"Enquiry received."*, then cleared the form. The warning was `DEV`-gated. Verified against the deployed bundle: no endpoint was configured, so **every live enquiry was silently discarded.**
+2. **`/catalogue` returned a hard Vercel 404 on direct load** — verified live. `vercel.json` was still untracked, so Entry 05's fix had never deployed.
+3. **Nine placeholder tokens rendered to real buyers**: `{{email}}`, `{{street address}}`, `{{MOQ}}`, `{{lead time}}`, `{{monthly capacity}}`, `{{GSM}}` (22 of 29 products), `{{GSM range}}`, `{{fit}}`, `{{size range}}`.
+4. **The redesign had discarded real per-product specs the original publishes.** Harvested all 29 original product pages: 28 publish a size range, 14 a GSM, 25 an article number, and all a material description.
+5. **The touch CTA was invisible but tappable.** `.pk-card__overlay` was `opacity:0` with `pointer-events:auto`, hover-revealed, with no `@media (hover: hover)` guard anywhere in 3,600 lines of CSS. On the home showcase this meant tapping a card silently added a style to the enquiry and jerked the page down to the form.
+
+Also: no favicon, `robots.txt`, `sitemap.xml` or JSON-LD (the last an explicit §5.2 requirement); a relative `og:image` breaking every link unfurl; five trust badges rendered as unclickable plain text while the original site carries real verifying URLs.
+
+### Deliverables
+
+| File | Change |
+|---|---|
+| `src/lib/submitEnquiry.js` | **Deleted.** No endpoint existed or was planned; the dead POST path was the bug. |
+| `src/sections/EnquiryForm.jsx` | Submit is now an anchor-based WhatsApp handoff (`window.open` after `await` is popup-blocked in Safari/Firefox; native anchor navigation is not). States reduced to `idle` / `handoff`; **"Enquiry received" removed entirely**; draft and picked styles survive the handoff; `onSubmit` keeps the Enter key working; email placeholder block removed; factory block now shows Sunder Nagar, Ludhiana plus a real Google Maps link. |
+| `src/data/products.js` | Rewritten to object literals with `articleNo`, `sizes`, `material`, real `gsm`, `alias` (the client's original title) and a `haystack` search field. Confirmed GSM went from 7 to 14 of 29. |
+| `src/data/company.js` | `PLACEHOLDERS` cut from 9 entries to 5; new `LOCATION` (city + verified Maps URL); `LISTINGS` now `{name, url}`; new `SOCIAL`. |
+| `src/components/QuickView.jsx` | Spec table 8 rows / 3 placeholders to 10 rows / 2. Per-product `sourceNote` surfaced. |
+| `src/pages/Catalogue.jsx` | Search reads `haystack`; `300 GSM` filter added; MOQ placeholder replaced with an honest CTA; `BreadcrumbList` JSON-LD. |
+| `src/components/ProductCard.jsx` | One affordance, one hit area: the whole photo is a `button` opening quick view in both variants; overlay is `aria-hidden` and non-interactive. |
+| `src/sections/Showcase.jsx` | Renders its own `QuickView`; the silent add-and-scroll is gone. |
+| `src/styles/components.css` | Overlay `pointer-events:none` always; hover reveal scoped to `@media (hover: hover) and (pointer: fine)`; `:focus-within` kept outside so keyboard works on any device; always-on overlay under `(hover: none), (pointer: coarse)`; swatch note wraps to its own line. |
+| `src/sections/Manufacturing.jsx` | Three bracketed stat cards became three honest conditions plus a converting CTA. |
+| `src/components/Footer.jsx`, `src/sections/About.jsx` | Listings and social are real outbound links from one source of truth; address and email placeholders gone. |
+| `src/sections/WhyUs.jsx` | Added the missing `id="why-us"`. |
+| `src/lib/meta.js` *(new)* | Per-route title / description / canonical / OG. Canonical is always the bare path, so catalogue filters cannot generate duplicate indexable URLs. |
+| `src/components/JsonLd.jsx`, `src/components/NotFound.jsx` *(new)* | Route-scoped schema; a real 404 page instead of rendering Home at HTTP 200. |
+| `index.html` | `lang="en-IN"`, absolute `og:image` and `og:url`, Twitter card, favicon links, static `Organization` / `LocalBusiness` / `WebSite` JSON-LD. |
+| `public/favicon.svg`, `public/robots.txt`, `public/sitemap.xml` *(new)* | All three were entirely absent. |
+| `vercel.json` | Added long-lived `Cache-Control` for hashed assets (was `max-age=0, must-revalidate`) plus two security headers. |
+| `.env.example` | **Deleted** along with the endpoint it documented. |
+
+### Decisions
+
+| Decision | Reasoning |
+|---|---|
+| **WhatsApp handoff, not a form backend** | User's call. No email address exists, so `mailto:`, Formspree, Web3Forms and a serverless function all lack a destination. WhatsApp is the only path that can deliver today and is where this trade replies. Accepted trade-off: **no enquiry is recorded anywhere.** Revisit when an email address arrives. |
+| **Anchor, not a submitting button** | `window.open()` after an `await` is popup-blocked in Safari and Firefox. Native anchor navigation never is. |
+| **Ship all 29 product rows exactly as the client publishes them** | User's call, made after the inconsistencies below were flagged. This is fidelity to the client's own published data, not invention. The five affected rows carry a `sourceNote` shown in the quick view. |
+| **Canonical points at the Vercel domain, not panwarknitwear.com** | The **old site is still live** on that domain. Canonicalising to it would tell Google this build is a duplicate of the site it replaces. One constant (`SITE_URL`) to flip at cutover. |
+| **Dropped TradeIndia and the LinkedIn company page from the listings row** | No verified URL for either. An unclickable badge sitting beside four working links reads as a dead link and weakens the section. |
+| **Removed the email block rather than showing `{{email}}`** | A labelled empty slot is worse than an honest omission when three phone numbers and WhatsApp are live. |
+| **Both card variants open quick view** | The same visual pill previously meant two different things, and the home-page meaning (silent add plus scroll) was the worst interaction on the site. A buyer should read the spec sheet before enquiring. |
+| **No TypeScript / Tailwind / Supabase / Framer Motion migration** | See the stack divergence below. Rewriting ~7,000 working lines to match a document is not an improvement. |
+| **Deferred: image pipeline, FAQ section, mobile type floor** | User scoped this pass to items 1–7. |
+
+### ⚠️ Stack divergence from CLAUDE.md §4
+
+Section 4 specifies React 19, TypeScript, Tailwind v4, React Router v7, Supabase, zod, react-hook-form, shadcn/ui, Lucide and Framer Motion. **The build uses none of them** — React 18.3.1, plain JSX, hand-written CSS, Router 6, three runtime dependencies, hand-rolled validation, IntersectionObserver plus WAAPI. The result is good and lean, but **§4 and the code need reconciling**; §4 should be amended to describe what was actually built.
+
+### Open questions — needs verification from the business owner
+
+Unchanged: real **email address**, **street address**, **MOQ**, **lead time**, **monthly capacity**, **certifications**, **MSP Sports photography**, **factory photography**, per-fabric GSM ranges.
+
+**New — source data inconsistencies on the client's own product pages, now published as-is:**
+
+1. Article number **`23092` is reused across four different styles** (two-thread filice hoodie, two-thread logo filice hood, two-thread hood logo sweatshirt, digital print T-shirt).
+2. **Two-thread round-neck hoodie, chest print** lists sizes **`24, 26, 28, 30, 32, 34, 36`** — waist sizes belonging to a lower, not a hoodie — and gives its material as dry-fit matty for what the catalogue calls a fleece hoodie. Both look like data-entry errors.
+3. **Two styles share the article name** "Two Thread Round Neck Hood Chest Print".
+4. **Shape swead 320 GSM round-neck hoodie** carries an article name belonging to a different style.
+5. **Feather bonding sweatshirt** is the only style with no published size range.
+
+### Estimates
+
+Duration ≈ 55 minutes. Tokens ≈ 300,000. **Both estimated, not measured.**
+
+### GitHub
+
+**No GitHub repository changes, commits, pushes, or pull requests were made.** All work is local.
+
+---
+
 ## Next up
 
-Run `design/CLAUDE-DESIGN-PROMPT-02.md` in the **same** Claude Design canvas as prompt 01. Then extract the final tokens and the motion spec into `design/DESIGN-BRIEF.md` and begin the build.
+Two actions only the user can take, both required for `/catalogue` to resolve in production:
+
+1. Vercel → Project → Settings → Build & Deployment → **Root Directory** = `Panwar Knitwear Website Redesign/panwarknitwear/panwar-knitwear`; Framework Preset **Vite**; then redeploy with the build cache **unchecked**.
+2. Commit `vercel.json` (still untracked). Either step alone leaves the 404 in place.
+
+Then, deferred from Entry 06 and worth doing next:
+
+- **Image pipeline** — 6.7 MB of unoptimized 982×1147 JPEGs served at ~300–470 px. A `sharp` devDependency plus one build script emitting WebP at 400 / 640 / 982, and a `picture` component. The largest remaining performance win.
+- **FAQ section** — the buyer-qualifying questions, every answer either verified or an honest "ask and we confirm", plus `FAQPage` schema.
+- **Mobile type floor** — rendered text measured at 8 px, 10 px and 11 px at 375 px. The causes are hardcoded px values in component rules, not the `--t-*` clamp tokens.
+- Amend `CLAUDE.md` §4 to match the stack actually built.

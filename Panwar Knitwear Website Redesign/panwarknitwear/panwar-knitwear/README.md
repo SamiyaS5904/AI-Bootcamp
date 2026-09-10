@@ -57,11 +57,25 @@ line; every other weight is `{{GSM}}` until the mill confirms it.
 
 ### The enquiry form
 
-`src/lib/submitEnquiry.js` POSTs JSON to `VITE_ENQUIRY_ENDPOINT`. Copy
-`.env.example` to `.env` and set it to go live. With no endpoint configured the
-form still validates and runs through its sending and success states, but
-nothing is delivered — so wire this up before launch. The WhatsApp button beside
-it works either way and carries the whole enquiry as a prefilled message.
+The form hands the enquiry to WhatsApp. It validates, then opens a `wa.me`
+link carrying every field and every picked style as a prefilled message, and it
+says plainly that nothing was sent from the page — the buyer still has to press
+send in WhatsApp.
+
+This replaced an earlier version that POSTed to a `VITE_ENQUIRY_ENDPOINT`. With
+no endpoint configured that code resolved as if it had succeeded, so the form
+told buyers "Enquiry received" and threw their enquiry away. If you add a real
+backend later, keep the rule that broke: **only a confirmed delivery may show a
+success state.**
+
+The primary control is an `<a>`, not a submitting `<button>`, because
+`window.open()` after an `await` is popup-blocked in Safari and Firefox while
+native anchor navigation is not. Pressing Enter in a field triggers the same
+anchor.
+
+Trade-off to be aware of: **no enquiry is recorded anywhere.** Once the client
+supplies an email address, a free form service (Web3Forms, Formspree) or a
+serverless function would give you a durable log.
 
 ### Missing photography
 
@@ -134,7 +148,11 @@ ink.
   private; the fallback stacks are already defined in `tokens.css`.
 - **`img/logo.png` in the handoff is the old purple-gradient lockup**, so the
   wordmark is set typographically instead. A flat mark is worth commissioning.
-- **No analytics and no form backend** are wired up yet.
+- **No analytics** is wired up.
+- **No form backend.** Enquiries go out over WhatsApp only, so nothing is
+  logged server-side. Needs a client email address to change.
+- **Images are unoptimized** — 6.7 MB of 982x1147 JPEGs, no WebP and no
+  `srcset`, served at ~300-470 px on cards. The largest remaining perf win.
 
 ---
 

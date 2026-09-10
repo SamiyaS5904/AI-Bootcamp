@@ -22,10 +22,16 @@ needed; there is no server to run.
 
 BEFORE IT GOES LIVE
 -------------------
-- The enquiry form does not deliver anywhere yet. Copy `.env.example` to `.env`
-  and set VITE_ENQUIRY_ENDPOINT to your form endpoint. WhatsApp works already.
-- Replace the bracketed placeholders — {{MOQ}}, {{lead time}},
-  {{monthly capacity}}, {{email}}, {{street address}} — in
-  src/data/company.js.
+- Set Vercel's Root Directory to this folder and commit vercel.json, or
+  /catalogue will 404 on a direct link or a refresh.
+- The enquiry form hands off to WhatsApp and nothing is logged server-side.
+  Supply a real email address if you want a durable record of enquiries.
+- Replace the remaining bracketed placeholders — {{MOQ}}, {{fit}}, {{GSM}},
+  {{GSM range}}, {{size set}} — in src/data/company.js and
+  src/data/products.js as the figures are confirmed.
+- Update SITE_URL in src/lib/meta.js, the canonical and og:* URLs in
+  index.html, and public/sitemap.xml when panwarknitwear.com cuts over to
+  this build. They currently point at the Vercel domain on purpose, because
+  the OLD site is still live on panwarknitwear.com.
 
 Full notes are in README.md.
