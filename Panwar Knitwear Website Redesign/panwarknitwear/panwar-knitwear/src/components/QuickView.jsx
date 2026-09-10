@@ -29,11 +29,16 @@ export default function QuickView({ product, index, total, onClose, onStep, onEn
 
   const added = has(product.id);
 
+  // Article number, sizes and material come off our own spec sheets. Fit and
+  // minimum order genuinely vary by order, so they stay bracketed rather than
+  // being guessed at.
   const spec = [
+    product.articleNo && ["Article no.", product.articleNo],
     ["Fabric", product.fabric],
     ["GSM", product.gsm],
+    product.material && ["Material", product.material],
+    ["Sizes", product.sizes ?? PLACEHOLDERS.sizeSet],
     ["Fit", PLACEHOLDERS.fit],
-    ["Sizes", PLACEHOLDERS.sizes],
     ["Colourways", "Colour run as photographed"],
     [
       "Branding options",
@@ -41,7 +46,7 @@ export default function QuickView({ product, index, total, onClose, onStep, onEn
     ],
     ["Minimum order", PLACEHOLDERS.moq],
     ["Packing", "Branded poly bag with wash care"],
-  ];
+  ].filter(Boolean);
 
   return (
     <div
@@ -126,7 +131,9 @@ export default function QuickView({ product, index, total, onClose, onStep, onEn
           </div>
 
           <p className="pk-modal__note">
-            Bracketed values are awaiting confirmed figures from the client.
+            {product.sourceNote
+              ? `Note: ${product.sourceNote} Ask us and we will confirm.`
+              : "Bracketed values vary by order — ask and we confirm them in writing with your rate."}
           </p>
 
           <div className="pk-modal__pager">
