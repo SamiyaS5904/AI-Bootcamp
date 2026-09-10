@@ -52,7 +52,15 @@ export default function About() {
         <div className="pk-listings" ref={listingsRef}>
           <span className="pk-label">LISTED ON</span>
           {LISTINGS.map((listing) => (
-            <span key={listing}>{listing}</span>
+            <a
+              key={listing.url}
+              href={listing.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {listing.name} &#8599;
+              <span className="pk-vh"> (opens in a new tab)</span>
+            </a>
           ))}
         </div>
       </div>

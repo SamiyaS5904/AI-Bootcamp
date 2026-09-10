@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { NAV, PHONES, PLACEHOLDERS } from "../data/company.js";
+import { LISTINGS, LOCATION, NAV, PHONES, SOCIAL } from "../data/company.js";
 
 export default function Footer() {
   return (
@@ -34,12 +34,21 @@ export default function Footer() {
               lineHeight: 1.6,
             }}
           >
-            <span className="pk-ph">{PLACEHOLDERS.address}</span>
+            Sunder Nagar, {LOCATION.city}
             <br />
-            Ludhiana, Punjab, India
+            {LOCATION.region}, {LOCATION.country}
             <br />
             GST registered 2017
           </address>
+          <a
+            className="pk-link-arrow"
+            href={LOCATION.maps}
+            style={{ marginTop: 14, display: "inline-block" }}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            Get directions &#8599;
+          </a>
         </div>
 
         <div className="pk-footer__col">
@@ -59,35 +68,22 @@ export default function Footer() {
         <div className="pk-footer__col">
           <span className="pk-label">BRANDS &amp; SOCIAL</span>
           <div className="pk-footer__links">
-            <a href="https://zonixa.com" rel="noreferrer noopener" target="_blank">
-              zonixa.com
-            </a>
-            <a href="https://mspsports.in" rel="noreferrer noopener" target="_blank">
-              mspsports.in
-            </a>
-            <a
-              href="https://instagram.com/panwarknitwear"
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              Instagram @panwarknitwear
-            </a>
-            <a
-              href="https://facebook.com/Panwarknitwear1"
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              Facebook /Panwarknitwear1
-            </a>
+            {SOCIAL.map((item) => (
+              <a key={item.url} href={item.url} rel="noreferrer noopener" target="_blank">
+                {item.name}
+              </a>
+            ))}
           </div>
 
           <span className="pk-label" style={{ display: "block", margin: "28px 0 12px" }}>
             LISTED ON
           </span>
-          <div style={{ color: "var(--text-faint)", fontSize: 14, lineHeight: 1.7 }}>
-            JustDial · IndiaMART
-            <br />
-            TradeIndia · Google · LinkedIn
+          <div className="pk-footer__links">
+            {LISTINGS.map((item) => (
+              <a key={item.url} href={item.url} rel="noreferrer noopener" target="_blank">
+                {item.name} &#8599;
+              </a>
+            ))}
           </div>
         </div>
 
@@ -99,9 +95,6 @@ export default function Footer() {
                 {phone.display}
               </a>
             ))}
-            <span className="pk-ph" style={{ fontSize: 15 }}>
-              {PLACEHOLDERS.email}
-            </span>
           </div>
           <a
             href="/#enquiry"
