@@ -7,18 +7,15 @@ import FloatingActions from "./components/FloatingActions.jsx";
 import EnquiryBasket from "./components/EnquiryBasket.jsx";
 import Home from "./pages/Home.jsx";
 import Catalogue from "./pages/Catalogue.jsx";
+import NotFound from "./components/NotFound.jsx";
 import { EnquiryProvider } from "./lib/enquiry.jsx";
-
-const TITLES = {
-  "/": "Panwar Knitwear — knitwear manufacturer in Ludhiana, since 2016",
-  "/catalogue": "Product catalogue — 29 styles — Panwar Knitwear",
-};
+import { applyRouteMeta } from "./lib/meta.js";
 
 function Chrome() {
   const { pathname, hash, state } = useLocation();
 
   useEffect(() => {
-    document.title = TITLES[pathname] ?? TITLES["/"];
+    applyRouteMeta(pathname);
   }, [pathname]);
 
   // A fresh page starts at the top — unless we were sent to a specific section.
@@ -42,7 +39,7 @@ function Chrome() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/catalogue" element={<Catalogue />} />
-        <Route path="*" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />
