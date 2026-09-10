@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
 
-import { PHONES, PLACEHOLDERS } from "../data/company.js";
+import { LOCATION, PHONES } from "../data/company.js";
 import { usePersistentState, useReveal } from "../hooks/index.js";
 import { composeEnquiryMessage, useEnquiry, whatsappUrl } from "../lib/enquiry.jsx";
-import { submitEnquiry } from "../lib/submitEnquiry.js";
 import { WhatsAppIcon } from "../components/Icons.jsx";
 
 const BRANDING = ["Printing", "Embroidery", "Labels & hang tags", "None, plain garments"];
@@ -72,6 +71,7 @@ export default function EnquiryForm() {
   const [errors, setErrors] = useState({});
   const [state, setState] = useState("idle");
   const formRef = useRef(null);
+  const handoffRef = useRef(null);
 
   const { picked, remove, clear } = useEnquiry();
 
@@ -92,7 +92,35 @@ export default function EnquiryForm() {
         : [...f.branding, option],
     }));
 
-  const onSubmit = async (event) => {
+  /**
+   * The enquiry goes out over WhatsApp, which is where this trade actually
+   * replies. So the primary control is a real anchor, not a submitting button:
+   * opening a window after an `await` gets blocked by Safari and Firefox, but
+   * native anchor navigation never is.
+   *
+   * Validation runs on click and cancels the navigation if anything is wrong.
+   * Nothing here may ever claim the enquiry was received — this page does not
+   * deliver it, WhatsApp does.
+   */
+  const onHandoff = (event) => {
+    const found = validate(form);
+    setErrors(found);
+
+    const firstError = Object.keys(found)[0];
+    if (firstError) {
+      event.preventDefault();
+      formRef.current?.querySelector(`#${firstError}`)?.focus();
+      return;
+    }
+
+    // The draft and the picked styles deliberately survive: WhatsApp may not
+    // open, and the buyer must not lose what they typed.
+    setState("handoff");
+  };
+
+  // Pressing Enter in a field must not reload the page. Validate, then trigger
+  // the same anchor — a keypress is a user gesture, so this is not blocked.
+  const onSubmit = (event) => {
     event.preventDefault();
     const found = validate(form);
     setErrors(found);
@@ -102,31 +130,25 @@ export default function EnquiryForm() {
       formRef.current?.querySelector(`#${firstError}`)?.focus();
       return;
     }
-
-    setState("sending");
-    try {
-      await submitEnquiry({ ...form, styles: picked, sentAt: new Date().toISOString() });
-      setState("sent");
-      setForm(EMPTY);
-      clear();
-    } catch {
-      setState("error");
-    }
+    handoffRef.current?.click();
   };
 
+  const startOver = () => {
+    setForm(EMPTY);
+    clear();
+    setErrors({});
+    setState("idle");
+  };
+
+  const waHref = whatsappUrl(composeEnquiryMessage(form, picked));
+
   const note = {
-    idle: "We reply on working days between 10:00 and 19:00 IST.",
-    sending: "Sending — do not refresh.",
-    sent: "Enquiry received. We will reply on WhatsApp or by phone within one working day.",
-    error: "That did not send. Please try WhatsApp or call us directly — the numbers are beside this form.",
+    idle: "This opens WhatsApp with your details filled in — press send there and it reaches us. We reply on working days between 10:00 and 19:00 IST.",
+    handoff:
+      "Your enquiry is ready in WhatsApp — press send there and we have it. Nothing was sent from this page, so your details are still here if you need them.",
   }[state];
 
-  const submitLabel = {
-    idle: "Send enquiry",
-    sending: "Sending your enquiry…",
-    sent: "Enquiry received",
-    error: "Try again",
-  }[state];
+  const submitLabel = state === "handoff" ? "Open WhatsApp again" : "Send this enquiry on WhatsApp";
 
   return (
     <section className="pk-section pk-section--cream" id="enquiry">
@@ -142,8 +164,9 @@ export default function EnquiryForm() {
               Tell us what you need made.
             </h2>
             <p className="pk-enquiry__lede">
-              Fill this in and we will come back with fabric options, a rate and a dispatch date. Or
-              send the same details on WhatsApp.
+              Fill this in and it opens WhatsApp with everything filled out, ready to send. We
+              come back with fabric options, a rate and a dispatch date. Prefer to talk? The
+              numbers are beside this form.
             </p>
           </div>
 
@@ -319,24 +342,28 @@ export default function EnquiryForm() {
             </div>
 
             <div className="pk-form__foot pk-form__wide">
-              <button
-                type="submit"
+              <a
                 className="pk-btn pk-btn--submit"
                 data-state={state}
-                disabled={state === "sending" || state === "sent"}
-              >
-                {submitLabel}
-              </button>
-
-              <a
-                className="pk-btn pk-btn--whatsapp"
-                href={whatsappUrl(composeEnquiryMessage(form, picked))}
+                href={waHref}
+                ref={handoffRef}
                 target="_blank"
                 rel="noreferrer noopener"
+                onClick={onHandoff}
               >
                 <WhatsAppIcon width={17} height={17} />
-                Send on WhatsApp instead
+                {submitLabel}
               </a>
+
+              {state === "handoff" ? (
+                <button type="button" className="pk-btn pk-btn--ghost" onClick={startOver}>
+                  Start a new enquiry
+                </button>
+              ) : (
+                <a className="pk-btn pk-btn--ghost" href={`tel:${PHONES[0].tel}`}>
+                  Or call {PHONES[0].display}
+                </a>
+              )}
 
               <p className="pk-form__note" data-state={state} aria-live="polite">
                 {note}
@@ -368,13 +395,6 @@ export default function EnquiryForm() {
           </a>
 
           <div className="pk-contactcard__block">
-            <span className="pk-label">EMAIL</span>
-            <p className="pk-ph" style={{ color: "var(--text-faint)" }}>
-              {PLACEHOLDERS.email}
-            </p>
-          </div>
-
-          <div className="pk-contactcard__block">
             <span className="pk-label">BUSINESS HOURS</span>
             <p>
               Monday to Saturday, 10:00–19:00 IST
@@ -388,10 +408,18 @@ export default function EnquiryForm() {
             <p>
               Panwar Knitwear
               <br />
-              <span className="pk-ph">{PLACEHOLDERS.address}</span>
+              Sunder Nagar, {LOCATION.city}
               <br />
-              Ludhiana, Punjab, India
+              {LOCATION.region}, {LOCATION.country}
             </p>
+            <a
+              className="pk-link-arrow"
+              href={LOCATION.maps}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              See us on Google Maps ↗
+            </a>
           </div>
         </aside>
       </div>

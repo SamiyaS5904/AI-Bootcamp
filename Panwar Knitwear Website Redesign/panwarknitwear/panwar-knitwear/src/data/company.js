@@ -12,15 +12,24 @@ export const PHONES = [
 export const WHATSAPP_NUMBER = "919876045457";
 
 export const PLACEHOLDERS = {
-  moq: "{{MOQ}}",
-  lead: "{{lead time}}",
-  capacity: "{{monthly capacity}}",
-  email: "{{email}}",
   gsm: "{{GSM}}",
   gsmRange: "{{GSM range}}",
-  address: "{{street address}}",
+  sizeSet: "{{size set}}",
   fit: "{{fit}}",
-  sizes: "{{size range}}",
+  moq: "{{MOQ}}",
+};
+
+/**
+ * Location. The client has not supplied a street address, so we give the city
+ * and link their own verified Google Business listing for directions rather
+ * than showing a bracketed placeholder where an address should be.
+ */
+export const LOCATION = {
+  city: "Ludhiana",
+  region: "Punjab",
+  country: "India",
+  countryCode: "IN",
+  maps: "https://maps.app.goo.gl/rrg4VPdpZcRvZTQZ6",
 };
 
 export const FABRIC_LIBRARY = [
@@ -131,7 +140,27 @@ export const TIMELINE = [
   ["Today", "29 styles, 8 fabrics, 26–50 people", true],
 ];
 
-export const LISTINGS = ["JustDial", "IndiaMART", "TradeIndia", "Google Business", "LinkedIn"];
+/**
+ * Third-party listings — every one a real, working link.
+ *
+ * A badge a buyer cannot click is a claim they cannot check, which is worth
+ * less than saying nothing. TradeIndia and a LinkedIn company page were listed
+ * here before as plain text with no URL behind them, so they are gone until
+ * the client supplies the links.
+ */
+export const LISTINGS = [
+  { name: "JustDial", url: "https://jsdl.in/DT-40JPFSTDR23" },
+  { name: "IndiaMART", url: "https://www.indiamart.com/panwar-knitwear" },
+  { name: "Google Business", url: "https://maps.app.goo.gl/rrg4VPdpZcRvZTQZ6" },
+];
+
+/** Brand sites and social — all verified on the client's own site. */
+export const SOCIAL = [
+  { name: "zonixa.com", url: "https://zonixa.com" },
+  { name: "mspsports.in", url: "https://mspsports.in" },
+  { name: "Instagram @panwarknitwear", url: "https://www.instagram.com/panwarknitwear" },
+  { name: "Facebook /Panwarknitwear1", url: "https://facebook.com/Panwarknitwear1" },
+];
 
 export const NAV = [
   ["Products", "products"],
