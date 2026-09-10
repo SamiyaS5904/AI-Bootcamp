@@ -666,6 +666,9 @@
   transform: scale(1.04);
 }
 
+/* Purely a legend over the photo: the whole media area is the button, so this
+   layer must never take a tap. An invisible clickable layer is how the old
+   build ended up firing an unexplained action on touch devices. */
 .pk-card__overlay {
   position: absolute;
   inset: 0;
@@ -675,24 +678,60 @@
   gap: 10px;
   padding: 16px;
   background: linear-gradient(to top, rgba(20, 19, 26, 0.95) 4%, rgba(20, 19, 26, 0.1) 60%);
-  opacity: 0;
+  pointer-events: none;
   transition: opacity var(--d-micro) var(--micro);
 }
 
-.pk-card:hover .pk-card__overlay,
+/* The quick-view bar rises up from the bottom edge of the card. */
+.pk-card__cta {
+  transition: transform var(--d-micro) var(--settle);
+}
+
+/* Reveal on hover only where hovering is actually possible. */
+@media (hover: hover) and (pointer: fine) {
+  .pk-card__overlay {
+    opacity: 0;
+  }
+
+  .pk-card__cta {
+    transform: translateY(14px);
+  }
+
+  .pk-card:hover .pk-card__overlay {
+    opacity: 1;
+  }
+
+  .pk-card:hover .pk-card__cta {
+    transform: none;
+  }
+}
+
+/* Keyboard users get the same reveal on any device, hover or not. */
 .pk-card:focus-within .pk-card__overlay {
   opacity: 1;
 }
 
-/* The enquire bar rises up from the bottom edge of the card. */
-.pk-card__cta {
-  transform: translateY(14px);
-  transition: transform var(--d-micro) var(--settle);
-}
-
-.pk-card:hover .pk-card__cta,
 .pk-card:focus-within .pk-card__cta {
   transform: none;
+}
+
+/* Touch: there is no hover, so the colour run and the quick-view affordance
+   stay visible. The swatch row answers "what colourways can I get?", which is
+   exactly what a bulk buyer wants to see without tapping. */
+@media (hover: none), (pointer: coarse) {
+  .pk-card__overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(20, 19, 26, 0.92) 4%, rgba(20, 19, 26, 0) 62%);
+  }
+
+  .pk-swatches {
+    flex-wrap: wrap;
+  }
+
+  /* On a 214px rail card the note cannot share a line with six swatches. */
+  .pk-swatches__note {
+    flex-basis: 100%;
+  }
 }
 
 /* Colour dots sampled from the run in the photograph. */
