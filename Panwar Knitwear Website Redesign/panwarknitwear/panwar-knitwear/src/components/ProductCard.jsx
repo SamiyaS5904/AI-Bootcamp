@@ -15,8 +15,16 @@ function Swatches({ colours }) {
 }
 
 /**
- * One style. `showcase` reveals an enquire bar on hover; `catalogue` opens the
- * quick view and carries an add-to-enquiry toggle.
+ * One style.
+ *
+ * The whole photo is the button and it opens the quick view, in both variants.
+ * That matters for two reasons: the overlay pill used to be a real button on
+ * the home showcase, and because the overlay is hover-revealed a touch user
+ * could not see it — so tapping a card silently added a style to the enquiry
+ * and jerked the page down to the form. Now the visible affordance and the hit
+ * area are the same element, and a buyer sees the spec sheet before enquiring.
+ *
+ * `catalogue` additionally carries an add-to-enquiry toggle in the card body.
  */
 export default function ProductCard({
   product,
@@ -25,7 +33,7 @@ export default function ProductCard({
   priority,
   ...rest
 }) {
-  const { toggle, has, add } = useEnquiry();
+  const { toggle, has } = useEnquiry();
   const added = has(product.id);
 
   const media = (
@@ -38,43 +46,30 @@ export default function ProductCard({
         loading={priority ? "eager" : "lazy"}
         decoding="async"
       />
-      <div className="pk-card__overlay">
+      <div className="pk-card__overlay" aria-hidden="true">
         <Swatches colours={product.colours} />
-        {variant === "showcase" ? (
-          <button
-            type="button"
-            className="pk-btn pk-btn--primary pk-btn--sm pk-btn--block pk-card__cta"
-            onClick={() => {
-              add(product);
-              onQuickView?.(product);
-            }}
-          >
-            Enquire about this style
-          </button>
-        ) : (
-          <span className="pk-btn pk-btn--ghost pk-btn--sm pk-btn--block pk-card__cta">
-            Quick view
-          </span>
-        )}
+        <span
+          className={`pk-btn pk-btn--sm pk-btn--block pk-card__cta ${
+            variant === "showcase" ? "pk-btn--primary" : "pk-btn--ghost"
+          }`}
+        >
+          Quick view
+        </span>
       </div>
     </>
   );
 
   return (
     <article className="pk-card" {...rest}>
-      {variant === "catalogue" ? (
-        <button
-          type="button"
-          className="pk-card__media"
-          onClick={() => onQuickView?.(product)}
-          aria-label={`Quick view: ${product.name}`}
-          style={{ border: "none", padding: 0, cursor: "pointer", display: "block", width: "100%" }}
-        >
-          {media}
-        </button>
-      ) : (
-        <div className="pk-card__media">{media}</div>
-      )}
+      <button
+        type="button"
+        className="pk-card__media"
+        onClick={() => onQuickView?.(product)}
+        aria-label={`Quick view: ${product.name}`}
+        style={{ border: "none", padding: 0, cursor: "pointer", display: "block", width: "100%" }}
+      >
+        {media}
+      </button>
 
       <div className="pk-card__body">
         <h3 className="pk-card__name">{product.name}</h3>

@@ -2,9 +2,10 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ProductCard from "../components/ProductCard.jsx";
+import QuickView from "../components/QuickView.jsx";
 import { CATEGORIES, PRODUCTS } from "../data/products.js";
 import { useMediaQuery, useReducedMotion, useReveal } from "../hooks/index.js";
-import { scrollToEnquiry } from "../lib/enquiry.jsx";
+import { scrollToEnquiry, useEnquiry } from "../lib/enquiry.jsx";
 
 const SHOWN = 12;
 
@@ -83,8 +84,22 @@ export default function Showcase() {
 
   const [gridRef, snapshot] = useFlip([filter], !reduced && !isMobile);
 
+  // The same quick view the catalogue uses, so a buyer on the home page reads
+  // the spec sheet before committing to an enquiry.
+  const { add } = useEnquiry();
+  const [openId, setOpenId] = useState(null);
+  const openIndex = shown.findIndex((p) => p.id === openId);
+  const open = openIndex >= 0 ? shown[openIndex] : null;
+
+  const step = (delta) => {
+    const next = shown[openIndex + delta];
+    if (next) setOpenId(next.id);
+  };
+
   const pick = (next) => {
     if (next === filter) return;
+    // Don't leave a stale id behind that could reopen the modal on a re-filter.
+    setOpenId(null);
     snapshot();
     setFilter(next);
   };
@@ -131,12 +146,25 @@ export default function Showcase() {
               data-key={product.id}
               product={product}
               priority={i < 4}
-              onQuickView={() => scrollToEnquiry()}
+              onQuickView={() => setOpenId(product.id)}
             />
           ))}
         </div>
 
         {isMobile && <p className="pk-rail__hint">SWIPE FOR MORE →</p>}
+
+        <QuickView
+          product={open}
+          index={openIndex}
+          total={shown.length}
+          onClose={() => setOpenId(null)}
+          onStep={step}
+          onEnquire={(p) => {
+            add(p);
+            setOpenId(null);
+            scrollToEnquiry();
+          }}
+        />
 
         <div className="pk-showcase__more">
           <Link className="pk-btn pk-btn--ghost" to="/catalogue">
