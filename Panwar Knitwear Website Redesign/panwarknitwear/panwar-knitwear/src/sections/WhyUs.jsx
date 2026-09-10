@@ -15,7 +15,7 @@ export default function WhyUs() {
   const gridRef = useReveal({ stagger: 100 });
 
   return (
-    <section className="pk-section">
+    <section className="pk-section" id="why-us">
       <span className="pk-section-num" aria-hidden="true">
         07
       </span>
