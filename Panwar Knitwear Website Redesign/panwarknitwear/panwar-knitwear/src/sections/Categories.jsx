@@ -1,10 +1,9 @@
 import { CATEGORY_CARDS } from "../data/company.js";
-import { useMediaQuery, useReveal } from "../hooks/index.js";
+import { useReveal } from "../hooks/index.js";
 
 export default function Categories() {
   const headRef = useReveal();
   const gridRef = useReveal({ stagger: 110 });
-  const isMobile = useMediaQuery("(max-width: 760px)");
 
   return (
     <section className="pk-section" id="categories">
@@ -55,7 +54,6 @@ export default function Categories() {
           ))}
         </div>
 
-        {isMobile && <p className="pk-rail__hint">SWIPE FOR ALL SIX →</p>}
       </div>
     </section>
   );

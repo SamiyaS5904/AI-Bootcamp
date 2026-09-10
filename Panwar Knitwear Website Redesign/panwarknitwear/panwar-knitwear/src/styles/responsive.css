@@ -302,22 +302,21 @@
     padding-inline: var(--gutter);
   }
 
-  /* Category cards become a snap rail. */
+  /* Category cards go two-up rather than into a snap rail.
+     As a rail, categories five and six — track pants and shorts, the whole
+     MSP Sports bottom-wear half of the business — sat off-screen behind a
+     horizontal swipe most visitors never make. Six cards in a 2x3 grid is
+     one vertical scroll and nothing is hidden. */
   .pk-cats {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
     background: transparent;
     border: none;
     margin-top: 28px;
-    margin-inline: calc(var(--gutter) * -1);
-    padding: 0 var(--gutter) 6px;
   }
 
   .pk-cat {
-    flex: 0 0 232px;
-    scroll-snap-align: start;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
@@ -623,6 +622,7 @@
     grid-template-columns: 1fr;
   }
 
+  .pk-listings a,
   .pk-listings span:not(.pk-label) {
     padding: 10px 14px;
     font-size: 13px;
