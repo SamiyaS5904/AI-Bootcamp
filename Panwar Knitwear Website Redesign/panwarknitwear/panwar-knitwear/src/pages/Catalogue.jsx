@@ -3,22 +3,39 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import ProductCard from "../components/ProductCard.jsx";
 import QuickView from "../components/QuickView.jsx";
+import JsonLd from "../components/JsonLd.jsx";
 import { SearchIcon } from "../components/Icons.jsx";
 import { PLACEHOLDERS } from "../data/company.js";
 import { CATEGORIES, FABRICS, GSM_FILTERS, PRODUCTS } from "../data/products.js";
 import { useReveal } from "../hooks/index.js";
+import { SITE_URL } from "../lib/meta.js";
 import { useEnquiry } from "../lib/enquiry.jsx";
 
 const SORTS = {
   default: { label: "Catalogue order", fn: (a, b) => a.id - b.id },
   "name-asc": { label: "Name, A–Z", fn: (a, b) => a.name.localeCompare(b.name) },
   "gsm-first": {
-    label: "Confirmed 320 GSM first",
+    label: "Confirmed weight first",
     fn: (a, b) => Number(b.gsmConfirmed) - Number(a.gsmConfirmed) || a.id - b.id,
   },
 };
 
 const DEFAULTS = { cat: "All", fabric: "All", gsm: "All", q: "", sort: "default" };
+
+// Mirrors the breadcrumb rendered at the top of the page.
+const BREADCRUMB = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Product catalogue",
+      item: `${SITE_URL}/catalogue`,
+    },
+  ],
+};
 
 export default function Catalogue() {
   const [params, setParams] = useSearchParams();
@@ -51,12 +68,12 @@ export default function Catalogue() {
     const list = PRODUCTS.filter((p) => {
       if (cat !== "All" && p.cat !== cat) return false;
       if (fabric !== "All" && p.fabric !== fabric) return false;
-      if (gsm === "320 GSM" && !p.gsmConfirmed) return false;
       if (gsm === "Weight to confirm" && p.gsmConfirmed) return false;
-      if (needle) {
-        const hay = `${p.name} ${p.cat} ${p.fabric}`.toLowerCase();
-        if (!hay.includes(needle)) return false;
-      }
+      if (gsm.endsWith(" GSM") && p.gsm !== gsm) return false;
+      // `haystack` includes the client's original product title and article
+      // number, so trade terms like "filice", "ben collar" and "half baju"
+      // still find the right style.
+      if (needle && !p.haystack.includes(needle)) return false;
       return true;
     });
     return list.sort((SORTS[sort] ?? SORTS.default).fn);
@@ -103,6 +120,7 @@ export default function Catalogue() {
 
   return (
     <main id="main">
+      <JsonLd data={BREADCRUMB} />
       <section className="pk-shell pk-cat-hero">
         <nav className="pk-crumb" aria-label="Breadcrumb">
           <Link to="/">Home</Link> / Product catalogue
@@ -120,8 +138,14 @@ export default function Catalogue() {
 
           <div className="pk-moq">
             <span className="pk-label">MINIMUM ORDER</span>
-            <div className="pk-moq__val pk-ph">{PLACEHOLDERS.moq}</div>
-            <p>Per style, per colourway.</p>
+            <div className="pk-moq__val">Depends on the style</div>
+            <p>
+              Fabric, colour count and branding all move it. Tell us the style and quantity
+              and we confirm the minimum in writing with your rate.
+            </p>
+            <Link className="pk-link-arrow" to="/" state={{ scrollTo: "enquiry" }}>
+              Ask for a quote →
+            </Link>
           </div>
         </div>
       </section>
@@ -190,8 +214,9 @@ export default function Catalogue() {
             </fieldset>
 
             <p className="pk-filters__note">
-              Styles marked <span className="pk-ph">{PLACEHOLDERS.gsm}</span> are pending a
-              confirmed weight from the mill.
+              Confirmed weights come from our own spec sheets. Styles marked{" "}
+              <span className="pk-ph">{PLACEHOLDERS.gsm}</span> are still to be confirmed
+              against the mill — ask and we will send the figure.
             </p>
           </aside>
 
