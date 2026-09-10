@@ -1,12 +1,18 @@
 import { useRef } from "react";
 
-import { PLACEHOLDERS, PROCESS } from "../data/company.js";
+import { PROCESS } from "../data/company.js";
 import { useMediaQuery, useReducedMotion, useReveal, useScrollProgress } from "../hooks/index.js";
 
+/**
+ * Capacity, minimum order and lead time are the three questions every bulk
+ * buyer asks first, and all three genuinely move with the order — fabric,
+ * colour count, branding and season. Rather than print three empty figures,
+ * this block says what each one depends on and asks for the brief.
+ */
 const CAPACITY = [
-  ["MONTHLY CAPACITY", PLACEHOLDERS.capacity],
-  ["MINIMUM ORDER", PLACEHOLDERS.moq],
-  ["LEAD TIME", PLACEHOLDERS.lead],
+  ["MONTHLY CAPACITY", "Quoted per order", "Depends on the fabric and the season."],
+  ["MINIMUM ORDER", "Per style, per colour", "Fewer colourways means a lower minimum."],
+  ["LEAD TIME", "Agreed up front", "Fixed with your dispatch date before we start."],
 ];
 
 /**
@@ -86,13 +92,18 @@ export default function Manufacturing() {
             </div>
 
             <div className="pk-capacity">
-              {CAPACITY.map(([label, value]) => (
+              {CAPACITY.map(([label, value, note]) => (
                 <div className="pk-capacity__card" key={label}>
                   <span className="pk-label">{label}</span>
-                  <div className="pk-capacity__val pk-ph">{value}</div>
+                  <div className="pk-capacity__val">{value}</div>
+                  <p className="pk-capacity__note">{note}</p>
                 </div>
               ))}
             </div>
+
+            <a className="pk-btn pk-btn--primary pk-capacity__cta" href="#enquiry">
+              Send your spec and we will confirm all three in writing
+            </a>
 
             <div className="pk-mfg__foot">
               <span>
