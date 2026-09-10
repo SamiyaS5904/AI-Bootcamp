@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -9,15 +9,57 @@
       content="Panwar Knitwear manufactures hoodies, sweatshirts, T-shirts, jackets, lowers and shorts in bulk from Ludhiana, Punjab. 320 GSM heavy knits, private label and OEM, established 2016."
     />
     <meta name="theme-color" content="#14131A" />
-    <link rel="canonical" href="https://panwarknitwear.com/" />
+
+    <!--
+      Canonical and og:* URLs are absolute and point at the live deployment,
+      NOT panwarknitwear.com — the old site is still served there, so
+      canonicalising to it would declare this build a duplicate of the site it
+      replaces. Change these together with SITE_URL in src/lib/meta.js and the
+      URLs in public/sitemap.xml at cutover.
+      Link unfurlers (WhatsApp, LinkedIn, Facebook, Slack) do not run JS, so
+      these tags must be here in the static HTML, not injected by React.
+    -->
+    <link rel="canonical" href="https://panwarknitwear-weld.vercel.app/" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Panwar Knitwear — knitwear manufacturing from Ludhiana, since 2016" />
+    <meta property="og:site_name" content="Panwar Knitwear" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content="https://panwarknitwear-weld.vercel.app/" />
+    <meta
+      property="og:title"
+      content="Panwar Knitwear — knitwear manufacturing from Ludhiana, since 2016"
+    />
     <meta
       property="og:description"
       content="Bulk knitwear manufacturing for wholesalers, retailers, distributors and institutional buyers. ZONIXA top wear, MSP Sports bottom wear, private label ready."
     />
-    <meta property="og:image" content="/img/p01.jpg" />
+    <meta
+      property="og:image"
+      content="https://panwarknitwear-weld.vercel.app/img/p01.jpg"
+    />
+    <meta property="og:image:width" content="982" />
+    <meta property="og:image:height" content="1147" />
+    <meta
+      property="og:image:alt"
+      content="A ZONIXA 320 GSM round-neck hoodie laid flat with its colour run and branded poly-bag packaging"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Panwar Knitwear — knitwear manufacturing from Ludhiana, since 2016"
+    />
+    <meta
+      name="twitter:description"
+      content="Bulk knitwear manufacturing for wholesalers, retailers, distributors and institutional buyers. ZONIXA top wear, MSP Sports bottom wear, private label ready."
+    />
+    <meta
+      name="twitter:image"
+      content="https://panwarknitwear-weld.vercel.app/img/p01.jpg"
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,6 +67,80 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Gurmukhi:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <!--
+      Static so it is crawlable with zero JS. Every value here is verified:
+      founding year, GST registration, team size, the three phone numbers, the
+      opening hours stated on the page, and the client's own listing URLs.
+      No street address exists yet — PostalAddress is valid without one — and
+      priceRange, email and certifications are omitted rather than invented.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": ["Organization", "LocalBusiness"],
+            "@id": "https://panwarknitwear-weld.vercel.app/#organization",
+            "name": "Panwar Knitwear",
+            "url": "https://panwarknitwear-weld.vercel.app/",
+            "description": "Knitwear manufacturer in Ludhiana, Punjab, established 2016. Hoodies, sweatshirts, T-shirts, jackets, lowers and shorts produced in bulk with private-label branding.",
+            "image": "https://panwarknitwear-weld.vercel.app/img/p01.jpg",
+            "foundingDate": "2016",
+            "telephone": "+919876045457",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Ludhiana",
+              "addressRegion": "Punjab",
+              "addressCountry": "IN"
+            },
+            "areaServed": { "@type": "Country", "name": "India" },
+            "hasMap": "https://maps.app.goo.gl/rrg4VPdpZcRvZTQZ6",
+            "numberOfEmployees": {
+              "@type": "QuantitativeValue",
+              "minValue": 26,
+              "maxValue": 50
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday"
+                ],
+                "opens": "10:00",
+                "closes": "19:00"
+              }
+            ],
+            "brand": [
+              { "@type": "Brand", "name": "ZONIXA", "url": "https://zonixa.com" },
+              { "@type": "Brand", "name": "MSP Sports", "url": "https://mspsports.in" }
+            ],
+            "sameAs": [
+              "https://zonixa.com",
+              "https://mspsports.in",
+              "https://www.instagram.com/panwarknitwear",
+              "https://facebook.com/Panwarknitwear1",
+              "https://www.indiamart.com/panwar-knitwear",
+              "https://jsdl.in/DT-40JPFSTDR23",
+              "https://maps.app.goo.gl/rrg4VPdpZcRvZTQZ6"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://panwarknitwear-weld.vercel.app/#website",
+            "url": "https://panwarknitwear-weld.vercel.app/",
+            "name": "Panwar Knitwear",
+            "inLanguage": "en-IN",
+            "publisher": { "@id": "https://panwarknitwear-weld.vercel.app/#organization" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
