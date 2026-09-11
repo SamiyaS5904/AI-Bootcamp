@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "panwar-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "panwarknitwear/panwar-knitwear", "run", "preview", "--", "--port", "4173", "--strictPort"],
+      "port": 4173
+    }
+  ]
+}

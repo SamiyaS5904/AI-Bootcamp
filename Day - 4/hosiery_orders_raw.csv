@@ -1,0 +1,103 @@
+order_no,date,day,customer,item,qty_dozens,rate_per_dozen,amount,payment_status,amount_paid
+1001,04-07-26,Sat,deep hosiery,Tshirt,15,900,13500,Paid,13500
+1002,26-09-2026,Wed,bhalla knitwear,Lowers,3,720,Rs 2160,PAID,2160
+1003,10-08-26,Mon,Bhalla Knitwear,track pant,10,approx 1100,11000,PAID,11000
+1004,18/07/2026,Fri, Star Woollens,track pant,3,1100,Rs 3300,paid,Rs 3300
+1005,Aug-27,Mon,NEW PUNJAB CLOTH HOUSE,socks,3,240,,Part Paid,288
+1006,01-09-26,Wed,Singla Textiles,Banyan,20,360,7200,Paid,7200
+1007,02-07-26,Thu,Singla Textiles,Lowers,20 dozen,720,14400,udhaar,0
+1008,16-07-2026,Fri,Singla Textiles,T Shirt,10 dozen,900,9000,paid,9000
+1009,Sep-16,Tue,VERMA GARMENTS,t-shirt,5,900,4500,part paid,1350
+1010,23/09/2026,Sat, Deep Hosiery,lower,8,720,5760,part paid,2880
+1011,Aug-28,Sun,Lucky Traders,t-shirt,6,900," ₹5,400.00 ",Paid,5400
+1012,06-07-26,Mon,bhalla knitwear,Banyan,5,360,1800,paid,₹1800
+1013,07-23-26,Fri,Deep Hosiery,t-shirt,2,900,1800,Partial,540
+1014,25-08-2026,Thu,arora collection,T Shirt,15,900,₹13500,Cash,13500
+1015,26-8-26,Fri,Singla Textiles,t-shirt,8 dozen,900,7200,part paid,2880
+1016,16/08/2026,Fri,KAPOOR & SONS,Baniyan,5,360,Rs 1800,Paid,₹1800
+1017,Sep-26,Thu,Maa Durga Garments ,T Shirt,8,900,Rs 7200,Udhaar,
+1018,03-08-26,Mon,Lucky Traders,T Shirt,8,900,Rs 7200,Udhaar,0
+1019,16-07-2026,Fri,Guru Nanak Hosiery,Track Pant,4,1100,Rs 4400,paid,4400
+1020,10-08-26,Wed, Star Woollens,Thermal Set,,1450,14500,PAID,Rs 14500
+1021,13-08-2026,Fri,Sharma Traders,Sock,20,240,4800/-,Paid,4800
+1022,05-07-26,Sun, Sharma Traders,Sock,2,240,480,Part Paid,Rs 144
+1023,06-08-26,Sat,Lucky Traders ,T-Shirt,15,900,₹13500,Part Paid,6750
+1011,Aug-28,Sun,Lucky Traders,t-shirt,6,900," ₹5,400.00 ",Paid,5400
+1024,09-07-26,Fri,Kapoor & Sons,Baniyan,4,360,1440,part paid,432
+1025,08-07-26,Fri,Deep Hosiery,Ankle Socks,10,240,2400,Part Paid,Rs 1200
+1026,08-02-26,Sat,NEW PUNJAB CLOTH HOUSE,Baniyan,12,360,,PAID,4320
+1027,11-07-26,Fri,Singla Textiles,T-Shirt,12,900,10800,Partial,Rs 5400
+1028,09-27-26,Sat,verma garments,T Shirt,20,900,18000,Paid,18000
+1029,21-9-26,Fri,verma garments,Socks,15,240,3600,PAID,3600
+1030,09-08-26,Wed,Arora Collection,Lower Track,,1100,8800,paid,₹8800
+1031,03-09-26,Sun,Sharma Traders,Sweter,,1800,9000/-,Cash,9000
+1032,26-7-26,Sun,Bhalla Knitwear,socks,3,240,₹720,paid,720
+1033,Aug-24,Sun,Maa Durga Garments,track pant,4,1100,4400,Paid,₹4400
+1034,27/08/2026,Thu,New Punjab Cloth House,Track Lower,15,720,,part paid,5400
+1035,28-08-2026,Tue,Maa Durga Garments,Lower,,720,3600,part paid,1080/-
+1036,02-08-26,Sun,Star Woollens,Tshirt,20,900,18000,PAID,Rs 18000
+1037,20/08/2026,Fri,Guru Nanak Hosiery,Track Pant,4 dozen,1100,Rs 4400,paid,4400/-
+1038,06-07-26,Fri,New Punjab Cloth House ,Lowers,4,720,2880,PAID,₹2880
+1039,04-08-26,Mon,Lucky Traders,track pant,15,approx 1100,16500,Paid,16500/-
+1040,20-07-2026,Mon,Deep Hosiery,Tshirt,6 dozen,900," ₹5,400.00 ",Paid," ₹5,400.00 "
+1041,14-7-26,Sat,Arora Collection,t-shirt,5,900,Rs 4500,paid,4500
+1042,Aug-03,Mon, Lucky Traders,t-shirt,15,900,,Paid,13500
+1043,11-08-26,Fri,Sharma Traders,T-Shirt,20,900,18000,paid,18000
+1044,15/08/2026,Tue,Maa Durga Garments ,Track Pant,20,1100,22000,paid,22000
+1045,10-07-26,Sat,STAR WOOLLENS,Sock,6,240,1440,Partial,432
+1046,02-09-26,Fri,Verma Garments,t-shirt,5,900,4500,PAID,4500
+1047,04-09-26,Tue,arora collection,Lower Track,2 dozen,1100,2200,PAID,2200/-
+1048,19/08/2026,Thu,star woollens,Tshirt,10,900,9000,Paid,₹9000
+1049,10-08-26,Sat,Arora Collection,Sweter,10,1800,Rs 18000,Paid,Rs 18000
+1050,11-07-26,Fri,Kapoor & Sons,thermal,20,1450,29000,UDHAR,0
+1051,27-9-26,Sat,Singla Textiles ,Baniyan,5,360,1800,Credit,0
+1052,16/07/2026,Sun,Star Woollens ,Thermal,10 dozen,1450,14500,Partial,₹7250
+1053,27-7-26,Tue,singla textiles,Banyan,20,360,,Udhaar,
+1054,Aug-18,Fri,sharma traders,vest,5,360,1800,Cash,₹1800
+1055,20/08/2026,Tue,guru nanak hosiery,Track Pant,10,1100,11000,udhaar,0
+1056,27/07/2026,Thu,Star Woollens ,Vest,4,360,Rs 1440,udhaar,0
+1057,09-09-26,Wed,VERMA GARMENTS,Sweter,6,1800,10800,Paid,10800
+1058,Aug-20,Sat,Kapoor & Sons,Socks,6,240,,Pending,0
+1059,26-7-26,Tue,ARORA COLLECTION,Track Pant,3,1100,3300/-,Partial,₹990
+1060,07-25-26,Tue,star woollens,Tshirt,15,900,13500/-,Partial,4050
+1061,03-09-26,Sat,DEEP HOSIERY,T Shirt,12,900,Rs 10800,Cash,10800
+1062,06-08-26,Sat,deep hosiery,lower,10,720,7200,paid,Rs 7200
+1063,02-08-26,Sat,kapoor & sons,Vest,15,360,,part paid,1620
+1064,19-08-2026,Mon,star woollens,Sock,4,240,960,Cash,960
+1065,05-08-26,Mon,Lucky Traders,Sock,20,240,4800,Paid,4800
+1066,27/09/2026,Sat,Kapoor & Sons ,Track Pant,8,1100,,UDHAR,
+1067,14-8-26,Sat,maa durga garments,Socks,12,240,2880,PAID,Rs 2880
+1068,22-09-2026,Sat,kapoor & sons,Baniyan,3,360,Rs 1080,Partial,Rs 540
+1069,18/08/2026,Thu, Kapoor & Sons,Track Lower,8,720,5760,part paid,1728
+1042,Aug-03,Mon, Lucky Traders,t-shirt,15,900,,Paid,13500
+1070,08-17-26,Tue,Star Woollens ,Baniyan,8,360,2880,PAID,2880
+1071,Jul-11,Thu,Singla Textiles,T-Shirt,12,900,,Partial,4320
+1072,08-23-26,Thu,Sharma Traders,lower,15,720,Rs 10800,Cash,10800
+1073,21/08/2026,Thu,kapoor & sons,t-shirt,20,900,18000,paid,18000/-
+1074,10-08-26,Tue,Guru Nanak Hosiery,sweater,4,1800,7200,PAID,7200
+1075,22/07/2026,Sat,Singla Textiles,socks,3,240,720,part paid,360
+1076,Jul-17,Wed,STAR WOOLLENS,Ankle Socks,3,240,720,Cash,720
+1077,13-8-26,Fri, Maa Durga Garments,Sweter,4,1800,7200,paid,Rs 7200
+1078,04-08-26,Tue,Guru Nanak Hosiery,Sweater,12,1800,21600,Cash,21600/-
+1079,Jul-25,Sat,NEW PUNJAB CLOTH HOUSE,Vest,10,360,3600,part paid,1440
+1080,23-08-2026,Sun,Bhalla Knitwear,Trackpant,5,1100,5500/-,paid,5500
+1081,16/07/2026,Mon,Sharma Traders,T-Shirt,,900,18000/-,part paid,₹9000
+1082,Sep-07,Thu,Sharma Traders,T Shirt,4,900,3600,udhaar,
+1083,27/08/2026,Tue, Arora Collection,lower,6,720,4320,Udhaar,
+1084,Jul-24,Sat,Kapoor & Sons,Track Pant,6,1100,6600,part paid,2640
+1085,03-08-26,Thu,Star Woollens,Vest,4,360,1440,UDHAR,
+1086,08-07-26,Wed, Sharma Traders,vest,6,approx 360,Rs 2160,Credit,
+1087,03-09-26,Fri,SHARMA TRADERS,T-Shirt,,900,Rs 3600,Part Paid,1800
+1088,Sep-20,Sat,Lucky Traders,socks,6,240,1440,Pending,
+1089,26/09/2026,Sat,Sharma Traders,track pant,12,1100,₹13200,Partial,Rs 5280
+1090,07-08-26,Mon, New Punjab Cloth House,Baniyan,3,360,₹1080,UDHAR,0
+1091,19/08/2026,Sat,Arora Collection,Sweter,6,1800,10800,Cash,10800
+1092,05-07-26,Wed,Lucky Traders,Track Lower,2,720,1440,Partial,576
+1093,05-08-26,Sun,Verma Garments,socks,3,240,720,part paid,288
+1094,07-08-26,Mon,Verma Garments,t-shirt,4,900,3600,Part Paid,₹1440
+1095,02-07-26,Sat, New Punjab Cloth House,Socks,4,240,960,PAID,₹960
+1096,Jul-09,Wed,VERMA GARMENTS,t-shirt,8 dozen,900,7200/-,Pending,0
+1097,Jul-12,Sat,Lucky Traders,socks,12,240,2880,udhaar,
+1098,25-08-2026,Sat,Arora Collection,Vest,15,360,5400,udhaar,
+1099,16-7-26,Fri, Arora Collection,Sock,5,240,₹1200,paid,1200
+1100,Aug-08,Tue, Guru Nanak Hosiery,Tshirt,4,900,3600,paid,Rs 3600

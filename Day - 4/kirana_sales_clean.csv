@@ -1,0 +1,106 @@
+bill_no,date,date_note,date_ambiguous,customer_name,is_walk_in,product,pack_size,qty,rate,amount,is_paid,payment_method,amount_paid,qty_was_derived,amount_was_derived,date_raw,customer_raw,item_raw,qty_raw,amount_raw,payment_status_raw,amount_paid_raw
+5001,2026-09-09,both readings agree,False,Manpreet Kaur,False,Rice,,2.0,390,780.0,False,credit,,False,False,09/09/2026,manpreet kaur,rice,2,780,udhaar,
+5002,2026-09-28,day-first,False,,True,Salt,,1.0,24,24.0,True,unknown,24.0,False,False,28-09-2026,Cash,salt,1,24,paid,24
+5003,2026-08-02,day-first,False,,True,Atta,,1.0,420,420.0,True,cash,420.0,False,False,02-08-2026,Walk-in,Aata,1,Rs 420,Cash,420
+5004,2026-08-25,day-first,False,Anil Sethi,False,Milk,1l,1.0,66,66.0,False,credit,,False,False,25-8-26,Anil Sethi ,Milk 1L,1,66,Credit,
+5005,2026-08-28,day-first,False,,True,Tea,,2.0,135,270.0,True,unknown,270.0,False,False,28-08-2026,cash,tea,2,270,Done,270
+5006,2026-09-15,month-first,False,,True,Milk,,2.0,66,132.0,True,cash,132.0,False,True,09/15/2026,Walk-in,milk,2,,Cash,132
+5007,2026-09-18,day-first,False,,True,Oil,1l,3.0,140,420.0,True,unknown,420.0,False,False,18-09-2026,Cash,Tel 1L,3,420,Done,420
+5008,2026-09-11,day-first,False,,True,Sugar,1kg,1.0,48,48.0,True,cash,48.0,False,False,11/09/2026,,Cheeni 1kg,1,48,Cash,48
+5009,2026-08-11,month-first,False,,True,Atta,10kg,2.0,420,840.0,True,unknown,840.0,False,False,08/11/2026,Walk-in,aata 10kg,2,840,Paid,840
+5010,2026-09-22,day-first,False,,True,Tea,,1.0,135,135.0,True,unknown,135.0,False,False,22-9-26,Counter,Chai Patti,1,135,paid,135/-
+5011,2026-08-04,day-first,False,,True,Sugar,,1.0,48,48.0,True,unknown,48.0,False,False,04/08/2026,,Sugar,1,48,paid,48
+5012,2026-08-04,day-first,False,,True,Salt,,1.0,24,24.0,True,unknown,24.0,False,False,04/08/2026,Counter,Salt,1,24,paid,24
+5013,2026-09-25,day-first,False,,True,Milk,1l,5.0,66,330.0,True,unknown,330.0,False,False,25/09/2026,Walk-in,Milk 1L,5,330,Paid,330
+5014,2026-08-26,day-first,False,Anil Sethi,False,Tea,,1.0,135,135.0,False,credit,,False,False,26/08/2026,ANIL SETHI,Chai Patti,1,135,Udhaar,
+5015,2026-09-26,day-first,False,Anil Sethi,False,Tea,,1.0,135,135.0,False,credit,,False,False,26/09/2026, Anil Sethi,tea,1,Rs 135,Pending,
+5016,2026-08-20,year assumed,False,,True,Oil,1l,5.0,140,700.0,True,unknown,700.0,False,False,20 Aug,Counter,Refined Oil 1L,5,700/-,paid,₹700
+5017,2026-09-06,year assumed,False,,True,Oil,,4.0,140,560.0,True,unknown,560.0,False,False,6 Sep,Counter,Refined Oil,4,560,Paid,560/-
+5018,2026-09-26,year assumed,False,,True,Namkeen,,3.0,55,165.0,True,unknown,165.0,False,False,26 Sep,,Mixture,3,165,Paid,165
+5019,2026-09-27,year assumed,False,,True,Atta,,1.0,420,420.0,True,unknown,420.0,True,False,27 Sep,Cash,Aata,,420,Done,420/-
+5020,2026-09-03,year assumed,False,,True,Milk,1l,4.0,66,264.0,True,unknown,264.0,False,False,3 Sep,Counter,Milk 1L,4 pcs,264,Paid,₹264
+5021,2026-08-23,day-first,False,,True,Atta,10kg,3.0,420,1260.0,True,cash,1260.0,False,False,23-8-26,,Atta 10kg,3,1260,Cash,1260
+5022,2026-08-25,day-first,False,Anil Sethi,False,Atta,10kg,1.0,420,420.0,True,cash,420.0,False,False,25-8-26,Anil Sethi,aata 10kg,1,420,Cash,420
+5023,2026-09-10,day-first,False,Neha Gupta,False,Salt,,2.0,24,48.0,True,unknown,48.0,False,False,10/09/2026,Neha Gupta,Namak,2,48/-,paid,48/-
+5024,2026-08-21,day-first,False,,True,Rice,5kg,4.0,390,1560.0,True,unknown,1560.0,False,False,21/08/2026,Counter,Rice 5kg,4,1560,Paid,1560
+5025,2026-09-04,year assumed,False,,True,Biscuit,,1.0,30,30.0,True,unknown,30.0,False,False,4 Sep,,biscuit,1,30,Done,30
+5026,2026-09-03,day-first,False,Anil Sethi,False,Milk,,2.0,66,132.0,True,unknown,132.0,False,False,03/09/2026,Anil Sethi ,milk,2,132,Done,132/-
+5027,2026-08-19,day-first,False,,True,Rice,,3.0,390,1170.0,True,cash,1170.0,False,False,19/08/2026,Counter,Rice,3,Rs 1170,Cash,1170
+5028,2026-08-14,day-first,False,,True,Rice,5kg,1.0,390,390.0,True,unknown,390.0,False,False,14-8-26,Cash,Rice 5kg,1,390,paid,390/-
+5029,2026-08-24,day-first,False,,True,Namkeen,200g,2.0,55,110.0,True,unknown,110.0,False,False,24/08/2026,cash,Namkeen 200g,2,Rs 110,Paid,110
+5030,2026-08-04,day-first,False,,True,Atta,10kg,2.0,420,840.0,True,unknown,840.0,False,False,4-8-26,Walk-in,Atta 10kg,2,840,Paid,840
+5031,2026-08-18,day-first,False,Gurpreet Singh,False,Rice,5kg,2.0,390,780.0,True,unknown,780.0,True,False,18/08/2026,gurpreet singh,Chawal 5kg,, 780 ,paid,780
+5032,2026-09-20,day-first,False,,True,Sugar,,3.0,48,144.0,True,unknown,144.0,False,False,20/09/2026,,sugar,3,144,Paid,₹144
+5033,2026-08-11,day-first,False,,True,Atta,10kg,2.0,420,840.0,True,cash,840.0,False,False,11/08/2026,Cash,Aata 10kg,2,840,Cash,Rs 840
+5034,2026-09-14,day-first,False,,True,Milk,1l,5.0,66,330.0,True,cash,330.0,False,True,14-9-26,cash,Doodh 1L,5,,Cash,330
+5035,2026-08-02,day-first,False,Sukhwinder Kaur,False,Atta,,1.0,420,420.0,True,unknown,420.0,False,False,2-8-26,sukhwinder kaur,Aata,1, 420 ,paid,420
+5036,2026-08-09,AMBIGUOUS,True,Harish Chand,False,Rice,5kg,5.0,390,1950.0,True,unknown,1950.0,False,False,08/09/2026,Harish Chand,Rice 5kg,5,1950,paid,Rs 1950
+5037,2026-08-23,day-first,False,,True,Tea,,5.0,135,675.0,True,cash,675.0,False,False,23/08/2026,Counter,tea,5 pcs, 675 ,Cash,675
+5038,2026-09-15,day-first,False,Harish Chand,False,Atta,10kg,1.0,420,420.0,False,credit,,False,False,15/09/2026,Harish Chand ,Atta 10kg,1,420/-,Credit,
+5039,2026-08-11,day-first,False,,True,Salt,,4.0,24,96.0,True,unknown,96.0,False,False,11/08/2026,cash,Salt,4,Rs 96,paid,Rs 96
+5040,2026-09-01,year assumed,False,Sukhwinder Kaur,False,Atta,,4.0,420,1680.0,False,credit,,False,False,1 Sep,Sukhwinder Kaur,Aata,4,1680,Khata,
+5041,2026-09-23,day-first,False,Harish Chand,False,Milk,1l,1.0,66,66.0,False,credit,,False,False,23/09/2026,Harish Chand,Doodh 1L,1,66,udhaar,
+5042,2026-09-25,day-first,False,,True,Milk,,4.0,66,264.0,True,unknown,264.0,False,True,25/09/2026,Cash,Milk,4,,Paid,264
+5043,2026-09-27,day-first,False,,True,Atta,10kg,2.0,420,840.0,True,cash,840.0,False,False,27-09-2026,Cash,Atta 10kg,2,840,Cash,840/-
+5044,2026-08-08,both readings agree,False,Baljit Singh,False,Dal,1kg,4.0,120,480.0,True,cash,480.0,False,False,8-8-26,Baljit Singh,Daal 1kg,4,480/-,Cash,480/-
+5045,2026-08-27,day-first,False,,True,Atta,10kg,1.0,420,420.0,True,cash,420.0,False,False,27/08/2026,Counter,Atta 10kg,1,Rs 420,Cash,420/-
+5046,2026-08-12,day-first,False,,True,Rice,,2.0,390,780.0,True,unknown,780.0,False,False,12/08/2026,Walk-in,Rice,2,Rs 780,Done,780
+5047,2026-09-21,day-first,False,,True,Tea,250g,2.0,135,270.0,True,unknown,270.0,False,False,21/09/2026,Cash,Tea 250g,2,270,paid,270
+5048,2026-09-17,day-first,False,,True,Atta,,4.0,420,1680.0,True,unknown,1680.0,False,False,17/09/2026,Cash,Aata,4,1680/-,Paid,1680
+5049,2026-08-10,day-first,False,,True,Milk,,3.0,66,198.0,True,cash,198.0,False,False,10/08/2026,Cash,Milk,3,198,Cash, 198 
+5050,2026-08-08,both readings agree,False,,True,Atta,10kg,3.0,420,1260.0,True,unknown,1260.0,False,False,8-8-26,cash,aata 10kg,3,1260,Done,1260
+5051,2026-09-04,year assumed,False,,True,Atta,10kg,1.0,420,420.0,True,unknown,420.0,False,False,4 Sep,cash,aata 10kg,1, 420 ,Done,420
+5052,2026-09-11,day-first,False,,True,Milk,1l,2.0,66,132.0,True,cash,132.0,False,False,11/09/2026,Counter,Milk 1L,2,132,Cash, 132 
+5053,2026-08-06,day-first,False,Manpreet Kaur,False,Rice,,5.0,390,1950.0,True,cash,1950.0,False,False,6-8-26,Manpreet Kaur,Rice,5,₹1950,Cash,1950
+5054,2026-08-09,year assumed,False,,True,Sugar,,5.0,48,240.0,True,unknown,240.0,False,False,9 Aug,,Sugar,5,₹240,Done,240
+5055,2026-09-04,year assumed,False,,True,Milk,1l,1.0,66,66.0,True,unknown,66.0,False,False,4 Sep,,Doodh 1L,1,66,paid,66
+5056,2026-09-24,day-first,False,,True,Atta,10kg,4.0,420,1680.0,True,unknown,1680.0,False,False,24/09/2026,Cash,Aata 10kg,4,1680,Done,1680
+5057,2026-08-17,year assumed,False,,True,Dal,,4.0,120,480.0,True,unknown,480.0,False,True,17 Aug,Walk-in,dal,4,,Paid,480
+5058,2026-08-28,day-first,False,,True,Milk,1l,2.0,66,132.0,True,unknown,132.0,False,True,28/08/2026,cash,Doodh 1L,2,,Paid,₹132
+5059,2026-08-22,month-first,False,,True,Tea,,1.0,135,135.0,True,unknown,135.0,False,False,08/22/2026,Walk-in,Tea,1,135/-,paid,135
+5060,2026-08-22,year assumed,False,,True,Oil,1l,1.0,140,140.0,True,cash,140.0,False,False,22 Aug,,Refined Oil 1L,1,140,Cash,140
+5061,2026-08-04,month-first,False,,True,Atta,10kg,2.0,420,840.0,True,unknown,840.0,False,False,08/04/2026,Cash,aata 10kg,2,840,Done,840
+5062,2026-08-20,day-first,False,,True,Biscuit,,1.0,30,30.0,True,cash,30.0,False,False,20/08/2026,Cash,biscuit,1,30,Cash,30
+5063,2026-08-16,day-first,False,Harish Chand,False,Sugar,,1.0,48,48.0,False,credit,0.0,False,False,16-08-2026,Harish Chand,Sugar,1,48,Khata,0
+5064,2026-09-12,year assumed,False,,True,Namkeen,,1.0,55,55.0,True,unknown,55.0,False,False,12 Sep,Walk-in,Mixture,1,55,paid,55
+5065,2026-08-03,month-first,False,,True,Oil,,2.0,140,280.0,True,unknown,280.0,False,False,08/03/2026,Cash,oil,2,280,Paid,280
+5066,2026-09-18,year assumed,False,,True,Milk,,1.0,66,66.0,True,cash,66.0,False,False,18 Sep,Walk-in,milk,1,66/-,Cash,₹66
+5067,2026-08-19,day-first,False,,True,Milk,1l,5.0,66,330.0,True,cash,330.0,False,False,19/08/2026,Walk-in,Milk 1L,5,330,Cash,330/-
+5068,2026-08-27,day-first,False,Harish Chand,False,Sugar,1kg,3.0,48,144.0,False,credit,0.0,False,False,27/08/2026,harish chand,Cheeni 1kg,3,144,Pending,0
+5069,2026-09-22,day-first,False,,True,Milk,1l,4.0,66,264.0,True,unknown,264.0,False,False,22/09/2026,Counter,Milk 1L,4,264,Paid,264
+5070,2026-08-17,year assumed,False,,True,Namkeen,,1.0,55,55.0,True,unknown,55.0,False,False,17 Aug,Cash,Mixture,1,₹55,Paid,55
+5071,2026-09-11,year assumed,False,Neha Gupta,False,Sugar,1kg,2.0,48,96.0,False,credit,0.0,False,False,11 Sep,neha gupta,Sugar 1kg,2,96,Pending,0
+5072,2026-08-26,day-first,False,,True,Oil,1l,5.0,140,700.0,True,unknown,700.0,False,False,26/08/2026,Cash,Refined Oil 1L,5,700,Done, 700 
+5073,2026-08-24,day-first,False,,True,Sugar,1kg,1.0,48,48.0,True,unknown,48.0,False,False,24/08/2026,Counter,Sugar 1kg,1,48,Done,48
+5074,2026-09-05,month-first,False,Neha Gupta,False,Milk,1l,4.0,66,264.0,True,unknown,264.0,False,False,09/05/2026,Neha Gupta,Milk 1L,4,264,Paid,264
+5075,2026-08-26,day-first,False,,True,Namkeen,,4.0,55,220.0,True,unknown,220.0,False,False,26-8-26,Counter,namkeen,4,₹220,Done, 220 
+5076,2026-09-07,day-first,False,Gurpreet Singh,False,Milk,,3.0,66,198.0,True,unknown,198.0,False,False,07/09/2026,Gurpreet Singh,Milk,3,198/-,Paid,198
+5077,2026-08-25,day-first,False,Gurpreet Singh,False,Namkeen,200g,3.0,55,165.0,True,cash,165.0,False,False,25/08/2026,Gurpreet Singh,Namkeen 200g,3,165,Cash,Rs 165
+5078,2026-08-02,year assumed,False,,True,Salt,,4.0,24,96.0,True,unknown,96.0,False,False,2 Aug,,Namak,4,96,Paid,96
+5079,2026-08-09,year assumed,False,,True,Biscuit,,5.0,30,150.0,True,unknown,150.0,False,False,9 Aug,Walk-in,Biscuits,5,150,Done,150
+5080,2026-09-03,day-first,False,,True,Rice,,1.0,390,390.0,True,cash,390.0,False,False,03/09/2026,Counter,rice,1 pcs,390,Cash,390
+5081,2026-08-22,day-first,False,,True,Atta,,1.0,420,420.0,True,unknown,420.0,False,False,22/08/2026,Cash,Aata,1,420,Done, 420 
+5082,2026-08-26,day-first,False,Baljit Singh,False,Dal,1kg,2.0,120,240.0,False,credit,,False,False,26/08/2026,Baljit Singh,Dal 1kg,2,240/-,Udhaar,
+5083,2026-08-06,year assumed,False,,True,Namkeen,,2.0,55,110.0,True,unknown,110.0,False,False,6 Aug,,namkeen,2,110,Paid,110
+5084,2026-08-28,day-first,False,Sukhwinder Kaur,False,Sugar,,1.0,48,48.0,True,cash,48.0,False,False,28-08-2026,Sukhwinder Kaur,Sugar,1,48,Cash,₹48
+5085,2026-08-23,day-first,False,,True,Atta,,1.0,420,420.0,True,unknown,420.0,False,True,23/08/2026,Walk-in,Aata,1,,Paid,420/-
+5086,2026-08-16,month-first,False,,True,Rice,,2.0,390,780.0,True,unknown,780.0,False,False,08/16/2026,cash,Rice,2,₹780,Paid,780
+5087,2026-09-27,day-first,False,,True,Oil,,3.0,140,420.0,True,unknown,420.0,False,False,27/09/2026,Counter,Refined Oil,3,420,Paid,420
+5088,2026-09-03,day-first,False,Harish Chand,False,Atta,10kg,5.0,420,2100.0,True,unknown,2100.0,False,False,03/09/2026,Harish Chand,Aata 10kg,5,2100/-,Paid,2100
+5089,2026-09-27,day-first,False,,True,Biscuit,,1.0,30,30.0,True,unknown,30.0,False,False,27-9-26,,Biscuits,1,30,Done,30
+5090,2026-08-26,day-first,False,,True,Milk,1l,1.0,66,66.0,True,unknown,66.0,False,False,26/08/2026,,Milk 1L,1,66,Paid,66
+5091,2026-08-06,day-first,False,Baljit Singh,False,Milk,1l,3.0,66,198.0,True,unknown,198.0,False,False,06-08-2026,baljit singh,Milk 1L,3,198,Paid, 198 
+5092,2026-09-12,day-first,False,,True,Milk,,1.0,66,66.0,True,unknown,66.0,False,False,12/09/2026,Counter,milk,1,66,Done,Rs 66
+5093,2026-09-10,day-first,False,,True,Atta,,1.0,420,420.0,True,unknown,420.0,False,False,10/09/2026,Cash,Aata,1,420,Done,420
+5094,2026-08-19,day-first,False,Manpreet Kaur,False,Atta,,1.0,420,420.0,False,credit,0.0,False,False,19-08-2026,Manpreet Kaur,Aata,1,420,Credit,0
+5095,2026-08-11,day-first,False,,True,Namkeen,,2.0,55,110.0,True,unknown,110.0,False,False,11-08-2026,,namkeen,2,Rs 110,Paid,₹110
+5096,2026-08-09,AMBIGUOUS,True,,True,Milk,1l,1.0,66,66.0,True,cash,66.0,False,False,09-08-2026,Walk-in,Milk 1L,1,66,Cash,66
+5097,2026-08-06,day-first,False,,True,Namkeen,,5.0,55,275.0,True,unknown,275.0,False,False,6-8-26,Walk-in,namkeen,5,275/-,Done,₹275
+5098,2026-09-06,day-first,False,Anil Sethi,False,Rice,5kg,1.0,390,390.0,False,credit,0.0,False,False,6-9-26,Anil Sethi ,Chawal 5kg,1,390,Pending,0
+5099,2026-08-07,day-first,False,,True,Sugar,,2.0,48,96.0,True,unknown,96.0,True,False,07-08-2026,,Sugar,,96,Done,96
+5100,2026-08-27,month-first,False,,True,Atta,10kg,1.0,420,420.0,True,unknown,420.0,False,True,08/27/2026,Cash,Aata 10kg,1,,paid,420
+5101,2026-09-09,both readings agree,False,,True,Sugar,,1.0,48,48.0,True,unknown,48.0,False,True,09-09-2026,,Sugar,1,,Paid,48/-
+5102,2026-08-16,day-first,False,,True,Milk,,4.0,66,264.0,True,unknown,264.0,False,False,16-08-2026,Walk-in,milk,4,264,Paid, 264 
+5103,2026-09-07,day-first,False,,True,Rice,,5.0,390,1950.0,True,unknown,1950.0,False,False,7-9-26,Cash,Rice,5,1950,paid,₹1950
+5104,2026-08-12,day-first,False,,True,Atta,,2.0,420,840.0,True,unknown,840.0,True,False,12/08/2026,cash,Aata,,840,paid,840/-
+5105,2026-08-27,day-first,False,Harish Chand,False,Biscuit,,2.0,30,60.0,False,credit,,False,False,27-8-26,harish chand,Parle-G,2,60,udhaar,
