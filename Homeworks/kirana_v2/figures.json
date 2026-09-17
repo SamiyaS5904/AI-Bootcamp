@@ -1,0 +1,750 @@
+{
+ "meta": {
+  "source": "kirana_sales_raw.csv",
+  "generated": "17 Sep 2026",
+  "rows_raw": 106,
+  "rows_clean": 105,
+  "date_from": "02 Aug 2026",
+  "date_to": "28 Sep 2026",
+  "trading_days": 48,
+  "span_days": 61,
+  "n_skus": 10,
+  "raw_item_strings": 36,
+  "n_named": 7,
+  "raw_name_strings": 19
+ },
+ "kpi": {
+  "revenue": 45540,
+  "bills": 105,
+  "units": 251,
+  "avg_bill": 434,
+  "credit": 4680,
+  "credit_bills": 14,
+  "credit_pct": 10.3,
+  "collected": 40860,
+  "collected_pct": 89.7,
+  "credit_days_of_trade": 4.9,
+  "top2_share": 71.6,
+  "named_bills": 28,
+  "named_revenue": 13833,
+  "named_pct": 30.4,
+  "named_avg_bill": 494,
+  "anon_avg_bill": 412,
+  "items_per_bill": 1.0
+ },
+ "quality": {
+  "dup_bills": [
+   "5016"
+  ],
+  "dup_value": 700,
+  "n_date_styles": 5,
+  "date_styles": {
+   "25/09/2026 - day first": 51,
+   "6 Sep - no year written": 19,
+   "25-8-26 - two-digit year": 17,
+   "25-09-2026 - day first": 14,
+   "09/15/2026 - month first": 4
+  },
+  "date_ambiguous": 2,
+  "date_ambiguous_bills": [
+   "5036",
+   "5096"
+  ],
+  "date_unparsed": 0,
+  "day_col_match": 20,
+  "day_col_total": 105,
+  "day_col_mismatch_pct": 81.0,
+  "raw_item_strings": 36,
+  "n_skus": 10,
+  "raw_name_strings": 19,
+  "n_named": 7,
+  "n_status_tokens": 9,
+  "status_tokens": {
+   "Paid": 29,
+   "Cash": 23,
+   "Done": 21,
+   "paid": 18,
+   "Pending": 4,
+   "udhaar": 3,
+   "Credit": 3,
+   "Udhaar": 2,
+   "Khata": 2
+  },
+  "method_unknown": 68,
+  "method_cash": 23,
+  "qty_missing": 4,
+  "qty_text": 3,
+  "amount_missing": 8,
+  "amount_text": 28,
+  "arithmetic_errors": 0,
+  "unpaid_blank": 9,
+  "unpaid_zero": 5,
+  "as_written": 44014,
+  "true_total": 45540,
+  "understated_by": 1526,
+  "understated_pct": 3.4
+ },
+ "skus": [
+  {
+   "sku": "Atta 10kg",
+   "category": "Staples",
+   "rate": 420,
+   "revenue": 19740,
+   "bills": 24,
+   "units": 47,
+   "rev_share": 43.3,
+   "unit_share": 18.7,
+   "cum_share": 43.3
+  },
+  {
+   "sku": "Rice 5kg",
+   "category": "Staples",
+   "rate": 390,
+   "revenue": 12870,
+   "bills": 12,
+   "units": 33,
+   "rev_share": 28.3,
+   "unit_share": 13.1,
+   "cum_share": 71.6
+  },
+  {
+   "sku": "Milk 1L",
+   "category": "Daily fresh",
+   "rate": 66,
+   "revenue": 3894,
+   "bills": 22,
+   "units": 59,
+   "rev_share": 8.6,
+   "unit_share": 23.5,
+   "cum_share": 80.2
+  },
+  {
+   "sku": "Refined Oil 1L",
+   "category": "Staples",
+   "rate": 140,
+   "revenue": 3220,
+   "bills": 7,
+   "units": 23,
+   "rev_share": 7.1,
+   "unit_share": 9.2,
+   "cum_share": 87.2
+  },
+  {
+   "sku": "Tea 250g",
+   "category": "Grocery",
+   "rate": 135,
+   "revenue": 1755,
+   "bills": 7,
+   "units": 13,
+   "rev_share": 3.9,
+   "unit_share": 5.2,
+   "cum_share": 91.1
+  },
+  {
+   "sku": "Namkeen 200g",
+   "category": "Snacks",
+   "rate": 55,
+   "revenue": 1265,
+   "bills": 9,
+   "units": 23,
+   "rev_share": 2.8,
+   "unit_share": 9.2,
+   "cum_share": 93.9
+  },
+  {
+   "sku": "Dal 1kg",
+   "category": "Staples",
+   "rate": 120,
+   "revenue": 1200,
+   "bills": 3,
+   "units": 10,
+   "rev_share": 2.6,
+   "unit_share": 4.0,
+   "cum_share": 96.5
+  },
+  {
+   "sku": "Sugar 1kg",
+   "category": "Staples",
+   "rate": 48,
+   "revenue": 1008,
+   "bills": 11,
+   "units": 21,
+   "rev_share": 2.2,
+   "unit_share": 8.4,
+   "cum_share": 98.7
+  },
+  {
+   "sku": "Biscuits",
+   "category": "Snacks",
+   "rate": 30,
+   "revenue": 300,
+   "bills": 5,
+   "units": 10,
+   "rev_share": 0.7,
+   "unit_share": 4.0,
+   "cum_share": 99.4
+  },
+  {
+   "sku": "Salt 1kg",
+   "category": "Staples",
+   "rate": 24,
+   "revenue": 288,
+   "bills": 5,
+   "units": 12,
+   "rev_share": 0.6,
+   "unit_share": 4.8,
+   "cum_share": 100.0
+  }
+ ],
+ "customers": [
+  {
+   "name": "Sukhwinder Kaur",
+   "spend": 2148,
+   "bills": 3,
+   "owed": 1680,
+   "pct_unpaid": 78.2
+  },
+  {
+   "name": "Manpreet Kaur",
+   "spend": 3150,
+   "bills": 3,
+   "owed": 1200,
+   "pct_unpaid": 38.1
+  },
+  {
+   "name": "Harish Chand",
+   "spend": 4788,
+   "bills": 7,
+   "owed": 738,
+   "pct_unpaid": 15.4
+  },
+  {
+   "name": "Anil Sethi",
+   "spend": 1278,
+   "bills": 6,
+   "owed": 726,
+   "pct_unpaid": 56.8
+  },
+  {
+   "name": "Baljit Singh",
+   "spend": 918,
+   "bills": 3,
+   "owed": 240,
+   "pct_unpaid": 26.1
+  },
+  {
+   "name": "Neha Gupta",
+   "spend": 408,
+   "bills": 3,
+   "owed": 96,
+   "pct_unpaid": 23.5
+  },
+  {
+   "name": "Gurpreet Singh",
+   "spend": 1143,
+   "bills": 3,
+   "owed": 0,
+   "pct_unpaid": 0.0
+  }
+ ],
+ "monthly": [
+  {
+   "month": "Aug 2026",
+   "revenue": 25218,
+   "bills": 61
+  },
+  {
+   "month": "Sep 2026",
+   "revenue": 20322,
+   "bills": 44
+  }
+ ],
+ "daily": [
+  {
+   "date": "02 Aug",
+   "revenue": 936,
+   "bills": 3
+  },
+  {
+   "date": "03 Aug",
+   "revenue": 280,
+   "bills": 1
+  },
+  {
+   "date": "04 Aug",
+   "revenue": 1752,
+   "bills": 4
+  },
+  {
+   "date": "06 Aug",
+   "revenue": 2533,
+   "bills": 4
+  },
+  {
+   "date": "07 Aug",
+   "revenue": 96,
+   "bills": 1
+  },
+  {
+   "date": "08 Aug",
+   "revenue": 1740,
+   "bills": 2
+  },
+  {
+   "date": "09 Aug",
+   "revenue": 456,
+   "bills": 3
+  },
+  {
+   "date": "10 Aug",
+   "revenue": 198,
+   "bills": 1
+  },
+  {
+   "date": "11 Aug",
+   "revenue": 1886,
+   "bills": 4
+  },
+  {
+   "date": "12 Aug",
+   "revenue": 1620,
+   "bills": 2
+  },
+  {
+   "date": "14 Aug",
+   "revenue": 390,
+   "bills": 1
+  },
+  {
+   "date": "16 Aug",
+   "revenue": 1092,
+   "bills": 3
+  },
+  {
+   "date": "17 Aug",
+   "revenue": 535,
+   "bills": 2
+  },
+  {
+   "date": "18 Aug",
+   "revenue": 780,
+   "bills": 1
+  },
+  {
+   "date": "19 Aug",
+   "revenue": 1920,
+   "bills": 3
+  },
+  {
+   "date": "20 Aug",
+   "revenue": 730,
+   "bills": 2
+  },
+  {
+   "date": "21 Aug",
+   "revenue": 1560,
+   "bills": 1
+  },
+  {
+   "date": "22 Aug",
+   "revenue": 695,
+   "bills": 3
+  },
+  {
+   "date": "23 Aug",
+   "revenue": 2355,
+   "bills": 3
+  },
+  {
+   "date": "24 Aug",
+   "revenue": 158,
+   "bills": 2
+  },
+  {
+   "date": "25 Aug",
+   "revenue": 651,
+   "bills": 3
+  },
+  {
+   "date": "26 Aug",
+   "revenue": 1361,
+   "bills": 5
+  },
+  {
+   "date": "27 Aug",
+   "revenue": 1044,
+   "bills": 4
+  },
+  {
+   "date": "28 Aug",
+   "revenue": 450,
+   "bills": 3
+  },
+  {
+   "date": "01 Sep",
+   "revenue": 1680,
+   "bills": 1
+  },
+  {
+   "date": "03 Sep",
+   "revenue": 2886,
+   "bills": 4
+  },
+  {
+   "date": "04 Sep",
+   "revenue": 516,
+   "bills": 3
+  },
+  {
+   "date": "05 Sep",
+   "revenue": 264,
+   "bills": 1
+  },
+  {
+   "date": "06 Sep",
+   "revenue": 950,
+   "bills": 2
+  },
+  {
+   "date": "07 Sep",
+   "revenue": 2148,
+   "bills": 2
+  },
+  {
+   "date": "08 Sep",
+   "revenue": 1950,
+   "bills": 1
+  },
+  {
+   "date": "09 Sep",
+   "revenue": 828,
+   "bills": 2
+  },
+  {
+   "date": "10 Sep",
+   "revenue": 468,
+   "bills": 2
+  },
+  {
+   "date": "11 Sep",
+   "revenue": 276,
+   "bills": 3
+  },
+  {
+   "date": "12 Sep",
+   "revenue": 121,
+   "bills": 2
+  },
+  {
+   "date": "14 Sep",
+   "revenue": 330,
+   "bills": 1
+  },
+  {
+   "date": "15 Sep",
+   "revenue": 552,
+   "bills": 2
+  },
+  {
+   "date": "17 Sep",
+   "revenue": 1680,
+   "bills": 1
+  },
+  {
+   "date": "18 Sep",
+   "revenue": 486,
+   "bills": 2
+  },
+  {
+   "date": "20 Sep",
+   "revenue": 144,
+   "bills": 1
+  },
+  {
+   "date": "21 Sep",
+   "revenue": 270,
+   "bills": 1
+  },
+  {
+   "date": "22 Sep",
+   "revenue": 399,
+   "bills": 2
+  },
+  {
+   "date": "23 Sep",
+   "revenue": 66,
+   "bills": 1
+  },
+  {
+   "date": "24 Sep",
+   "revenue": 1680,
+   "bills": 1
+  },
+  {
+   "date": "25 Sep",
+   "revenue": 594,
+   "bills": 2
+  },
+  {
+   "date": "26 Sep",
+   "revenue": 300,
+   "bills": 2
+  },
+  {
+   "date": "27 Sep",
+   "revenue": 1710,
+   "bills": 4
+  },
+  {
+   "date": "28 Sep",
+   "revenue": 24,
+   "bills": 1
+  }
+ ],
+ "weekday": [
+  {
+   "day": "Mon",
+   "revenue": 3943,
+   "bills": 11,
+   "avg_bill": 358,
+   "claimed_bills": 13
+  },
+  {
+   "day": "Tue",
+   "revenue": 9650,
+   "bills": 18,
+   "avg_bill": 536,
+   "claimed_bills": 12
+  },
+  {
+   "day": "Wed",
+   "revenue": 5795,
+   "bills": 13,
+   "avg_bill": 446,
+   "claimed_bills": 5
+  },
+  {
+   "day": "Thu",
+   "revenue": 11021,
+   "bills": 18,
+   "avg_bill": 612,
+   "claimed_bills": 13
+  },
+  {
+   "day": "Fri",
+   "revenue": 4368,
+   "bills": 16,
+   "avg_bill": 273,
+   "claimed_bills": 14
+  },
+  {
+   "day": "Sat",
+   "revenue": 3120,
+   "bills": 10,
+   "avg_bill": 312,
+   "claimed_bills": 13
+  },
+  {
+   "day": "Sun",
+   "revenue": 7643,
+   "bills": 19,
+   "avg_bill": 402,
+   "claimed_bills": 35
+  }
+ ],
+ "reminder": {
+  "n_debtors": 6,
+  "recommended": 500,
+  "thresholds": [
+   {
+    "threshold": 200,
+    "people": 5,
+    "of_people": 6,
+    "amount": 4584,
+    "pct": 97.9
+   },
+   {
+    "threshold": 500,
+    "people": 4,
+    "of_people": 6,
+    "amount": 4344,
+    "pct": 92.8
+   },
+   {
+    "threshold": 1000,
+    "people": 2,
+    "of_people": 6,
+    "amount": 2880,
+    "pct": 61.5
+   },
+   {
+    "threshold": 2000,
+    "people": 0,
+    "of_people": 6,
+    "amount": 0,
+    "pct": 0.0
+   },
+   {
+    "threshold": 5000,
+    "people": 0,
+    "of_people": 6,
+    "amount": 0,
+    "pct": 0.0
+   }
+  ],
+  "biggest_bill": {
+   "bill": "5040",
+   "customer": "Sukhwinder Kaur",
+   "sku": "Atta 10kg",
+   "qty": 4,
+   "amount": 1680,
+   "pct_of_book": 35.9
+  },
+  "udhaar_bills_per_month": 7.0,
+  "days_between_udhaar_bills": 3.4
+ },
+ "credit_by_sku": [
+  {
+   "sku": "Atta 10kg",
+   "amount": 2520
+  },
+  {
+   "sku": "Rice 5kg",
+   "amount": 1170
+  },
+  {
+   "sku": "Sugar 1kg",
+   "amount": 288
+  },
+  {
+   "sku": "Tea 250g",
+   "amount": 270
+  },
+  {
+   "sku": "Dal 1kg",
+   "amount": 240
+  },
+  {
+   "sku": "Milk 1L",
+   "amount": 132
+  },
+  {
+   "sku": "Biscuits",
+   "amount": 60
+  }
+ ],
+ "credit_bills": [
+  {
+   "bill": "5040",
+   "customer": "Sukhwinder Kaur",
+   "sku": "Atta 10kg",
+   "amount": 1680,
+   "status_written": "Khata",
+   "date": "01 Sep"
+  },
+  {
+   "bill": "5001",
+   "customer": "Manpreet Kaur",
+   "sku": "Rice 5kg",
+   "amount": 780,
+   "status_written": "udhaar",
+   "date": "09 Sep"
+  },
+  {
+   "bill": "5038",
+   "customer": "Harish Chand",
+   "sku": "Atta 10kg",
+   "amount": 420,
+   "status_written": "Credit",
+   "date": "15 Sep"
+  },
+  {
+   "bill": "5094",
+   "customer": "Manpreet Kaur",
+   "sku": "Atta 10kg",
+   "amount": 420,
+   "status_written": "Credit",
+   "date": "19 Aug"
+  },
+  {
+   "bill": "5098",
+   "customer": "Anil Sethi",
+   "sku": "Rice 5kg",
+   "amount": 390,
+   "status_written": "Pending",
+   "date": "06 Sep"
+  },
+  {
+   "bill": "5082",
+   "customer": "Baljit Singh",
+   "sku": "Dal 1kg",
+   "amount": 240,
+   "status_written": "Udhaar",
+   "date": "26 Aug"
+  },
+  {
+   "bill": "5068",
+   "customer": "Harish Chand",
+   "sku": "Sugar 1kg",
+   "amount": 144,
+   "status_written": "Pending",
+   "date": "27 Aug"
+  },
+  {
+   "bill": "5014",
+   "customer": "Anil Sethi",
+   "sku": "Tea 250g",
+   "amount": 135,
+   "status_written": "Udhaar",
+   "date": "26 Aug"
+  },
+  {
+   "bill": "5015",
+   "customer": "Anil Sethi",
+   "sku": "Tea 250g",
+   "amount": 135,
+   "status_written": "Pending",
+   "date": "26 Sep"
+  },
+  {
+   "bill": "5071",
+   "customer": "Neha Gupta",
+   "sku": "Sugar 1kg",
+   "amount": 96,
+   "status_written": "Pending",
+   "date": "11 Sep"
+  },
+  {
+   "bill": "5004",
+   "customer": "Anil Sethi",
+   "sku": "Milk 1L",
+   "amount": 66,
+   "status_written": "Credit",
+   "date": "25 Aug"
+  },
+  {
+   "bill": "5041",
+   "customer": "Harish Chand",
+   "sku": "Milk 1L",
+   "amount": 66,
+   "status_written": "udhaar",
+   "date": "23 Sep"
+  },
+  {
+   "bill": "5105",
+   "customer": "Harish Chand",
+   "sku": "Biscuits",
+   "amount": 60,
+   "status_written": "udhaar",
+   "date": "27 Aug"
+  },
+  {
+   "bill": "5063",
+   "customer": "Harish Chand",
+   "sku": "Sugar 1kg",
+   "amount": 48,
+   "status_written": "Khata",
+   "date": "16 Aug"
+  }
+ ]
+}

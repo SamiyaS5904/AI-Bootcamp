@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirana store — August 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --ink:#1A2733; --body:#46535F; --quiet:#7C8894;
+  --page:#FCFCFB; --card:#FFFFFF; --line:#E6E4DF; --hair:#F0EEE9;
+  --accent:#C2703D; --paid:#3D7A6B; --owed:#B0453B; --grey:#B9BDC2;
+  --wash:#F6F5F2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+  font:400 16.5px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600;line-height:1.2;margin:0;letter-spacing:-.01em}
+p{margin:0 0 1em}
+.wrap{max-width:880px;margin:0 auto;padding:0 28px}
+
+/* header */
+header{padding:52px 0 34px}
+.eyebrow{font-size:.82rem;color:var(--quiet);margin-bottom:20px;line-height:1.7}
+.eyebrow b{color:var(--body);font-weight:600}
+h1{font-size:clamp(2rem,5vw,2.9rem);max-width:20ch}
+.stand{color:var(--body);font-size:1.05rem;max-width:60ch;margin-top:16px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:rgba(252,252,251,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.navin{max-width:880px;margin:0 auto;padding:0 28px;display:flex;gap:30px;overflow-x:auto}
+nav button{appearance:none;background:none;border:0;font:inherit;font-size:.92rem;
+  color:var(--quiet);padding:16px 0 13px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+nav button:hover{color:var(--ink)}
+nav button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+/* sections */
+main{padding:44px 0 100px}
+section{display:none}
+section.on{display:block}
+h2{font-size:1.9rem;margin-bottom:12px}
+.intro{color:var(--body);max-width:62ch;margin-bottom:40px}
+.block{margin:0 0 52px}
+.block:last-child{margin-bottom:0}
+h3{font-size:1.22rem;margin-bottom:8px}
+.sub{color:var(--quiet);font-size:.92rem;max-width:60ch;margin:0 0 18px}
+.after{color:var(--body);font-size:.97rem;max-width:62ch;margin-top:18px}
+.after b{font-weight:600;color:var(--ink)}
+
+/* headline numbers */
+.lead{border-top:2px solid var(--ink);border-bottom:1px solid var(--line);
+  padding:26px 0;margin-bottom:44px;display:grid;gap:26px}
+@media(min-width:640px){.lead{grid-template-columns:1fr 1fr}}
+.lead .n{font-family:"Source Serif 4",serif;font-size:2.7rem;line-height:1;font-weight:600}
+.lead .n.owed{color:var(--owed)}
+.lead .l{color:var(--quiet);font-size:.92rem;margin-top:8px;max-width:34ch}
+
+.strip{display:flex;gap:34px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);margin-bottom:44px}
+.strip div{min-width:104px}
+.strip b{display:block;font-family:"Source Serif 4",serif;font-size:1.35rem;font-weight:600}
+.strip span{font-size:.84rem;color:var(--quiet)}
+
+/* chart figure */
+figure{margin:0;background:var(--card);border:1px solid var(--line);padding:24px 24px 18px}
+.plot{position:relative;height:300px}
+.plot.tall{height:360px}
+figcaption{color:var(--quiet);font-size:.88rem;margin-top:16px;padding-top:14px;border-top:1px solid var(--hair);max-width:62ch}
+
+/* bar of money */
+.moneybar{display:flex;height:40px;border:1px solid var(--line)}
+.moneybar i{height:100%}
+.keys{display:flex;flex-wrap:wrap;gap:22px;margin-top:14px;font-size:.88rem;color:var(--body)}
+.keys span{display:flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+
+/* insight */
+.point{border-left:2px solid var(--line);padding-left:22px;margin:0 0 34px}
+.point h3{font-size:1.15rem}
+.point p{color:var(--body);font-size:.98rem;margin:8px 0 0;max-width:62ch}
+.point .todo{color:var(--accent);font-weight:500;margin-top:10px}
+
+/* flags */
+.flag{border:1px solid var(--line);border-top:3px solid var(--owed);background:var(--card);
+  padding:28px 28px 24px;margin-bottom:28px}
+.flag h3{font-size:1.35rem;color:var(--owed)}
+.flag .size{color:var(--owed);font-size:.9rem;margin:6px 0 16px}
+.flag p{color:var(--body);max-width:62ch}
+.flag .fix{background:var(--wash);padding:18px 20px;margin-top:20px;font-size:.96rem;color:var(--body)}
+.flag .fix b{color:var(--ink)}
+
+/* idea */
+.idea{background:var(--wash);padding:22px 24px;margin:0 0 52px}
+.idea h3{font-family:Inter,sans-serif;font-size:.88rem;font-weight:600;color:var(--accent)}
+.idea p{margin:8px 0 0;color:var(--body);font-size:.97rem;max-width:62ch}
+
+/* slider */
+.tool{border:1px solid var(--line);background:var(--card);padding:24px}
+.tool input{width:100%;max-width:440px;accent-color:var(--owed);margin-top:6px}
+.tool .out{font-family:"Source Serif 4",serif;font-size:1.3rem;margin-top:14px;line-height:1.45;max-width:56ch}
+.tool .out small{display:block;font-family:Inter,sans-serif;font-size:.88rem;color:var(--quiet);margin-top:6px}
+
+/* lists */
+ul.plain{list-style:none;padding:0;margin:0}
+ul.plain li{padding:11px 0;border-bottom:1px solid var(--hair);display:flex;gap:12px;color:var(--body)}
+ul.plain li input{margin-top:6px;width:15px;height:15px;accent-color:var(--paid);flex:0 0 auto}
+ul.plain li.done label{color:var(--quiet);text-decoration:line-through}
+label{cursor:pointer}
+.stage{font-size:.86rem;font-weight:600;color:var(--accent);margin:34px 0 6px}
+.stage:first-child{margin-top:0}
+
+/* tables */
+.scroll{overflow-x:auto;border:1px solid var(--line);background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 14px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--hair)}
+th:first-child,td:first-child{text-align:left}
+thead th{background:var(--wash);color:var(--body);font-weight:600;font-size:.82rem;border-bottom:1px solid var(--line)}
+tfoot td{font-weight:600;background:var(--wash);border-top:1px solid var(--line)}
+tbody tr:hover{background:#FAF9F6}
+td.owed{color:var(--owed)}
+td.unk{color:var(--quiet);font-style:italic}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.filters button{appearance:none;font:inherit;font-size:.86rem;padding:7px 14px;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);color:var(--body)}
+.filters button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filters input{font:inherit;font-size:.86rem;padding:7px 12px;border:1px solid var(--line);background:var(--card);min-width:180px}
+footer{border-top:1px solid var(--line);margin-top:60px;padding-top:20px;color:var(--quiet);font-size:.85rem}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <p class="eyebrow">Day 3, Task 2 — Data analysis using Claude<br>
+    Analyse the dataset, find insights, report flags<br>
+    <b>Samiya Sehgal</b> &nbsp;·&nbsp; URN 2302662</p>
+  <h1>A kirana shop sold Rs 22,885 in August. Rs 5,365 never came back.</h1>
+  <p class="stand">Forty-five orders, nine regular customers, twenty-two days. The shop is healthy. The udhaar book is not — because it does not exist.</p>
+</header>
+
+<nav>
+  <div class="navin" role="tablist">
+    <button role="tab" id="t1" aria-controls="s1" aria-selected="true">The month</button>
+    <button role="tab" id="t2" aria-controls="s2" aria-selected="false">What earns</button>
+    <button role="tab" id="t3" aria-controls="s3" aria-selected="false">Who pays</button>
+    <button role="tab" id="t4" aria-controls="s4" aria-selected="false">Two flags</button>
+    <button role="tab" id="t5" aria-controls="s5" aria-selected="false">The numbers</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- 1 -->
+<section class="on" id="s1" role="tabpanel" aria-labelledby="t1" tabindex="0">
+  <div class="lead">
+    <div><div class="n">Rs 22,885</div><div class="l">sold across 45 orders in 22 days</div></div>
+    <div><div class="n owed">Rs 5,365</div><div class="l">of that has not been confirmed as paid — nearly one rupee in four</div></div>
+  </div>
+
+  <div class="strip">
+    <div><b>Rs 1,040</b><span>a day</span></div>
+    <div><b>Rs 509</b><span>a bill</span></div>
+    <div><b>114</b><span>items sold</span></div>
+    <div><b>9</b><span>customers, all regulars</span></div>
+    <div><b>22</b><span>days, none empty</span></div>
+  </div>
+
+  <div class="block">
+    <h3>Money earned each day</h3>
+    <p class="sub">Hover any point for that day's exact takings.</p>
+    <figure>
+      <div class="plot"><canvas id="c-daily"></canvas></div>
+      <figcaption>About two orders arrived every single day, yet takings swung from Rs 270 to Rs 3,020. The peak is one customer buying two rice bags — Rs 2,900 of that day's Rs 3,020. Nothing here is falling; the day's total simply depends on whether something big sold.</figcaption>
+    </figure>
+    <p class="after">The second half of the month looks 10% lower than the first, but that is only where the rice orders happened to land. Twenty-two days is far too short to read a trend, a festival or a best weekday.</p>
+  </div>
+
+  <div class="block">
+    <h3>Where the Rs 22,885 went</h3>
+    <div class="moneybar" role="img" aria-label="76.6% collected, 18.9% on udhaar, 4.6% with no payment status">
+      <i style="background:var(--paid);flex:0 0 76.6%"></i>
+      <i style="background:var(--owed);flex:0 0 18.9%"></i>
+      <i style="background:var(--grey);flex:0 0 4.6%"></i>
+    </div>
+    <div class="keys">
+      <span><i class="dot" style="background:var(--paid)"></i>Collected — Rs 17,520</span>
+      <span><i class="dot" style="background:var(--owed)"></i>Given on udhaar — Rs 4,315</span>
+      <span><i class="dot" style="background:var(--grey)"></i>Never written down — Rs 1,050</span>
+    </div>
+    <p class="after">The grey piece matters as much as the red one. Three orders have no payment status at all, so the shop cannot say whether that money ever arrived.</p>
+  </div>
+
+  <div class="idea">
+    <h3>Sales and cash are not the same thing</h3>
+    <p>A sale happens the moment goods leave the shop. Cash happens only when the customer pays. Udhaar puts a gap between the two — which is how a shop can look busy all month and still find the cash box empty.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="s2" role="tabpanel" aria-labelledby="t2" tabindex="0">
+  <h2>What earns the money</h2>
+  <p class="intro">Ten products. Three of them carry the shop, and the two that move fastest across the counter barely register.</p>
+
+  <div class="block">
+    <figure>
+      <div class="plot tall"><canvas id="c-prod"></canvas></div>
+      <figcaption>Rice 25kg brought Rs 8,700 from only five orders — 38 paise of every rupee earned. With atta and ghee it reaches 65%.</figcaption>
+    </figure>
+  </div>
+
+  <div class="point">
+    <h3>One product is holding up the whole shop</h3>
+    <p>Rice sells once or twice a week, so a single missed sale is felt immediately. If rice runs out for a week, or a shop nearby prices the same bag Rs 50 lower, about a third of the business is exposed.</p>
+    <p class="todo">Never let rice, atta or ghee finish. Check their stock daily and the local rice price monthly.</p>
+  </div>
+
+  <div class="block">
+    <h3>The busiest goods earn the least</h3>
+    <p class="sub">Grey is share of items handed over the counter. Dark is share of money earned.</p>
+    <figure>
+      <div class="plot"><canvas id="c-vv"></canvas></div>
+      <figcaption>Salt and biscuits are 40 of every 100 items sold and under 5% of the money. Rice and ghee are 10 items in 100 and half the money.</figcaption>
+    </figure>
+  </div>
+
+  <div class="point">
+    <h3>Shelf space should follow value, not speed</h3>
+    <p>Salt and biscuits are worth keeping — they bring people through the door. But they should not be eating the best shelf space or the stock money.</p>
+    <p class="todo">Keep cheap fast-movers near the counter; put rice, atta and ghee where they are seen.</p>
+  </div>
+
+  <div class="idea">
+    <h3>The 80–20 rule</h3>
+    <p>In almost every shop a few items bring most of the money — roughly 20% of products give about 80% of earnings. Here it is sharper: three products out of ten give 65%. That tells you what must never run out, and how much rests on it.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="s3" role="tabpanel" aria-labelledby="t3" tabindex="0">
+  <h2>Who pays, and who does not</h2>
+  <p class="intro">All nine customers come back. But spending and paying are two different rankings, and only one of them puts money in the box.</p>
+
+  <div class="block">
+    <p class="sub">Green is paid, red is udhaar, grey is orders where nobody wrote anything down.</p>
+    <figure>
+      <div class="plot tall"><canvas id="c-cust"></canvas></div>
+      <figcaption>Harpreet Singh spends the most — Rs 6,390, an average bill of Rs 1,278 against the shop's Rs 509 — and has never taken udhaar. Ramesh Kumar visits most often, seven times, but paid cash twice: the shop has received Rs 1,400 of the Rs 3,615 he took.</figcaption>
+    </figure>
+  </div>
+
+  <div class="point">
+    <h3>The customer who comes most often pays the least</h3>
+    <p>Visits are easy to notice; cash received is what the shop lives on. Ranked by money actually in hand, the quiet customer beats the frequent one four times over.</p>
+    <p class="todo">Count your best customers by what they have paid, and look after the top three — they are 58% of the money.</p>
+  </div>
+
+  <div class="block">
+    <h3>Goods going out against money coming in</h3>
+    <figure>
+      <div class="plot"><canvas id="c-gap"></canvas></div>
+      <figcaption>The dark line is goods that left the shop; the green line is money that returned. The gap never closes — by 22 August it stands at Rs 5,365, about five days of business.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <h3>Try a credit limit</h3>
+    <p class="sub">Move the slider to see what a per-order udhaar limit would have stopped, using the thirteen real credit orders from this month.</p>
+    <div class="tool">
+      <label for="limit">Limit per order</label>
+      <input type="range" id="limit" min="0" max="1500" step="50" value="500">
+      <div class="out" id="limit-out"></div>
+    </div>
+  </div>
+
+  <div class="idea">
+    <h3>Working money</h3>
+    <p>Money in a shop moves in a circle: buy stock, sell it, cash returns, buy again. Udhaar breaks the circle — the goods are gone, the cash has not come back, and the supplier still has to be paid.</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="s4" role="tabpanel" aria-labelledby="t4" tabindex="0">
+  <h2>Two flags</h2>
+  <p class="intro">Both are supported by the numbers on the other tabs. Neither costs money to fix.</p>
+
+  <div class="flag">
+    <h3>Udhaar is uncontrolled, and unrecorded</h3>
+    <p class="size">Rs 5,365 — 23.4% of sales — about five days of business</p>
+    <p>Goods worth Rs 4,315 went out on credit and another Rs 1,050 has nothing written about payment at all. The shop has already paid its supplier for those goods. Eight of the nine customers take udhaar, and Ramesh Kumar alone owes Rs 2,215 — more than half the credit book.</p>
+    <p>The deeper problem is that the register has no column for repayment. There is no way to tell what has quietly been settled from what is genuinely outstanding. It also worsens under pressure: in Week 2, the weakest week of the month, 42% of sales went on credit, and the largest single credit item was a Rs 1,450 rice bag.</p>
+    <div class="fix"><b>What to do.</b> Start one udhaar notebook this week: date, name, amount, due date, date paid, balance left. Set a limit of about Rs 500 per customer — twelve of the thirteen credit orders were already below it, so it costs no goodwill and stops only the rice bag and Ramesh Kumar's build-up. Take cash for rice and ghee. Agree small monthly payments with Ramesh: keep the customer, change the terms.</div>
+  </div>
+
+  <div class="flag">
+    <h3>The register cannot be trusted</h3>
+    <p class="size">Rs 2,155 of sales missing from the book — 9.4% understated</p>
+    <p>Six orders have no amount written. One total is wrong by Rs 80. Three orders do not record whether the customer paid. Three customers appear under two spellings each, and dates come in five formats. The owner is therefore working from a sales figure about 9% too low, cannot say who owes what, and cannot even search for a customer by name.</p>
+    <div class="fix"><b>What to do.</b> One date format, one spelling per customer, and never an empty amount or payment box — draw the columns first if it is a paper book. Then add one more column: what the shop paid the supplier. That single column is the difference between knowing what you sell and knowing what you earn.</div>
+  </div>
+
+  <div class="block">
+    <h3>What to do first</h3>
+    <p class="stage">This week</p>
+    <ul class="plain" id="todo">
+      <li><input type="checkbox" id="a1"><label for="a1">Start the udhaar notebook, with a repayment column</label></li>
+      <li><input type="checkbox" id="a2"><label for="a2">Set a limit of about Rs 500 of udhaar per customer</label></li>
+      <li><input type="checkbox" id="a3"><label for="a3">Take only cash for Rice 25kg and Ghee 1kg</label></li>
+      <li><input type="checkbox" id="a4"><label for="a4">Agree monthly payments with Ramesh Kumar for his Rs 2,215</label></li>
+      <li><input type="checkbox" id="a5"><label for="a5">Fill every column of the register, especially payment</label></li>
+      <li><input type="checkbox" id="a6"><label for="a6">Never let rice, atta or ghee run out</label></li>
+    </ul>
+    <p class="stage">Next few months</p>
+    <ul class="plain">
+      <li><input type="checkbox" id="b1"><label for="b1">Record what you paid the supplier — then profit becomes visible</label></li>
+      <li><input type="checkbox" id="b2"><label for="b2">Look after the top three customers, 58% of the money</label></li>
+      <li><input type="checkbox" id="b3"><label for="b3">Give the best shelf space to costly items, not fast-moving ones</label></li>
+      <li><input type="checkbox" id="b4"><label for="b4">Try delivery for heavy items — two customers have already asked</label></li>
+    </ul>
+    <p class="stage">Later</p>
+    <ul class="plain">
+      <li><input type="checkbox" id="c1"><label for="c1">Add a medium-priced line or two, so less rests on rice</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">Keep clean records for three to six months, then look for seasons</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">Suggest one small extra at the counter; watch the Rs 509 average</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="s5" role="tabpanel" aria-labelledby="t5" tabindex="0">
+  <h2>The numbers</h2>
+  <p class="intro">All 45 orders as analysed, after the register was cleaned. Filter or search; the total at the foot follows what you are looking at.</p>
+
+  <div class="filters">
+    <button data-f="all" aria-pressed="true">All 45</button>
+    <button data-f="Paid" aria-pressed="false">Paid — 29</button>
+    <button data-f="Udhaar" aria-pressed="false">Udhaar — 13</button>
+    <button data-f="Unrecorded" aria-pressed="false">Not written down — 3</button>
+    <input type="search" id="q" placeholder="Search name or item" aria-label="Search orders">
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Order</th><th>Aug</th><th>Customer</th><th>Item</th><th>Qty</th><th>Price</th><th>Amount</th><th>Payment</th></tr></thead>
+      <tbody id="rows"></tbody>
+      <tfoot><tr><td colspan="6" id="ftxt"></td><td id="fsum"></td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="block" style="margin-top:44px">
+    <h3>Products</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Product</th><th>Price</th><th>Orders</th><th>Items</th><th>Sales</th><th>Share</th><th>On udhaar</th></tr></thead>
+        <tbody>
+          <tr><td>Rice 25kg</td><td>1,450</td><td>5</td><td>6</td><td>8,700</td><td>38.0%</td><td>1,450</td></tr>
+          <tr><td>Atta 10kg</td><td>420</td><td>5</td><td>8</td><td>3,360</td><td>14.7%</td><td>0</td></tr>
+          <tr><td>Ghee 1kg</td><td>560</td><td>4</td><td>5</td><td>2,800</td><td>12.2%</td><td>0</td></tr>
+          <tr><td>Sugar 5kg</td><td>220</td><td>5</td><td>9</td><td>1,980</td><td>8.7%</td><td>0</td></tr>
+          <tr><td>Dal (Chana) 1kg</td><td>95</td><td>5</td><td>17</td><td>1,615</td><td>7.1%</td><td>665</td></tr>
+          <tr><td>Tea 250g</td><td>140</td><td>5</td><td>9</td><td>1,260</td><td>5.5%</td><td>840</td></tr>
+          <tr><td>Mustard Oil 1L</td><td>180</td><td>4</td><td>6</td><td>1,080</td><td>4.7%</td><td>540</td></tr>
+          <tr><td>Soap (pack of 4)</td><td>120</td><td>4</td><td>8</td><td>960</td><td>4.2%</td><td>720</td></tr>
+          <tr><td>Biscuits (assorted)</td><td>30</td><td>4</td><td>21</td><td>630</td><td>2.8%</td><td>0</td></tr>
+          <tr><td>Salt 1kg</td><td>20</td><td>4</td><td>25</td><td>500</td><td>2.2%</td><td>100</td></tr>
+        </tbody>
+        <tfoot><tr><td>Total</td><td></td><td>45</td><td>114</td><td>22,885</td><td>100.0%</td><td>4,315</td></tr></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Customers</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Customer</th><th>Orders</th><th>Sales</th><th>Share</th><th>Average bill</th><th>Not paid</th></tr></thead>
+        <tbody>
+          <tr><td>Harpreet Singh</td><td>5</td><td>6,390</td><td>27.9%</td><td>1,278</td><td>0</td></tr>
+          <tr><td>Ramesh Kumar</td><td>7</td><td>3,615</td><td>15.8%</td><td>516</td><td class="owed">2,215</td></tr>
+          <tr><td>Simran Kaur</td><td>6</td><td>3,310</td><td>14.5%</td><td>552</td><td class="owed">660</td></tr>
+          <tr><td>Vikram Sharma</td><td>5</td><td>2,180</td><td>9.5%</td><td>436</td><td class="owed">180</td></tr>
+          <tr><td>Pooja Rani</td><td>4</td><td>1,850</td><td>8.1%</td><td>463</td><td class="owed">120</td></tr>
+          <tr><td>Manpreet Kaur</td><td>4</td><td>1,570</td><td>6.9%</td><td>393</td><td class="owed">360</td></tr>
+          <tr><td>Anita Devi</td><td>5</td><td>1,445</td><td>6.3%</td><td>289</td><td class="owed">360</td></tr>
+          <tr><td>Gurpreet Singh</td><td>5</td><td>1,335</td><td>5.8%</td><td>267</td><td class="owed">280</td></tr>
+          <tr><td>Neha Verma</td><td>4</td><td>1,190</td><td>5.2%</td><td>298</td><td class="owed">1,190</td></tr>
+        </tbody>
+        <tfoot><tr><td>Total</td><td>45</td><td>22,885</td><td>100.0%</td><td>509</td><td>5,365</td></tr></tfoot>
+      </table>
+    </div>
+    <p class="after">Neha Verma's Rs 1,190 is Rs 140 of udhaar plus Rs 1,050 across three orders where the payment box was left empty, so none of it can be confirmed as received.</p>
+  </div>
+
+  <div class="block">
+    <h3>What was fixed before any of this was counted</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Problem in the register</th><th>Size</th><th>What was done</th></tr></thead>
+        <tbody>
+          <tr><td>Amount left blank</td><td>6 orders, Rs 2,235</td><td>Worked out from quantity × price</td></tr>
+          <tr><td>Total added up wrong (BKS-018)</td><td>Rs 1,200 for Rs 1,120 of ghee</td><td>Corrected</td></tr>
+          <tr><td>Payment status left blank</td><td>3 orders, Rs 1,050</td><td>Kept separate, not counted as paid</td></tr>
+          <tr><td>Same name spelt differently</td><td>9 customers, 12 spellings</td><td>Matched into 9</td></tr>
+          <tr><td>Dates in mixed formats</td><td>5 styles</td><td>All read as August 2026</td></tr>
+          <tr><td>Paid / paid / PAID</td><td>3 versions</td><td>Treated as one</td></tr>
+          <tr><td>No cost or purchase price</td><td>every row</td><td>Profit cannot be worked out</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="after">Sales are quantity × price across all 45 orders, which restores the six blanks and corrects the one wrong total. Average bill = 22,885 ÷ 45. Average day = 22,885 ÷ 22. Money received = 17,520 of 22,885. <b>Profit appears nowhere in this dashboard</b>, because the cost of goods is not in the file — and an assumed margin would only look precise, not be true.</p>
+  </div>
+</section>
+
+<footer>Source: Session 3 business dataset, 45 order rows, 1–22 August 2026. Day 3, Task 2 — Samiya Sehgal, URN 2302662.</footer>
+</main>
+
+<script>
+const ORDERS=[["BKS-001",1,"Ramesh Kumar","Atta 10kg",2,420,840,"Paid"],["BKS-002",1,"Simran Kaur","Sugar 5kg",3,220,660,"Paid"],["BKS-003",2,"Ramesh Kumar","Tea 250g",1,140,140,"Udhaar"],["BKS-004",2,"Harpreet Singh","Mustard Oil 1L",2,180,360,"Paid"],["BKS-005",3,"Pooja Rani","Rice 25kg",1,1450,1450,"Paid"],["BKS-006",3,"Simran Kaur","Dal (Chana) 1kg",4,95,380,"Udhaar"],["BKS-007",4,"Gurpreet Singh","Soap (pack of 4)",2,120,240,"Paid"],["BKS-008",4,"Anita Devi","Biscuits (assorted)",6,30,180,"Paid"],["BKS-009",5,"Ramesh Kumar","Salt 1kg",5,20,100,"Udhaar"],["BKS-010",5,"Manpreet Kaur","Ghee 1kg",1,560,560,"Paid"],["BKS-011",6,"Vikram Sharma","Atta 10kg",1,420,420,"Paid"],["BKS-012",6,"Simran Kaur","Tea 250g",2,140,280,"Udhaar"],["BKS-013",7,"Harpreet Singh","Rice 25kg",1,1450,1450,"Paid"],["BKS-014",7,"Neha Verma","Sugar 5kg",2,220,440,"Unrecorded"],["BKS-015",8,"Ramesh Kumar","Dal (Chana) 1kg",3,95,285,"Udhaar"],["BKS-016",8,"Anita Devi","Mustard Oil 1L",1,180,180,"Paid"],["BKS-017",9,"Gurpreet Singh","Biscuits (assorted)",4,30,120,"Paid"],["BKS-018",9,"Vikram Sharma","Ghee 1kg",2,560,1120,"Paid"],["BKS-019",9,"Manpreet Kaur","Soap (pack of 4)",3,120,360,"Udhaar"],["BKS-020",10,"Pooja Rani","Salt 1kg",10,20,200,"Paid"],["BKS-021",10,"Simran Kaur","Atta 10kg",1,420,420,"Paid"],["BKS-022",11,"Ramesh Kumar","Rice 25kg",1,1450,1450,"Udhaar"],["BKS-023",11,"Harpreet Singh","Tea 250g",3,140,420,"Paid"],["BKS-024",12,"Neha Verma","Dal (Chana) 1kg",2,95,190,"Unrecorded"],["BKS-025",12,"Gurpreet Singh","Sugar 5kg",1,220,220,"Paid"],["BKS-026",13,"Anita Devi","Mustard Oil 1L",2,180,360,"Udhaar"],["BKS-027",13,"Vikram Sharma","Biscuits (assorted)",8,30,240,"Paid"],["BKS-028",14,"Manpreet Kaur","Ghee 1kg",1,560,560,"Paid"],["BKS-029",14,"Ramesh Kumar","Soap (pack of 4)",2,120,240,"Udhaar"],["BKS-030",15,"Pooja Rani","Salt 1kg",4,20,80,"Paid"],["BKS-031",15,"Simran Kaur","Rice 25kg",1,1450,1450,"Paid"],["BKS-032",16,"Harpreet Singh","Atta 10kg",3,420,1260,"Paid"],["BKS-033",16,"Neha Verma","Tea 250g",1,140,140,"Udhaar"],["BKS-034",17,"Gurpreet Singh","Dal (Chana) 1kg",5,95,475,"Paid"],["BKS-035",17,"Anita Devi","Sugar 5kg",2,220,440,"Paid"],["BKS-036",18,"Vikram Sharma","Mustard Oil 1L",1,180,180,"Udhaar"],["BKS-037",18,"Manpreet Kaur","Biscuits (assorted)",3,30,90,"Paid"],["BKS-038",19,"Ramesh Kumar","Ghee 1kg",1,560,560,"Paid"],["BKS-039",19,"Pooja Rani","Soap (pack of 4)",1,120,120,"Udhaar"],["BKS-040",20,"Simran Kaur","Salt 1kg",6,20,120,"Paid"],["BKS-041",20,"Harpreet Singh","Rice 25kg",2,1450,2900,"Paid"],["BKS-042",21,"Neha Verma","Atta 10kg",1,420,420,"Unrecorded"],["BKS-043",21,"Gurpreet Singh","Tea 250g",2,140,280,"Udhaar"],["BKS-044",22,"Anita Devi","Dal (Chana) 1kg",3,95,285,"Paid"],["BKS-045",22,"Vikram Sharma","Sugar 5kg",1,220,220,"Paid"]];
+
+const INK='#1A2733', BODY='#46535F', ACC='#C2703D', PAID='#3D7A6B', OWED='#B0453B',
+      GREY='#B9BDC2', SOFT='#C8D2DA', LINE='#F0EEE9';
+const rs = n => 'Rs ' + n.toLocaleString('en-IN');
+
+Chart.defaults.font.family="Inter, sans-serif";
+Chart.defaults.font.size=12.5;
+Chart.defaults.color=BODY;
+Chart.defaults.maintainAspectRatio=false;
+Chart.defaults.plugins.tooltip.backgroundColor=INK;
+Chart.defaults.plugins.tooltip.padding=11;
+Chart.defaults.plugins.tooltip.cornerRadius=2;
+Chart.defaults.plugins.tooltip.displayColors=false;
+Chart.defaults.plugins.legend.labels.boxWidth=11;
+Chart.defaults.plugins.legend.labels.boxHeight=11;
+Chart.defaults.plugins.legend.labels.padding=16;
+Chart.defaults.elements.bar.borderRadius=1;
+
+const yMoney = { grid:{color:LINE}, border:{display:false}, beginAtZero:true,
+  ticks:{ callback:v => v>=1000 ? (v/1000)+'k' : v } };
+const xBare = { grid:{display:false}, border:{color:LINE} };
+
+const DAILY=[1500,500,1830,420,660,700,1890,465,1600,620,1870,410,600,800,1530,1400,915,270,680,3020,700,505];
+const PAIDD=[1500,360,1450,420,560,420,1450,180,1240,620,420,220,240,560,1530,1260,915,90,560,3020,0,505];
+const PRODUCTS=[["Rice 25kg",8700],["Atta 10kg",3360],["Ghee 1kg",2800],["Sugar 5kg",1980],["Dal (Chana) 1kg",1615],["Tea 250g",1260],["Mustard Oil 1L",1080],["Soap (pack of 4)",960],["Biscuits (assorted)",630],["Salt 1kg",500]];
+const CUST=[["Harpreet Singh",6390,0,0],["Ramesh Kumar",1400,2215,0],["Simran Kaur",2650,660,0],["Vikram Sharma",2000,180,0],["Pooja Rani",1730,120,0],["Manpreet Kaur",1210,360,0],["Anita Devi",1085,360,0],["Gurpreet Singh",1055,280,0],["Neha Verma",0,140,1050]];
+const CREDIT=[100,120,140,140,180,240,280,280,285,360,360,380,1450];
+const TOTAL=22885;
+
+const make={}, made={};
+
+make['c-daily']=el=>new Chart(el,{type:'line',
+  data:{labels:DAILY.map((_,i)=>i+1),datasets:[
+    {data:DAILY,borderColor:INK,borderWidth:2,tension:.3,pointRadius:2.5,pointHoverRadius:6,
+     pointBackgroundColor:INK,fill:true,backgroundColor:'rgba(26,39,51,.06)'},
+    {data:DAILY.map(()=>1040),borderColor:ACC,borderDash:[5,5],borderWidth:1.2,pointRadius:0,fill:false}
+  ]},
+  options:{interaction:{mode:'index',intersect:false},
+    scales:{x:{...xBare,title:{display:true,text:'day of August',color:'#7C8894',font:{size:11}}},y:yMoney},
+    plugins:{legend:{display:false},tooltip:{callbacks:{
+      title:c=>'August '+c[0].label,
+      label:c=>c.datasetIndex===0? 'Earned '+rs(c.parsed.y) : 'Average '+rs(1040)}}}}});
+
+make['c-prod']=el=>new Chart(el,{type:'bar',
+  data:{labels:PRODUCTS.map(p=>p[0]),datasets:[{data:PRODUCTS.map(p=>p[1]),
+    backgroundColor:PRODUCTS.map(p=>p[1]>=2800?ACC:SOFT),
+    hoverBackgroundColor:PRODUCTS.map(p=>p[1]>=2800?ACC:INK)}]},
+  options:{indexAxis:'y',
+    scales:{x:{...yMoney},y:{grid:{display:false},border:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{
+      label:c=>rs(c.parsed.x)+' — '+(100*c.parsed.x/TOTAL).toFixed(1)+'% of all sales'}}}}});
+
+make['c-vv']=el=>new Chart(el,{type:'bar',
+  data:{labels:['Salt + biscuits','Rice + ghee','Everything else'],datasets:[
+    {label:'share of items sold',data:[40.4,9.6,50.0],backgroundColor:GREY},
+    {label:'share of money earned',data:[4.9,50.3,44.8],backgroundColor:INK}]},
+  options:{scales:{x:xBare,y:{grid:{color:LINE},border:{display:false},beginAtZero:true,max:60,
+      ticks:{callback:v=>v+'%'}}},
+    plugins:{legend:{position:'bottom'},tooltip:{displayColors:true,
+      callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}}}});
+
+make['c-cust']=el=>new Chart(el,{type:'bar',
+  data:{labels:CUST.map(c=>c[0]),datasets:[
+    {label:'paid',data:CUST.map(c=>c[1]),backgroundColor:PAID,stack:'a'},
+    {label:'udhaar',data:CUST.map(c=>c[2]),backgroundColor:OWED,stack:'a'},
+    {label:'not written down',data:CUST.map(c=>c[3]),backgroundColor:GREY,stack:'a'}]},
+  options:{indexAxis:'y',
+    scales:{x:{...yMoney,stacked:true},y:{stacked:true,grid:{display:false},border:{display:false}}},
+    plugins:{legend:{position:'bottom'},tooltip:{displayColors:true,
+      callbacks:{label:c=>c.dataset.label+': '+rs(c.parsed.x)}}}}});
+
+make['c-gap']=el=>{
+  const sold=[],got=[]; let s=0,g=0;
+  for(let i=0;i<22;i++){s+=DAILY[i];g+=PAIDD[i];sold.push(s);got.push(g);}
+  return new Chart(el,{type:'line',
+    data:{labels:sold.map((_,i)=>i+1),datasets:[
+      {label:'goods sold',data:sold,borderColor:INK,borderWidth:2,pointRadius:0,tension:.2,
+       fill:'+1',backgroundColor:'rgba(176,69,59,.10)'},
+      {label:'money received',data:got,borderColor:PAID,borderWidth:2,pointRadius:0,tension:.2,fill:false}]},
+    options:{interaction:{mode:'index',intersect:false},
+      scales:{x:{...xBare,title:{display:true,text:'day of August',color:'#7C8894',font:{size:11}}},y:yMoney},
+      plugins:{legend:{position:'bottom'},tooltip:{displayColors:true,callbacks:{
+        title:c=>'By August '+c[0].label,
+        label:c=>c.dataset.label+': '+rs(c.parsed.y),
+        afterBody:c=>'Not yet paid: '+rs(c[0].parsed.y-c[1].parsed.y)}}}}});
+};
+
+/* tabs */
+const tabs=[...document.querySelectorAll('nav button')];
+function show(id){
+  tabs.forEach(t=>{
+    const on=t.id===id;
+    t.setAttribute('aria-selected',on);
+    document.getElementById(t.getAttribute('aria-controls')).classList.toggle('on',on);
+  });
+  const panel=document.getElementById(document.getElementById(id).getAttribute('aria-controls'));
+  panel.querySelectorAll('canvas').forEach(cv=>{ if(!made[cv.id]&&make[cv.id]) made[cv.id]=make[cv.id](cv); });
+  history.replaceState(null,'','#'+id);
+  window.scrollTo({top:0});
+}
+tabs.forEach((t,i)=>{
+  t.addEventListener('click',()=>show(t.id));
+  t.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+    e.preventDefault();
+    const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];
+    n.focus(); show(n.id);
+  });
+});
+show(document.getElementById(location.hash.slice(1))?location.hash.slice(1):'t1');
+
+/* slider */
+const lim=document.getElementById('limit'), lout=document.getElementById('limit-out');
+function upd(){
+  const L=+lim.value, stop=CREDIT.filter(v=>v>L), amt=stop.reduce((a,b)=>a+b,0);
+  lout.innerHTML = L===0
+    ? `No udhaar at all: every one of the 13 credit orders stops, keeping ${rs(4315)} in the shop.<small>Realistic for a neighbourhood shop? Probably not — udhaar is what keeps regulars loyal.</small>`
+    : `A limit of ${rs(L)} stops <b>${stop.length} of the 13</b> credit orders and keeps <b>${rs(amt)}</b> in the shop.<small>${13-stop.length} orders still go through. The Rs 1,450 rice bag is the single largest.</small>`;
+}
+lim.addEventListener('input',upd); upd();
+
+/* checklist */
+document.querySelectorAll('.plain input').forEach(cb=>
+  cb.addEventListener('change',()=>cb.closest('li').classList.toggle('done',cb.checked)));
+
+/* orders table */
+const body=document.getElementById('rows'),ftxt=document.getElementById('ftxt'),fsum=document.getElementById('fsum');
+let f='all',q='';
+function draw(){
+  const list=ORDERS.filter(o=>(f==='all'||o[7]===f)&&(!q||(o[0]+' '+o[2]+' '+o[3]).toLowerCase().includes(q)));
+  body.innerHTML=list.map(o=>{
+    const cls=o[7]==='Udhaar'?'owed':(o[7]==='Unrecorded'?'unk':'');
+    const pay=o[7]==='Unrecorded'?'not written down':o[7].toLowerCase();
+    return `<tr><td>${o[0]}</td><td>${o[1]}</td><td>${o[2]}</td><td>${o[3]}</td><td>${o[4]}</td><td>${o[5]}</td><td>${o[6].toLocaleString('en-IN')}</td><td class="${cls}">${pay}</td></tr>`;
+  }).join('')||'<tr><td colspan="8" style="text-align:left;color:#7C8894">Nothing matches that search.</td></tr>';
+  ftxt.textContent=`${list.length} order${list.length===1?'':'s'}`;
+  fsum.textContent=rs(list.reduce((a,o)=>a+o[6],0));
+}
+document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  f=b.dataset.f; draw();
+}));
+document.getElementById('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();draw();});
+draw();
+</script>
+</body>
+</html>

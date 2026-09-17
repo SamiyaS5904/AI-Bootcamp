@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khata — Kirana store intelligence</title>
+<meta name="description" content="Two months of a kirana shop's register, repaired and read: what it earns, what it is owed, and the one tool that would fix both.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  /* surfaces */
+  --page:#0F1419; --card:#161C23; --raise:#1B232C; --sunk:#12181E;
+  --line:#252F3A; --hair:#1E2731;
+  /* ink */
+  --t1:#E6EDF3; --t2:#9AA9B8; --t3:#6B7A8A;
+  /* data + status — validated against #161C23 on the dark band */
+  --accent:#CE7C3C; --accent-lit:#E8995C;
+  --cool:#4586C9; --cool-lit:#6BA3DC;
+  --paid:#3FA98A; --owed:#D8645A;
+  --glow:rgba(206,124,60,.16);
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--t1);
+  font:400 15.5px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(760px 420px at 12% -6%, rgba(206,124,60,.13), transparent 60%),
+    radial-gradient(680px 400px at 92% 4%, rgba(69,134,201,.10), transparent 62%)}
+h1,h2,h3,h4{margin:0;font-weight:600;line-height:1.18;letter-spacing:-.025em}
+p{margin:0 0 1em}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.shell{display:flex;min-height:100vh;position:relative;z-index:1}
+aside{width:244px;flex:0 0 244px;border-right:1px solid var(--line);
+  padding:26px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:26px;
+  background:rgba(15,20,25,.72);backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:11px;padding:0 8px}
+.brand .mark{width:32px;height:32px;border-radius:9px;flex:0 0 auto;
+  background:linear-gradient(145deg,var(--accent-lit),var(--accent));
+  box-shadow:0 0 0 1px rgba(232,153,92,.3),0 6px 18px -6px var(--accent);
+  display:grid;place-items:center;font-weight:700;font-size:15px;color:#140D07}
+.brand b{font-size:.98rem;font-weight:600;letter-spacing:-.02em;display:block}
+.brand span{font-size:.72rem;color:var(--t3);display:block;letter-spacing:.02em}
+nav{display:flex;flex-direction:column;gap:2px;flex:1}
+nav button{appearance:none;background:none;border:0;font:inherit;font-size:.895rem;
+  color:var(--t2);padding:9px 12px;border-radius:9px;cursor:pointer;text-align:left;
+  display:flex;align-items:center;gap:11px;transition:background .16s,color .16s;width:100%}
+nav button i{width:6px;height:6px;border-radius:50%;background:var(--line);flex:0 0 auto;transition:.16s}
+nav button:hover{background:var(--raise);color:var(--t1)}
+nav button[aria-selected=true]{background:linear-gradient(90deg,var(--glow),transparent);
+  color:var(--t1);font-weight:500;box-shadow:inset 2px 0 0 var(--accent)}
+nav button[aria-selected=true] i{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.side-meta{font-size:.72rem;color:var(--t3);line-height:1.6;padding:0 10px;border-top:1px solid var(--hair);padding-top:16px}
+.side-meta b{color:var(--t2);font-weight:500}
+
+main{flex:1;min-width:0;padding:38px 44px 96px;max-width:1180px}
+section{display:none;animation:rise .34s cubic-bezier(.2,.7,.3,1)}
+section.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- type ---------- */
+.eyebrow{font-size:.71rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-lit);
+  font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+.eyebrow::after{content:"";height:1px;flex:1;max-width:120px;
+  background:linear-gradient(90deg,var(--line),transparent)}
+h1{font-size:clamp(1.9rem,3.7vw,3rem);max-width:19ch;letter-spacing:-.035em}
+h1 em{font-style:normal;color:var(--accent-lit)}
+h2{font-size:1.65rem;margin-bottom:10px}
+h3{font-size:1.08rem}
+.stand{color:var(--t2);font-size:1.03rem;max-width:64ch;margin-top:18px}
+.intro{color:var(--t2);max-width:66ch;margin-bottom:36px}
+.sub{color:var(--t3);font-size:.88rem;max-width:64ch;margin:0 0 16px}
+.block{margin:0 0 46px}
+.sec-head{margin-bottom:30px}
+
+/* ---------- cards ---------- */
+.card{background:linear-gradient(160deg,var(--raise),var(--card));
+  border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 18px 40px -28px #000}
+
+/* KPI grid */
+.kpis{display:grid;gap:14px;margin:30px 0 40px;
+  grid-template-columns:repeat(auto-fit,minmax(196px,1fr))}
+.kpi{padding:19px 20px;position:relative;overflow:hidden}
+.kpi .k{font-size:.73rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.kpi .v{font-family:"JetBrains Mono",monospace;font-size:1.72rem;font-weight:700;
+  margin-top:9px;letter-spacing:-.045em;font-variant-numeric:tabular-nums;line-height:1.05}
+.kpi .d{font-size:.8rem;color:var(--t2);margin-top:7px;line-height:1.45}
+.kpi.hero{grid-column:span 2}
+@media(max-width:640px){.kpi.hero{grid-column:span 1}}
+.kpi.hero .v{font-size:2.5rem}
+.kpi.warn .v{color:var(--owed)}
+.kpi.warn::after{content:"";position:absolute;inset:0;border-radius:var(--r);pointer-events:none;
+  background:radial-gradient(260px 120px at 100% 0,rgba(216,100,90,.14),transparent 70%)}
+.kpi.good .v{color:var(--paid)}
+.kpi .spark{height:38px;margin-top:12px;margin-bottom:-4px;position:relative}
+.ringwrap{display:flex;align-items:center;gap:16px;margin-top:6px}
+.ring{width:74px;height:74px;flex:0 0 auto}
+.ring text{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;fill:var(--paid)}
+
+/* proportion strip */
+.split{display:flex;height:46px;gap:3px;border-radius:9px;overflow:hidden;margin-top:6px}
+.split i{height:100%;position:relative;display:grid;place-items:center;
+  font-size:.76rem;font-weight:600;color:#0C1116;font-family:"JetBrains Mono",monospace}
+.keys{display:flex;flex-wrap:wrap;gap:20px;margin-top:14px;font-size:.86rem;color:var(--t2)}
+.keys span{display:flex;gap:8px;align-items:center}
+.dot{width:9px;height:9px;border-radius:3px;flex:0 0 auto}
+
+/* charts */
+figure{margin:0;padding:22px 22px 16px}
+.plot{position:relative;height:400px}
+.plot.sm{height:330px}
+.plot.lg{height:450px}
+/* Pin the canvas to its box. Chart.js sets an inline pixel width, and between a
+   viewport change and its own resize the old width briefly survives — enough to
+   push the page sideways on a phone. Anchoring it here makes that impossible. */
+.plot > canvas,.spark > canvas{position:absolute;top:0;left:0;
+  width:100%!important;height:100%!important}
+figcaption{color:var(--t3);font-size:.85rem;margin-top:15px;padding-top:14px;
+  border-top:1px solid var(--hair);max-width:66ch}
+.fig-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  flex-wrap:wrap;margin-bottom:4px}
+.fig-head .tagnum{font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--t3)}
+
+/* three layers */
+.layer{display:grid;gap:11px;margin:24px 0 0}
+.lrow{background:var(--sunk);border:1px solid var(--hair);border-radius:11px;padding:16px 18px;
+  border-left:2px solid var(--line)}
+.lrow .tag{font-size:.68rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  display:flex;align-items:center;gap:9px;margin-bottom:8px;color:var(--t3)}
+.lrow p{margin:0;color:var(--t2);font-size:.95rem;max-width:68ch}
+.lrow.i{border-left-color:var(--t2)} .lrow.i .tag{color:var(--t1)}
+.lrow.f{border-left-color:var(--cool)} .lrow.f .tag{color:var(--cool-lit)}
+.lrow.a{border-left-color:var(--paid)} .lrow.a .tag{color:var(--paid)}
+.lrow.a p{color:var(--t1)}
+.conf{font-family:Inter;font-size:.63rem;letter-spacing:.08em;padding:3px 8px;border-radius:99px;
+  border:1px solid var(--line);color:var(--t3);font-weight:600}
+.conf.high{color:var(--paid);border-color:rgba(63,169,138,.4);background:rgba(63,169,138,.09)}
+.conf.med{color:var(--accent-lit);border-color:rgba(232,153,92,.4);background:rgba(232,153,92,.09)}
+.conf.low{color:var(--t3);background:var(--raise)}
+
+/* flags */
+.flag{padding:26px 28px 22px;margin-bottom:18px;position:relative;overflow:hidden;
+  border-color:rgba(216,100,90,.26)}
+.flag::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--owed),rgba(216,100,90,.15))}
+.flag::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(420px 150px at 0 0,rgba(216,100,90,.09),transparent 70%)}
+.flag > *{position:relative;z-index:1}
+.flag h3{font-size:1.2rem;display:flex;align-items:center;gap:11px}
+.flag .num{font-family:"JetBrains Mono",monospace;font-size:.72rem;font-weight:700;
+  background:rgba(216,100,90,.15);color:var(--owed);padding:4px 8px;border-radius:7px;
+  border:1px solid rgba(216,100,90,.3)}
+.flag .size{color:var(--owed);font-size:.83rem;margin:11px 0 15px;font-weight:500;
+  font-family:"JetBrains Mono",monospace;letter-spacing:-.01em}
+.flag p{color:var(--t2);max-width:67ch;font-size:.95rem}
+.flag .fix{background:var(--sunk);border:1px solid var(--hair);border-radius:10px;
+  padding:16px 18px;margin-top:18px;font-size:.93rem;color:var(--t2)}
+.flag .fix b{color:var(--t1)}
+.flag.soft{border-color:rgba(206,124,60,.26)}
+.flag.soft::before{background:linear-gradient(180deg,var(--accent),rgba(206,124,60,.15))}
+.flag.soft::after{background:radial-gradient(420px 150px at 0 0,rgba(206,124,60,.09),transparent 70%)}
+.flag.soft h3,.flag.soft .size{color:var(--accent-lit)}
+.flag.soft .num{background:rgba(206,124,60,.15);color:var(--accent-lit);border-color:rgba(206,124,60,.3)}
+
+/* idea + limits */
+.idea{border-radius:var(--r);padding:20px 22px;margin:0 0 44px;
+  background:linear-gradient(135deg,rgba(206,124,60,.09),rgba(69,134,201,.05));
+  border:1px solid rgba(206,124,60,.2)}
+.idea h3{font-size:.76rem;font-weight:700;color:var(--accent-lit);letter-spacing:.13em;text-transform:uppercase}
+.idea p{margin:10px 0 0;color:var(--t2);font-size:.94rem;max-width:66ch}
+.cant{padding:24px 26px 20px;margin-bottom:44px}
+.cant ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:1px;background:var(--hair);
+  border-radius:10px;overflow:hidden}
+.cant li{padding:14px 16px;background:var(--card);font-size:.92rem;display:grid;gap:4px}
+.cant li b{color:var(--t1);font-weight:600}
+.cant li em{font-style:normal;color:var(--t3);font-size:.865rem;line-height:1.55}
+
+/* checklist */
+.stage{font-size:.71rem;font-weight:700;color:var(--accent-lit);margin:36px 0 12px;
+  letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.stage::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--line),transparent)}
+.stage:first-child{margin-top:0}
+ul.plain{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+ul.plain li{padding:14px 16px;border-radius:11px;background:var(--card);border:1px solid var(--hair);
+  display:flex;gap:13px;color:var(--t2);font-size:.93rem;transition:border-color .18s,background .18s}
+ul.plain li:hover{border-color:var(--line);background:var(--raise)}
+ul.plain li input{margin-top:3px;width:16px;height:16px;accent-color:var(--paid);flex:0 0 auto;cursor:pointer}
+ul.plain li b{color:var(--t1)}
+ul.plain li.done{opacity:.5}
+ul.plain li.done label{text-decoration:line-through}
+label{cursor:pointer}
+
+/* tool */
+.steps{display:grid;gap:11px;margin:20px 0 0;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.steps > div{border-radius:12px;padding:18px;background:var(--card);border:1px solid var(--hair);position:relative}
+.steps b{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;
+  font-family:"JetBrains Mono",monospace;font-size:.82rem;margin-bottom:11px;
+  background:rgba(206,124,60,.14);color:var(--accent-lit);border:1px solid rgba(206,124,60,.28)}
+.steps span{font-size:.88rem;color:var(--t2);line-height:1.55;display:block}
+.feat{padding:22px 24px;margin-bottom:14px}
+.feat h3{font-size:1.03rem}
+.feat .why{font-size:.79rem;color:var(--cool-lit);margin:7px 0 12px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase}
+.feat p{margin:0;color:var(--t2);font-size:.93rem;max-width:67ch}
+.msg{background:linear-gradient(145deg,#16241F,#121B18);border:1px solid rgba(63,169,138,.28);
+  border-radius:14px 14px 14px 4px;padding:17px 19px;margin:18px 0 0;
+  font-size:.93rem;color:var(--t1);max-width:44ch;line-height:1.65;
+  box-shadow:0 14px 34px -22px #000}
+.msg b{color:var(--paid);font-family:"JetBrains Mono",monospace}
+.msg .meta{display:block;color:var(--t3);font-size:.75rem;margin-top:11px;
+  padding-top:10px;border-top:1px solid rgba(63,169,138,.16)}
+.rules{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:1px;
+  background:var(--hair);border-radius:11px;overflow:hidden}
+.rules li{padding:13px 16px 13px 38px;background:var(--card);color:var(--t2);
+  font-size:.92rem;position:relative}
+.rules li::before{content:"";position:absolute;left:16px;top:19px;width:7px;height:7px;
+  border-radius:50%;background:var(--paid);box-shadow:0 0 9px rgba(63,169,138,.6)}
+.rules li b{color:var(--t1)}
+.rules.no li::before{background:var(--t3);box-shadow:none}
+
+/* tables */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:.875rem}
+th,td{padding:11px 15px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--hair)}
+th:first-child,td:first-child{text-align:left}
+thead th{background:var(--sunk);color:var(--t3);font-weight:600;font-size:.72rem;
+  letter-spacing:.09em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+tbody td{color:var(--t2)}
+tbody td:first-child{color:var(--t1)}
+tbody td:not(:first-child){font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--raise)}
+tfoot td{font-weight:700;background:var(--sunk);color:var(--t1);border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace}
+tfoot td:first-child{font-family:Inter}
+td.owed{color:var(--owed)} td.good{color:var(--paid)}
+td.unk{color:var(--t3);font-style:italic;font-family:Inter!important}
+tr.pick td{background:rgba(206,124,60,.09)}
+tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--accent);color:var(--accent-lit);font-weight:600}
+
+footer{border-top:1px solid var(--hair);margin-top:50px;padding-top:20px;
+  color:var(--t3);font-size:.82rem;max-width:70ch;line-height:1.7}
+footer code{font-family:"JetBrains Mono",monospace;color:var(--t2);font-size:.95em}
+
+/* ---------- responsive ---------- */
+@media(max-width:900px){
+  .shell{flex-direction:column}
+  aside{width:auto;flex:none;height:auto;position:sticky;top:0;z-index:20;
+    flex-direction:row;align-items:center;gap:14px;padding:12px 16px;
+    border-right:0;border-bottom:1px solid var(--line);overflow:hidden}
+  .brand{padding:0;flex:0 0 auto}
+  .brand .txt{display:none}
+  nav{flex-direction:row;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav button{white-space:nowrap;padding:8px 13px;font-size:.84rem}
+  nav button i{display:none}
+  nav button[aria-selected=true]{box-shadow:none;background:rgba(206,124,60,.15)}
+  .side-meta{display:none}
+  main{padding:26px 18px 70px}
+}
+@media(max-width:560px){
+  main{padding:22px 14px 60px}
+  .kpi.hero .v{font-size:2rem}
+  figure{padding:14px 12px 10px}
+  .plot{height:330px} .plot.lg{height:360px} .plot.sm{height:290px}
+  .flag,.feat,.cant{padding:18px 16px}
+  .steps{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside>
+  <div class="brand">
+    <div class="mark">क</div>
+    <div class="txt"><b>Khata</b><span>Kirana intelligence</span></div>
+  </div>
+  <nav role="tablist">
+    <button role="tab" id="t1" aria-controls="s1" aria-selected="true"><i></i>Overview</button>
+    <button role="tab" id="t2" aria-controls="s2" aria-selected="false"><i></i>Flags</button>
+    <button role="tab" id="t3" aria-controls="s3" aria-selected="false"><i></i>Insights</button>
+    <button role="tab" id="t4" aria-controls="s4" aria-selected="false"><i></i>What to do</button>
+    <button role="tab" id="t5" aria-controls="s5" aria-selected="false"><i></i>The tool</button>
+    <button role="tab" id="t6" aria-controls="s6" aria-selected="false"><i></i>Numbers</button>
+  </nav>
+  <div class="side-meta">
+    <b>106 bills</b> · 02 Aug 2026 – 28 Sep 2026<br>
+    10 products · 7 named customers<br><br>
+    <b>Samiya Sehgal</b><br>URN 2302662
+  </div>
+</aside>
+
+<main>
+
+<!-- ================= 1 OVERVIEW ================= -->
+<section class="on" id="s1" role="tabpanel" aria-labelledby="t1" tabindex="0">
+  <p class="eyebrow">Kirana store · round two</p>
+  <h1>The shop sold ₹45,540 in two months. <em>₹4,680 never came back.</em></h1>
+  <p class="stand">And before any of that could be counted, the register had to be repaired:
+    a bill entered twice, five different ways of writing a date, 36 spellings
+    for 10 products, and a day-of-week column that disagrees with its own dates
+    81.0% of the time.</p>
+
+  <div class="kpis">
+    <div class="card kpi hero">
+      <div class="k">Total sold</div>
+      <div class="v">₹45,540</div>
+      <div class="d">105 bills over 48 trading days</div>
+      <div class="spark"><canvas id="c-spark"></canvas></div>
+    </div>
+    <div class="card kpi warn">
+      <div class="k">Unpaid udhaar</div>
+      <div class="v">₹4,680</div>
+      <div class="d">10.3% of sales · 14 bills ·
+        6 people · ≈4.9 days of trade</div>
+    </div>
+    <div class="card kpi good">
+      <div class="k">Collected</div>
+      <div class="ringwrap">
+        <svg class="ring" viewBox="0 0 80 80" role="img" aria-label="89.7 percent collected">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="#252F3A" stroke-width="7"/>
+          <circle id="ring-arc" cx="40" cy="40" r="32" fill="none" stroke="#3FA98A" stroke-width="7"
+                  stroke-linecap="round" transform="rotate(-90 40 40)"/>
+          <text x="40" y="45" text-anchor="middle">89.7%</text>
+        </svg>
+        <div><div class="v" style="font-size:1.3rem;margin:0">₹40,860</div>
+          <div class="d">actually in hand</div></div>
+      </div>
+    </div>
+    <div class="card kpi">
+      <div class="k">Average bill</div>
+      <div class="v">₹434</div>
+      <div class="d">251 units · 1.0 item per bill</div>
+    </div>
+    <div class="card kpi">
+      <div class="k">Top 2 products</div>
+      <div class="v">71.6%</div>
+      <div class="d">Atta and rice alone, of all revenue</div>
+    </div>
+    <div class="card kpi">
+      <div class="k">Register error</div>
+      <div class="v">₹1,526</div>
+      <div class="d">the book understates the shop by 3.4%</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Where the ₹45,540 went</h3>
+    <p class="sub">Money the shop actually has, against goods that left the counter on a promise.</p>
+    <div class="split" role="img" aria-label="89.7 percent collected, 10.3 percent on udhaar">
+      <i style="background:linear-gradient(90deg,#357F69,#3FA98A);width:89.7%">89.7%</i>
+      <i style="background:linear-gradient(90deg,#B04F46,#D8645A);width:10.3%"></i>
+    </div>
+    <div class="keys">
+      <span><i class="dot" style="background:var(--paid)"></i> Collected — ₹40,860 (89.7%)</span>
+      <span><i class="dot" style="background:var(--owed)"></i> Udhaar — ₹4,680 (10.3%)</span>
+    </div>
+  </div>
+
+  <div class="block">
+    <figure class="card">
+      <div class="fig-head">
+        <h3>Money earned each trading day</h3>
+        <span class="tagnum">48 days · 02 Aug 2026 – 28 Sep 2026</span>
+      </div>
+      <div class="plot"><canvas id="c-daily"></canvas></div>
+      <figcaption>The spikes are not busier days — they are days a bag of atta or rice sold.
+        Bill counts barely move; the day's takings depend almost entirely on whether a
+        ₹390 or ₹420 item went out.</figcaption>
+    </figure>
+  </div>
+
+  <div class="idea">
+    <h3>Sales and cash are not the same thing</h3>
+    <p>A sale happens when goods leave the shop. Cash happens when the customer pays. Udhaar
+      splits the two apart — sometimes by months. This is how a shop can look busy all day and
+      still have an empty cash box at night. Always ask two questions, not one: how much did I
+      sell, and how much did I actually receive?</p>
+  </div>
+
+  <div class="card cant">
+    <h3>What this data cannot tell us</h3>
+    <p class="sub">Stated plainly, because a confident answer here would be invented rather
+      than measured.</p>
+    <ul>
+      <li><b>Profit, or any margin.</b>
+        <em>The file records the selling price only. There is no purchase price, so nothing
+          in this study says what the shop earns — only what it sells.</em></li>
+      <li><b>Stockouts, overstock and dead stock.</b>
+        <em>There is no stock column at all. A day with no atta sold could mean nobody wanted
+          atta, or it could mean there was none. These two are indistinguishable here, so no
+          inventory claim is made anywhere on this page.</em></li>
+      <li><b>Peak hours, and therefore staffing.</b>
+        <em>Bills carry a date but no time. Any "the shop is busiest at 6pm" claim would be
+          guesswork.</em></li>
+      <li><b>What customers buy together.</b>
+        <em>Every bill has exactly one item — 1.0 items per bill across all
+          105 of them. There are no baskets in this data, so cross-selling cannot be
+          studied at all.</em></li>
+      <li><b>How most people paid.</b>
+        <em>The payment column mixes method with status, so for 68 of
+          105 bills it is impossible to say whether cash or UPI came in.</em></li>
+      <li><b>Anything seasonal.</b>
+        <em>Two months, one of them cut short on 28 Sep 2026. Far too short to read
+          festivals, seasons or a trend.</em></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 2 FLAGS ================= -->
+<section id="s2" role="tabpanel" aria-labelledby="t2" tabindex="0">
+  <div class="sec-head">
+    <p class="eyebrow">Problems the data reveals</p>
+    <h2>Flags</h2>
+    <p class="intro">Four things the register reveals about the business, in the order I would
+      fix them. The first is worth real money and is fixable this week.</p>
+  </div>
+
+  <div class="card flag">
+    <h3><span class="num">01</span> ₹4,680 of udhaar, with no due date and no way to chase it</h3>
+    <p class="size">10.3% of sales · 14 bills · 6 people · ≈4.9 days of trade</p>
+    <p>The shop has already paid a supplier for these goods and the money has not come back.
+      The register has no due-date column, no repayment column and no running balance, so
+      there is no way to tell what has quietly been settled and what is lost. Worse, there is
+      not a single part-payment anywhere in the file — udhaar here is all-or-nothing, which is
+      the hardest possible thing to ask a neighbour for.</p>
+    <p>It is also concentrated in exactly the wrong goods:
+      <b>₹3,690 of the ₹4,680 is atta and rice</b> — 78.8% of the
+      credit book sitting in the two products that carry the shop. And the single largest
+      item is bill 5040: 4 bags of
+      Atta 10kg to Sukhwinder Kaur on one day,
+      ₹1,680 — 35.9% of all the
+      money owed, in one transaction.</p>
+    <div class="fix"><b>What to do.</b> Start a real udhaar book this week with six columns:
+      date, name, amount, due date, date paid, balance left. Cap any single credit bill at
+      ₹500 — that one rule alone would have stopped the ₹1,680 bill.
+      Allow part-payments, because ₹200 against ₹1,680 is a conversation and ₹1,680 is a
+      confrontation. Take cash on atta and rice.</div>
+  </div>
+
+  <div class="card flag">
+    <h3><span class="num">02</span> The register cannot be trusted as written</h3>
+    <p class="size">Book says ₹44,014 · truth is ₹45,540 · understated by ₹1,526 (3.4%)</p>
+    <p>One bill (5016) is entered twice, adding ₹700 of revenue
+      that never happened. 8 bills have no amount written and
+      4 have no quantity. 28 amounts are written as
+      text — <i>Rs 420</i>, <i>700/-</i>, <i>₹1950</i> — so they cannot be added up without
+      cleaning. Unpaid is recorded as an empty box 9 times and as a
+      literal zero 5 times, which are the same thing written two ways.</p>
+    <p>And the date is written 5 different ways in one column, including both
+      day-first and month-first on the same page — which for 2 bills
+      (5036, 5096) makes the true date genuinely unknowable. The
+      <i>day</i> column is worse: checked against a real 2026 calendar it is wrong on
+      <b>81.0% of rows</b>, claiming 35 Sundays where
+      the dates give 19. One of those two columns is fiction, and it is not the dates.</p>
+    <div class="fix"><b>What to do.</b> None of this needs money — it needs the choice to be
+      taken away from whoever is writing. One date format, one spelling per product, never an
+      empty box. On paper that means ruling the columns first. Better, stop writing the fields
+      at all and let a phone fill them in, which is what the tool in the last section does.</div>
+  </div>
+
+  <div class="card flag">
+    <h3><span class="num">03</span> Two products carry 71.6% of the shop</h3>
+    <p class="size">Atta ₹19,740 (43.3%) + Rice ₹12,870 (28.3%)</p>
+    <p>Atta alone is 43.3% of everything the shop earns, from 24 bills.
+      A supplier raising the price of a 10kg bag, or the shop next door pricing it ₹20 lower,
+      moves nearly half this business. The bottom four products together
+      — sugar, dal, biscuits and salt — are under 6.1%.</p>
+    <div class="fix"><b>What to do.</b> These two lines need checking daily and their local
+      price watched monthly. Over the next few months, deliberately grow one or two mid-priced
+      lines so the shop is not resting this hard on a single bag.</div>
+  </div>
+
+  <div class="card flag soft">
+    <h3><span class="num">04</span> The till cannot be reconciled</h3>
+    <p class="size">Payment method unknown on 68 of 105 bills</p>
+    <p>The payment column mixes two completely different questions. <i>Cash</i> is a method.
+      <i>Paid</i>, <i>Done</i>, <i>Pending</i>, <i>Udhaar</i>, <i>Khata</i>, <i>Credit</i> are
+      states. They sit in the same column, in 9 different spellings.
+      Only 23 bills actually say how the money arrived, so the shop cannot
+      answer "how much cash should be in the box tonight?" — which is the one question a daily
+      count is supposed to settle.</p>
+    <div class="fix"><b>What to do.</b> Split it into two questions that each have one answer:
+      <i>paid or udhaar?</i> and, if paid, <i>cash or UPI?</i> Two taps, and the till becomes
+      countable.</div>
+  </div>
+</section>
+
+<!-- ================= 3 INSIGHTS ================= -->
+<section id="s3" role="tabpanel" aria-labelledby="t3" tabindex="0">
+  <div class="sec-head">
+    <p class="eyebrow">Evidence, interpretation, action</p>
+    <h2>Insights &amp; inferences</h2>
+    <p class="intro">Each finding is split into three separate layers: what the data literally
+      shows, what I think that means about the business, and what the owner could actually do.
+      The middle layer is interpretation, so it carries a confidence label — and where the data
+      is thin, that label says so.</p>
+  </div>
+
+  <div class="block">
+    <figure class="card">
+      <div class="fig-head">
+        <h3>One bag of atta holds up the shop</h3>
+        <span class="tagnum">share of revenue · running total</span>
+      </div>
+      <p class="sub">Bars and line are both percentages, on one scale.</p>
+      <div class="plot lg"><canvas id="c-pareto"></canvas></div>
+      <figcaption>Three products out of 10 reach 80.2% of revenue.
+        The bottom five together come to just 8.9%.</figcaption>
+    </figure>
+    <div class="layer">
+      <div class="lrow i"><span class="tag">Insight</span>
+        <p>Atta 10kg produced ₹19,740 — 43.3% of all revenue — from
+          24 bills and 47 bags. With rice it reaches
+          71.6%. Salt and biscuits together moved 22 units and
+          returned ₹588.</p></div>
+      <div class="lrow f"><span class="tag">Inference <span class="conf high">High confidence</span></span>
+        <p>This is a staples shop that also happens to sell snacks, not a general store. Its
+          income is genuinely fragile to two SKUs: a week without atta would take out roughly
+          two-fifths of turnover, and no amount of biscuit sales would cover it. The pattern is
+          strong enough, and consistent enough across both months, that it is not an artefact
+          of the short window.</p></div>
+      <div class="lrow a"><span class="tag">Do this</span>
+        <p>Never let atta or rice run out — check both every morning before opening. Write down
+          the local price of a 10kg atta bag once a month, because a ₹20 gap next door moves
+          43.3% of this business.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <figure class="card">
+      <div class="fig-head">
+        <h3>The goods that move most earn least</h3>
+        <span class="tagnum">money share vs unit share</span>
+      </div>
+      <p class="sub">Where the blue bar is taller than the orange, the shop is doing work it is
+        not being paid much for.</p>
+      <div class="plot lg"><canvas id="c-vv"></canvas></div>
+      <figcaption>Milk is the clearest case: 23.5% of every unit handed across
+        the counter, 8.6% of the money.</figcaption>
+    </figure>
+    <div class="layer">
+      <div class="lrow i"><span class="tag">Insight</span>
+        <p>Milk 1L appears on 22 bills — the second most of any product — and
+          accounts for 59 units, but only ₹3,894 (8.6%) of
+          revenue. Atta is the mirror image: 47 units, 43.3% of the money.</p></div>
+      <div class="lrow f"><span class="tag">Inference <span class="conf med">Moderate confidence</span></span>
+        <p>Milk is almost certainly the footfall driver — the reason someone walks in at all —
+          while atta is what they occasionally walk out with. That would make milk worth
+          protecting even though it earns little. I can only infer this, though:
+          every bill in this file has exactly one item, so there is no direct evidence that a
+          milk visit ever turns into a second purchase. That evidence does not exist yet
+          because the register has never recorded a basket.</p></div>
+      <div class="lrow a"><span class="tag">Do this</span>
+        <p>Keep milk cheap, fresh and never out of stock — treat it as the cost of getting
+          people through the door, not as a product that should pay for itself. Then start
+          writing more than one item per bill, so that in three months there is finally data on
+          what a milk customer also buys.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <figure class="card">
+      <div class="fig-head">
+        <h3>Credit sits with four people</h3>
+        <span class="tagnum">paid for vs still owed, per customer</span>
+      </div>
+      <p class="sub">Unpaid amounts are labelled directly on the bars, so the split does not
+        depend on telling red from green.</p>
+      <div class="plot lg"><canvas id="c-cust"></canvas></div>
+      <figcaption>Gurpreet Singh appears with nothing owed — 3 bills,
+        ₹1,143, always paid.</figcaption>
+    </figure>
+    <div class="layer">
+      <div class="lrow i"><span class="tag">Insight</span>
+        <p>6 of 7 named customers owe money.
+          Sukhwinder Kaur owes ₹1,680 — 78.2% of everything
+          she has ever bought here — and Anil Sethi owes 56.8% of his.
+          ₹3,690 of the ₹4,680 book (78.8%) is atta and
+          rice. Not one bill in the file shows a part-payment.</p></div>
+      <div class="lrow f"><span class="tag">Inference <span class="conf high">High confidence</span></span>
+        <p>Credit is not being extended as a small convenience on small items — it is being
+          extended on precisely the expensive staples the shop has already paid a supplier for.
+          The absence of any part-payment suggests there is no mechanism for it: the customer
+          either clears the whole thing or stays in the book, and so they stay in the book.
+          That is a system problem, not a character problem — these are repeat customers who
+          spend more per visit (₹494) than walk-ins (₹412).</p></div>
+      <div class="lrow a"><span class="tag">Do this</span>
+        <p>Cap a single udhaar bill at ₹500 and take cash on atta and rice — those two rules
+          together remove most of the risk without refusing anybody. Then offer part-payment
+          out loud: "jitna ho sake de dijiye." It is the difference between a customer who pays
+          something this week and one who avoids the shop.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <figure class="card">
+      <div class="fig-head">
+        <h3>Credit is going out on the shop's most expensive goods</h3>
+        <span class="tagnum">unpaid rupees by product</span>
+      </div>
+      <div class="plot sm"><canvas id="c-creditsku"></canvas></div>
+      <figcaption>Atta and rice are 78.8% of the credit book — and
+        71.6% of revenue. The goods the shop can least afford to wait for are
+        exactly the ones it is waiting for.</figcaption>
+    </figure>
+  </div>
+
+  <div class="block">
+    <figure class="card">
+      <div class="fig-head">
+        <h3>The busiest day in the book is a day that was never checked</h3>
+        <span class="tagnum">recomputed vs as written</span>
+      </div>
+      <div class="plot sm"><canvas id="c-wd"></canvas></div>
+      <figcaption>Grey is the <i>day</i> column as written. It claims 35 Sunday
+        bills; the dates give 19. It is wrong on 81.0%
+        of rows overall.</figcaption>
+    </figure>
+    <div class="layer">
+      <div class="lrow i"><span class="tag">Insight</span>
+        <p>Of 105 bills, the written weekday matches the written date only
+          20 times. Recomputed from the dates, takings are highest on
+          Thu (₹11,021) and lowest on Sat (₹3,120).</p></div>
+      <div class="lrow f"><span class="tag">Inference <span class="conf low">Low confidence</span></span>
+        <p>I would not act on the weekday pattern. 48 trading days leaves
+          about seven observations per weekday, and because one atta bill is worth fourteen
+          salt bills, a single large sale moves a whole weekday. Thu looks strong
+          mainly because big-ticket bills happened to land there. What I <i>am</i> confident
+          about is the meta-finding: a whole column of this register is fiction, and it was
+          being written down every single day without anyone checking it against a calendar.</p></div>
+      <div class="lrow a"><span class="tag">Do this</span>
+        <p>Stop writing the day by hand — it adds nothing a date does not already contain, and
+          here it added 105 chances to be wrong. Revisit weekday patterns
+          after three to six months of clean records, not before.</p></div>
+    </div>
+  </div>
+
+  <div class="idea">
+    <h3>Careful — a short period can fool you</h3>
+    <p>August shows ₹25,218 and September ₹20,322, which looks like a fall. It
+      is not safe to call that a decline: September stops on 28 Sep 2026 rather than the
+      30th, and in a shop where one bag of atta is worth fourteen packets of salt, a handful of
+      big bills landing in one month rather than the next explains the whole gap. Before
+      believing any trend, keep clean records for three to six months.</p>
+  </div>
+</section>
+
+<!-- ================= 4 RECOMMENDATIONS ================= -->
+<section id="s4" role="tabpanel" aria-labelledby="t4" tabindex="0">
+  <div class="sec-head">
+    <p class="eyebrow">Actionable</p>
+    <h2>What to do</h2>
+    <p class="intro">In order. Everything in the first group costs nothing but attention, and
+      between them they address ₹4,680 of money already outside the shop.</p>
+  </div>
+
+  <p class="stage">This week</p>
+  <ul class="plain">
+    <li><input type="checkbox" id="k1"><label for="k1"><b>Open a real udhaar book</b> — six columns: date, name, amount, due date, date paid, balance left. 6 people, ₹4,680. Start with the balances on the Numbers tab.</label></li>
+    <li><input type="checkbox" id="k2"><label for="k2"><b>Cap any single credit bill at ₹500.</b> 12 of the 14 udhaar bills in this file were already under ₹500, so almost nobody is refused — it stops the ₹1,680 bag-of-atta bill and nothing else.</label></li>
+    <li><input type="checkbox" id="k3"><label for="k3"><b>Take cash on atta and rice.</b> They are 78.8% of the credit book and 71.6% of revenue — the goods the shop can least afford to wait for.</label></li>
+    <li><input type="checkbox" id="k4"><label for="k4"><b>Say the words "jitna ho sake" out loud.</b> There is not one part-payment in two months. Accepting ₹200 against ₹1,680 collects more than demanding ₹1,680 does.</label></li>
+    <li><input type="checkbox" id="k5"><label for="k5"><b>Collect phone numbers.</b> Not in the data today, and nothing can remind anybody without them. 6 numbers is the whole job.</label></li>
+    <li><input type="checkbox" id="k6"><label for="k6"><b>Never run out of atta or rice.</b> Check both before opening.</label></li>
+  </ul>
+
+  <p class="stage">This month</p>
+  <ul class="plain">
+    <li><input type="checkbox" id="m1"><label for="m1"><b>Fix the writing habit.</b> One date format. One spelling per product — 36 spellings for 10 products is why the shop cannot answer "how much atta did I sell?".</label></li>
+    <li><input type="checkbox" id="m2"><label for="m2"><b>Split the payment column in two:</b> paid or udhaar, and if paid, cash or UPI. Right now the method is unknown on 68 of 105 bills.</label></li>
+    <li><input type="checkbox" id="m3"><label for="m3"><b>Add a purchase-price column.</b> This is the single highest-value change on the page. Without it the shop knows what it sells and has no idea what it earns — not one figure in this study is a profit figure.</label></li>
+    <li><input type="checkbox" id="m4"><label for="m4"><b>Write more than one item per bill.</b> Every bill here has exactly one, which is why nothing can be said about what sells alongside what.</label></li>
+    <li><input type="checkbox" id="m5"><label for="m5"><b>Look after Harish Chand</b> — ₹4,788 across 7 bills, the largest customer in the book.</label></li>
+  </ul>
+
+  <p class="stage">Later</p>
+  <ul class="plain">
+    <li><input type="checkbox" id="l1"><label for="l1"><b>Grow one or two mid-priced lines</b> so the shop is not resting 71.6% on two products.</label></li>
+    <li><input type="checkbox" id="l2"><label for="l2"><b>Record a time on each bill</b> — then, and only then, the peak-hour question becomes answerable.</label></li>
+    <li><input type="checkbox" id="l3"><label for="l3"><b>Revisit weekday and festival patterns</b> after three to six months of clean records. Two months cannot support it.</label></li>
+    <li><input type="checkbox" id="l4"><label for="l4"><b>Add a stock column</b> if inventory questions ever matter. Until one exists, stockouts and dead stock are unanswerable.</label></li>
+  </ul>
+</section>
+
+<!-- ================= 5 TECH SOLUTION ================= -->
+<section id="s5" role="tabpanel" aria-labelledby="t5" tabindex="0">
+  <div class="sec-head">
+    <p class="eyebrow">Proposed tech solution</p>
+    <h2>Khata</h2>
+    <p class="intro">One app on the shopkeeper's own phone. Not a billing machine, not a computer,
+      no barcode scanner, nothing to learn. It does one job — it makes the udhaar book impossible
+      to get wrong — and it does it in three taps at the counter.</p>
+  </div>
+
+  <div class="block">
+    <h3>The problem it solves</h3>
+    <p class="sub">₹4,680 is outside the shop with no due date, no balance and no
+      part-payment. Separately, the register mis-states the shop's own sales by
+      ₹1,526. Both have the same root cause: a human being writes every
+      field by hand, at a busy counter, with no constraints.</p>
+  </div>
+
+  <div class="block">
+    <h3>How it works</h3>
+    <div class="steps">
+      <div><b>1</b><span>Tap the product from a grid of 10 tiles. Nothing is typed, so there is no 36-spellings problem.</span></div>
+      <div><b>2</b><span>The price fills itself from the price list. The total is calculated, never written — so it can never be wrong.</span></div>
+      <div><b>3</b><span>Tap the quantity. Date and weekday are stamped by the phone, so five date formats become one.</span></div>
+      <div><b>4</b><span>Tap <i>Paid</i> or <i>Udhaar</i> — and if paid, <i>cash</i> or <i>UPI</i>. Method and status stop being one confused column.</span></div>
+    </div>
+    <p class="sub" style="margin-top:18px">Roughly four seconds. That matters, because at a
+      busy counter anything slower simply will not be done.</p>
+  </div>
+
+  <div class="block">
+    <h3>Start with udhaar only</h3>
+    <p class="sub">Almost every sale here is cash, so nothing can be captured automatically —
+      someone has to record it. But for this problem, that is not needed.</p>
+    <p style="color:var(--t2);max-width:67ch">A cash sale that is paid on the spot is already
+      finished; there is nothing left to track. Only the udhaar bills need entering — and there
+      were <b style="color:var(--t1)">14 of those in two months, about one every
+      3.4 trading days</b>. That is the version to start with,
+      because it asks for almost no discipline. Recording every sale is the upgrade later, once
+      the habit exists and the owner can see what it gives him.</p>
+  </div>
+
+  <div class="block">
+    <h3>Setting the reminder limit — from this shop's own numbers</h3>
+    <p class="sub">A reminder should only fire when a balance is genuinely worth a message.
+      The right cut-off cannot be a round number picked in advance; here is what each one
+      would actually have caught.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Cut-off</th><th>People it reaches</th><th>Money it covers</th><th>Share of the ₹4,680</th></tr></thead>
+        <tbody><tr><td>₹200</td><td>5 of 6</td><td>₹4,584</td><td>97.9%</td></tr>
+<tr class="pick"><td>₹500 ← recommended</td><td>4 of 6</td><td>₹4,344</td><td>92.8%</td></tr>
+<tr><td>₹1,000</td><td>2 of 6</td><td>₹2,880</td><td>61.5%</td></tr>
+<tr><td>₹2,000</td><td class="owed">0 of 6</td><td class="unk">nothing</td><td class="unk">—</td></tr>
+<tr><td>₹5,000</td><td class="owed">0 of 6</td><td class="unk">nothing</td><td class="unk">—</td></tr></tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin-top:16px">The largest single balance in this shop is
+      ₹1,680. <b style="color:var(--t1)">A ₹2,000 limit would never fire for anybody</b> — the tool would
+      look broken. <b style="color:var(--t1)">₹500 is the number for this shop:</b> it reaches
+      4 of the 6 people who owe anything and covers
+      92.8% of the money, while leaving the two smallest balances alone — which is
+      exactly the behaviour that keeps a neighbour a neighbour.</p>
+  </div>
+
+  <div class="block">
+    <h3>The reminder, and why it is calm</h3>
+    <p class="sub">The risk with any reminder feature is obvious: nag a neighbour over ₹700 and
+      lose them for good. So the design deliberately gives up some collection speed to protect
+      the relationship.</p>
+    <div class="msg">Namaste Sukhwinder Kaur ji 🙏<br><br>
+      Aapka khata: <b>₹1,680</b><br>
+      4 × Atta 10kg — ₹1,680<br><br>
+      Jab suvidha ho. Thoda-thoda bhi chalega.<br>
+      — Kirana Store
+      <span class="meta">Drafted by the app · sent only when the owner taps send</span></div>
+    <ul class="rules">
+      <li><b>The owner presses send, not the app.</b> It writes the message and puts it in a list; he taps send, or skip. If he knows someone has had a bad month, he skips. Automation drafts — the human decides.</li>
+      <li><b>One message per person per fortnight, maximum.</b> Never daily. The app refuses to send a second one even if asked.</li>
+      <li><b>It is a statement, not a demand</b>, and it is itemised. People argue with a total and accept a list.</li>
+      <li><b>It offers part-payment in the message itself</b> — "thoda-thoda bhi chalega" — so the ask is small enough to say yes to.</li>
+      <li><b>A thank-you goes out when it is paid.</b> Shops remember to ask and forget to thank.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>The three other things it does</h3>
+
+    <div class="card feat">
+      <h3>Bill cap warning — at the counter, before the goods leave</h3>
+      <p class="why">Prevention, not collection</p>
+      <p>When <i>Udhaar</i> is tapped, the screen shows that person's running balance and warns
+        if this bill would cross ₹500. Bill 5040 —
+        4 bags of atta, ₹1,680, on its own
+        35.9% of the entire credit book — would have triggered
+        this. A reminder can only chase money after the goods are gone; this stops it leaving.</p>
+    </div>
+
+    <div class="card feat">
+      <h3>Part payment — "thoda-thoda"</h3>
+      <p class="why">Not one part-payment in 105 bills</p>
+      <p>Today udhaar is all-or-nothing: the register can only record a debt as open or closed,
+        so ₹200 against ₹1,680 has nowhere to go and simply is not collected. A part-payment
+        button with a running balance changes the question from "can you pay ₹1,680?" to "kitna
+        de sakte hain aaj?" — which is a question people answer instead of avoiding. This is
+        the single most effective collection mechanic available here, and it is also the
+        gentlest.</p>
+    </div>
+
+    <div class="card feat">
+      <h3>Sunday summary — one message to the owner</h3>
+      <p class="why">No app to open, nothing to learn</p>
+      <p>Every Sunday evening the app sends the owner one WhatsApp message: sold this week,
+        received this week, still outstanding, who owes what, and which of atta or rice is
+        running low. It is the whole dashboard reduced to six lines. It exists because a tool
+        that has to be opened is a tool that stops being opened — this one comes to him.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>What it needs to run</h3>
+    <ul class="rules">
+      <li><b>A price list of 10 products.</b> Already derivable from this file — every product holds exactly one price across both months.</li>
+      <li><b>Customer name and phone number.</b> <i>Not in the data.</i> Phone numbers do not exist anywhere in the register and must be collected — 6 of them to start.</li>
+      <li><b>Opening balances.</b> The ₹4,680 already owed, from the Numbers tab.</li>
+      <li><b>An Android phone with WhatsApp.</b> Nothing else. It runs offline and syncs when there is signal.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>What it deliberately does not do</h3>
+    <ul class="rules no">
+      <li><b>No stock or inventory tracking.</b> There is no stock column in this data to seed it from, and it would demand a daily count — discipline that a register with a duplicated bill and five date formats has not yet earned. Adding it now would make the tool heavy enough to be abandoned.</li>
+      <li><b>No profit reporting.</b> Not until a purchase-price column exists. A profit number built on selling price alone would be invented.</li>
+      <li><b>No automatic sending.</b> Deliberately. See above.</li>
+      <li><b>No requirement to record cash sales.</b> Not at first. The udhaar bills alone — about one every 3.4 trading days — are enough to solve the problem it is built for.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 6 NUMBERS ================= -->
+<section id="s6" role="tabpanel" aria-labelledby="t6" tabindex="0">
+  <div class="sec-head">
+    <p class="eyebrow">Appendix</p>
+    <h2>The numbers</h2>
+    <p class="intro">Everything behind this page. Sales are quantity × rate for all
+      105 bills after removing the duplicate, which fills the
+      8 missing amounts and the 4 missing
+      quantities. Nothing was dropped or guessed.</p>
+  </div>
+
+  <div class="block">
+    <h3>Products</h3>
+    <p class="sub">&nbsp;</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Product</th><th>Rate</th><th>Revenue</th><th>Share</th><th>Bills</th><th>Units</th><th>Unpaid</th></tr></thead>
+      <tbody><tr><td>Atta 10kg</td><td>420</td><td>₹19,740</td><td>43.3%</td><td>24</td><td>47</td><td class="owed">₹2,520</td></tr>
+<tr><td>Rice 5kg</td><td>390</td><td>₹12,870</td><td>28.3%</td><td>12</td><td>33</td><td class="owed">₹1,170</td></tr>
+<tr><td>Milk 1L</td><td>66</td><td>₹3,894</td><td>8.6%</td><td>22</td><td>59</td><td class="owed">₹132</td></tr>
+<tr><td>Refined Oil 1L</td><td>140</td><td>₹3,220</td><td>7.1%</td><td>7</td><td>23</td><td class="unk">—</td></tr>
+<tr><td>Tea 250g</td><td>135</td><td>₹1,755</td><td>3.9%</td><td>7</td><td>13</td><td class="owed">₹270</td></tr>
+<tr><td>Namkeen 200g</td><td>55</td><td>₹1,265</td><td>2.8%</td><td>9</td><td>23</td><td class="unk">—</td></tr>
+<tr><td>Dal 1kg</td><td>120</td><td>₹1,200</td><td>2.6%</td><td>3</td><td>10</td><td class="owed">₹240</td></tr>
+<tr><td>Sugar 1kg</td><td>48</td><td>₹1,008</td><td>2.2%</td><td>11</td><td>21</td><td class="owed">₹288</td></tr>
+<tr><td>Biscuits</td><td>30</td><td>₹300</td><td>0.7%</td><td>5</td><td>10</td><td class="owed">₹60</td></tr>
+<tr><td>Salt 1kg</td><td>24</td><td>₹288</td><td>0.6%</td><td>5</td><td>12</td><td class="unk">—</td></tr></tbody>
+      <tfoot><tr><td>Total</td><td></td><td>₹45,540</td><td>100%</td><td>105</td><td>251</td><td>₹4,680</td></tr></tfoot>
+    </table></div>
+  </div>
+
+  <div class="block">
+    <h3>Named customers</h3>
+    <p class="sub">28 of 105 bills carry a name — ₹13,833
+      (30.4%). The other 77 are walk-ins recorded as
+      <i>Cash</i>, <i>Counter</i>, <i>Walk-in</i> or left blank.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Customer</th><th>Bills</th><th>Spent</th><th>Owed</th><th>% unpaid</th></tr></thead>
+      <tbody><tr><td>Sukhwinder Kaur</td><td>3</td><td>₹2,148</td><td class="owed">₹1,680</td><td class="owed">78.2%</td></tr>
+<tr><td>Manpreet Kaur</td><td>3</td><td>₹3,150</td><td class="owed">₹1,200</td><td class="owed">38.1%</td></tr>
+<tr><td>Harish Chand</td><td>7</td><td>₹4,788</td><td class="owed">₹738</td><td class="owed">15.4%</td></tr>
+<tr><td>Anil Sethi</td><td>6</td><td>₹1,278</td><td class="owed">₹726</td><td class="owed">56.8%</td></tr>
+<tr><td>Baljit Singh</td><td>3</td><td>₹918</td><td class="owed">₹240</td><td class="owed">26.1%</td></tr>
+<tr><td>Neha Gupta</td><td>3</td><td>₹408</td><td class="owed">₹96</td><td class="owed">23.5%</td></tr>
+<tr><td>Gurpreet Singh</td><td>3</td><td>₹1,143</td><td class="good">nothing</td><td class="unk">—</td></tr></tbody>
+    </table></div>
+  </div>
+
+  <div class="block">
+    <h3>Every unpaid bill</h3>
+    <p class="sub">&nbsp;</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Bill</th><th>Date</th><th>Customer</th><th>Item</th><th>Written as</th><th>Amount</th></tr></thead>
+      <tbody><tr><td>5040</td><td>01 Sep</td><td>Sukhwinder Kaur</td><td>Atta 10kg</td><td class="unk"><i>Khata</i></td><td class="owed">₹1,680</td></tr>
+<tr><td>5001</td><td>09 Sep</td><td>Manpreet Kaur</td><td>Rice 5kg</td><td class="unk"><i>udhaar</i></td><td class="owed">₹780</td></tr>
+<tr><td>5038</td><td>15 Sep</td><td>Harish Chand</td><td>Atta 10kg</td><td class="unk"><i>Credit</i></td><td class="owed">₹420</td></tr>
+<tr><td>5094</td><td>19 Aug</td><td>Manpreet Kaur</td><td>Atta 10kg</td><td class="unk"><i>Credit</i></td><td class="owed">₹420</td></tr>
+<tr><td>5098</td><td>06 Sep</td><td>Anil Sethi</td><td>Rice 5kg</td><td class="unk"><i>Pending</i></td><td class="owed">₹390</td></tr>
+<tr><td>5082</td><td>26 Aug</td><td>Baljit Singh</td><td>Dal 1kg</td><td class="unk"><i>Udhaar</i></td><td class="owed">₹240</td></tr>
+<tr><td>5068</td><td>27 Aug</td><td>Harish Chand</td><td>Sugar 1kg</td><td class="unk"><i>Pending</i></td><td class="owed">₹144</td></tr>
+<tr><td>5014</td><td>26 Aug</td><td>Anil Sethi</td><td>Tea 250g</td><td class="unk"><i>Udhaar</i></td><td class="owed">₹135</td></tr>
+<tr><td>5015</td><td>26 Sep</td><td>Anil Sethi</td><td>Tea 250g</td><td class="unk"><i>Pending</i></td><td class="owed">₹135</td></tr>
+<tr><td>5071</td><td>11 Sep</td><td>Neha Gupta</td><td>Sugar 1kg</td><td class="unk"><i>Pending</i></td><td class="owed">₹96</td></tr>
+<tr><td>5004</td><td>25 Aug</td><td>Anil Sethi</td><td>Milk 1L</td><td class="unk"><i>Credit</i></td><td class="owed">₹66</td></tr>
+<tr><td>5041</td><td>23 Sep</td><td>Harish Chand</td><td>Milk 1L</td><td class="unk"><i>udhaar</i></td><td class="owed">₹66</td></tr>
+<tr><td>5105</td><td>27 Aug</td><td>Harish Chand</td><td>Biscuits</td><td class="unk"><i>udhaar</i></td><td class="owed">₹60</td></tr>
+<tr><td>5063</td><td>16 Aug</td><td>Harish Chand</td><td>Sugar 1kg</td><td class="unk"><i>Khata</i></td><td class="owed">₹48</td></tr></tbody>
+      <tfoot><tr><td>Total</td><td></td><td></td><td></td><td></td><td>₹4,680</td></tr></tfoot>
+    </table></div>
+  </div>
+
+  <div class="block">
+    <h3>What was repaired before any of this was counted</h3>
+    <p class="sub">&nbsp;</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Problem in the register</th><th>Scale</th><th>What was done</th></tr></thead>
+      <tbody>
+        <tr><td>Bill 5016 entered twice</td><td>₹700</td><td class="unk">Removed — it was phantom revenue</td></tr>
+        <tr><td>Date written 5 different ways</td><td>105 rows</td><td class="unk">Parsed against an Aug–Sep 2026 window</td></tr>
+        <tr><td>Date genuinely unknowable</td><td>2 bills</td><td class="unk">Read day-first, and flagged as uncertain (5036, 5096)</td></tr>
+        <tr><td><i>day</i> column contradicts its own date</td><td>81.0%</td><td class="unk">Discarded; weekday recomputed from the date</td></tr>
+        <tr><td>Product spellings across three languages</td><td>36 → 10</td><td class="unk">Grouped by rate, which is unique per product</td></tr>
+        <tr><td>Customer spellings and stray spaces</td><td>19 → 7</td><td class="unk">Trimmed and case-matched</td></tr>
+        <tr><td>Amount missing</td><td>8 bills</td><td class="unk">Recomputed as quantity × rate</td></tr>
+        <tr><td>Quantity missing</td><td>4 bills</td><td class="unk">Recovered as amount ÷ rate</td></tr>
+        <tr><td>Amounts written as text (<i>Rs 420</i>, <i>700/-</i>)</td><td>28 bills</td><td class="unk">Stripped to numbers</td></tr>
+        <tr><td>Quantity written as text (<i>4 pcs</i>)</td><td>3 bills</td><td class="unk">Stripped to numbers</td></tr>
+        <tr><td>Unpaid shown as blank vs literal <i>0</i></td><td>9 / 5</td><td class="unk">Unified into one paid/unpaid field</td></tr>
+        <tr><td>Payment method mixed with payment status</td><td>9 spellings</td><td class="unk">Split; method left unknown on 68 bills rather than guessed</td></tr>
+        <tr><td>Amount disagreeing with quantity × rate</td><td class="good">0</td><td class="unk">None found — the arithmetic itself was sound</td></tr>
+      </tbody>
+      <tfoot><tr><td>Register as written</td><td>₹44,014</td><td>understates by ₹1,526 (3.4%)</td></tr></tfoot>
+    </table></div>
+  </div>
+
+  <footer>
+    Source: <code>kirana_sales_raw.csv</code> — 106 rows, 02 Aug 2026 to
+    28 Sep 2026. Cleaned and computed by <code>analysis.py</code>; every figure on this
+    page is injected from its output, none typed by hand. Profit, margin, stock levels,
+    wastage and time-of-day are absent from the source and are therefore absent here.
+    Generated 17 Sep 2026.
+  </footer>
+</section>
+
+</main>
+</div>
+
+<script>
+const D = {"meta":{"source":"kirana_sales_raw.csv","generated":"17 Sep 2026","rows_raw":106,"rows_clean":105,"date_from":"02 Aug 2026","date_to":"28 Sep 2026","trading_days":48,"span_days":61,"n_skus":10,"raw_item_strings":36,"n_named":7,"raw_name_strings":19},"kpi":{"revenue":45540,"bills":105,"units":251,"avg_bill":434,"credit":4680,"credit_bills":14,"credit_pct":10.3,"collected":40860,"collected_pct":89.7,"credit_days_of_trade":4.9,"top2_share":71.6,"named_bills":28,"named_revenue":13833,"named_pct":30.4,"named_avg_bill":494,"anon_avg_bill":412,"items_per_bill":1.0},"quality":{"dup_bills":["5016"],"dup_value":700,"n_date_styles":5,"date_styles":{"25/09/2026 - day first":51,"6 Sep - no year written":19,"25-8-26 - two-digit year":17,"25-09-2026 - day first":14,"09/15/2026 - month first":4},"date_ambiguous":2,"date_ambiguous_bills":["5036","5096"],"date_unparsed":0,"day_col_match":20,"day_col_total":105,"day_col_mismatch_pct":81.0,"raw_item_strings":36,"n_skus":10,"raw_name_strings":19,"n_named":7,"n_status_tokens":9,"status_tokens":{"Paid":29,"Cash":23,"Done":21,"paid":18,"Pending":4,"udhaar":3,"Credit":3,"Udhaar":2,"Khata":2},"method_unknown":68,"method_cash":23,"qty_missing":4,"qty_text":3,"amount_missing":8,"amount_text":28,"arithmetic_errors":0,"unpaid_blank":9,"unpaid_zero":5,"as_written":44014,"true_total":45540,"understated_by":1526,"understated_pct":3.4,"dup_bills_str":"5016","date_ambiguous_str":"5036, 5096"},"skus":[{"sku":"Atta 10kg","category":"Staples","rate":420,"revenue":19740,"bills":24,"units":47,"rev_share":43.3,"unit_share":18.7,"cum_share":43.3},{"sku":"Rice 5kg","category":"Staples","rate":390,"revenue":12870,"bills":12,"units":33,"rev_share":28.3,"unit_share":13.1,"cum_share":71.6},{"sku":"Milk 1L","category":"Daily fresh","rate":66,"revenue":3894,"bills":22,"units":59,"rev_share":8.6,"unit_share":23.5,"cum_share":80.2},{"sku":"Refined Oil 1L","category":"Staples","rate":140,"revenue":3220,"bills":7,"units":23,"rev_share":7.1,"unit_share":9.2,"cum_share":87.2},{"sku":"Tea 250g","category":"Grocery","rate":135,"revenue":1755,"bills":7,"units":13,"rev_share":3.9,"unit_share":5.2,"cum_share":91.1},{"sku":"Namkeen 200g","category":"Snacks","rate":55,"revenue":1265,"bills":9,"units":23,"rev_share":2.8,"unit_share":9.2,"cum_share":93.9},{"sku":"Dal 1kg","category":"Staples","rate":120,"revenue":1200,"bills":3,"units":10,"rev_share":2.6,"unit_share":4.0,"cum_share":96.5},{"sku":"Sugar 1kg","category":"Staples","rate":48,"revenue":1008,"bills":11,"units":21,"rev_share":2.2,"unit_share":8.4,"cum_share":98.7},{"sku":"Biscuits","category":"Snacks","rate":30,"revenue":300,"bills":5,"units":10,"rev_share":0.7,"unit_share":4.0,"cum_share":99.4},{"sku":"Salt 1kg","category":"Staples","rate":24,"revenue":288,"bills":5,"units":12,"rev_share":0.6,"unit_share":4.8,"cum_share":100.0}],"customers":[{"name":"Sukhwinder Kaur","spend":2148,"bills":3,"owed":1680,"pct_unpaid":78.2},{"name":"Manpreet Kaur","spend":3150,"bills":3,"owed":1200,"pct_unpaid":38.1},{"name":"Harish Chand","spend":4788,"bills":7,"owed":738,"pct_unpaid":15.4},{"name":"Anil Sethi","spend":1278,"bills":6,"owed":726,"pct_unpaid":56.8},{"name":"Baljit Singh","spend":918,"bills":3,"owed":240,"pct_unpaid":26.1},{"name":"Neha Gupta","spend":408,"bills":3,"owed":96,"pct_unpaid":23.5},{"name":"Gurpreet Singh","spend":1143,"bills":3,"owed":0,"pct_unpaid":0.0}],"monthly":[{"month":"Aug 2026","revenue":25218,"bills":61},{"month":"Sep 2026","revenue":20322,"bills":44}],"daily":[{"date":"02 Aug","revenue":936,"bills":3},{"date":"03 Aug","revenue":280,"bills":1},{"date":"04 Aug","revenue":1752,"bills":4},{"date":"06 Aug","revenue":2533,"bills":4},{"date":"07 Aug","revenue":96,"bills":1},{"date":"08 Aug","revenue":1740,"bills":2},{"date":"09 Aug","revenue":456,"bills":3},{"date":"10 Aug","revenue":198,"bills":1},{"date":"11 Aug","revenue":1886,"bills":4},{"date":"12 Aug","revenue":1620,"bills":2},{"date":"14 Aug","revenue":390,"bills":1},{"date":"16 Aug","revenue":1092,"bills":3},{"date":"17 Aug","revenue":535,"bills":2},{"date":"18 Aug","revenue":780,"bills":1},{"date":"19 Aug","revenue":1920,"bills":3},{"date":"20 Aug","revenue":730,"bills":2},{"date":"21 Aug","revenue":1560,"bills":1},{"date":"22 Aug","revenue":695,"bills":3},{"date":"23 Aug","revenue":2355,"bills":3},{"date":"24 Aug","revenue":158,"bills":2},{"date":"25 Aug","revenue":651,"bills":3},{"date":"26 Aug","revenue":1361,"bills":5},{"date":"27 Aug","revenue":1044,"bills":4},{"date":"28 Aug","revenue":450,"bills":3},{"date":"01 Sep","revenue":1680,"bills":1},{"date":"03 Sep","revenue":2886,"bills":4},{"date":"04 Sep","revenue":516,"bills":3},{"date":"05 Sep","revenue":264,"bills":1},{"date":"06 Sep","revenue":950,"bills":2},{"date":"07 Sep","revenue":2148,"bills":2},{"date":"08 Sep","revenue":1950,"bills":1},{"date":"09 Sep","revenue":828,"bills":2},{"date":"10 Sep","revenue":468,"bills":2},{"date":"11 Sep","revenue":276,"bills":3},{"date":"12 Sep","revenue":121,"bills":2},{"date":"14 Sep","revenue":330,"bills":1},{"date":"15 Sep","revenue":552,"bills":2},{"date":"17 Sep","revenue":1680,"bills":1},{"date":"18 Sep","revenue":486,"bills":2},{"date":"20 Sep","revenue":144,"bills":1},{"date":"21 Sep","revenue":270,"bills":1},{"date":"22 Sep","revenue":399,"bills":2},{"date":"23 Sep","revenue":66,"bills":1},{"date":"24 Sep","revenue":1680,"bills":1},{"date":"25 Sep","revenue":594,"bills":2},{"date":"26 Sep","revenue":300,"bills":2},{"date":"27 Sep","revenue":1710,"bills":4},{"date":"28 Sep","revenue":24,"bills":1}],"weekday":[{"day":"Mon","revenue":3943,"bills":11,"avg_bill":358,"claimed_bills":13},{"day":"Tue","revenue":9650,"bills":18,"avg_bill":536,"claimed_bills":12},{"day":"Wed","revenue":5795,"bills":13,"avg_bill":446,"claimed_bills":5},{"day":"Thu","revenue":11021,"bills":18,"avg_bill":612,"claimed_bills":13},{"day":"Fri","revenue":4368,"bills":16,"avg_bill":273,"claimed_bills":14},{"day":"Sat","revenue":3120,"bills":10,"avg_bill":312,"claimed_bills":13},{"day":"Sun","revenue":7643,"bills":19,"avg_bill":402,"claimed_bills":35}],"reminder":{"n_debtors":6,"recommended":500,"thresholds":[{"threshold":200,"people":5,"of_people":6,"amount":4584,"pct":97.9},{"threshold":500,"people":4,"of_people":6,"amount":4344,"pct":92.8},{"threshold":1000,"people":2,"of_people":6,"amount":2880,"pct":61.5},{"threshold":2000,"people":0,"of_people":6,"amount":0,"pct":0.0},{"threshold":5000,"people":0,"of_people":6,"amount":0,"pct":0.0}],"biggest_bill":{"bill":"5040","customer":"Sukhwinder Kaur","sku":"Atta 10kg","qty":4,"amount":1680,"pct_of_book":35.9},"udhaar_bills_per_month":7.0,"days_between_udhaar_bills":3.4},"credit_by_sku":[{"sku":"Atta 10kg","amount":2520},{"sku":"Rice 5kg","amount":1170},{"sku":"Sugar 1kg","amount":288},{"sku":"Tea 250g","amount":270},{"sku":"Dal 1kg","amount":240},{"sku":"Milk 1L","amount":132},{"sku":"Biscuits","amount":60}],"credit_bills":[{"bill":"5040","customer":"Sukhwinder Kaur","sku":"Atta 10kg","amount":1680,"status_written":"Khata","date":"01 Sep"},{"bill":"5001","customer":"Manpreet Kaur","sku":"Rice 5kg","amount":780,"status_written":"udhaar","date":"09 Sep"},{"bill":"5038","customer":"Harish Chand","sku":"Atta 10kg","amount":420,"status_written":"Credit","date":"15 Sep"},{"bill":"5094","customer":"Manpreet Kaur","sku":"Atta 10kg","amount":420,"status_written":"Credit","date":"19 Aug"},{"bill":"5098","customer":"Anil Sethi","sku":"Rice 5kg","amount":390,"status_written":"Pending","date":"06 Sep"},{"bill":"5082","customer":"Baljit Singh","sku":"Dal 1kg","amount":240,"status_written":"Udhaar","date":"26 Aug"},{"bill":"5068","customer":"Harish Chand","sku":"Sugar 1kg","amount":144,"status_written":"Pending","date":"27 Aug"},{"bill":"5014","customer":"Anil Sethi","sku":"Tea 250g","amount":135,"status_written":"Udhaar","date":"26 Aug"},{"bill":"5015","customer":"Anil Sethi","sku":"Tea 250g","amount":135,"status_written":"Pending","date":"26 Sep"},{"bill":"5071","customer":"Neha Gupta","sku":"Sugar 1kg","amount":96,"status_written":"Pending","date":"11 Sep"},{"bill":"5004","customer":"Anil Sethi","sku":"Milk 1L","amount":66,"status_written":"Credit","date":"25 Aug"},{"bill":"5041","customer":"Harish Chand","sku":"Milk 1L","amount":66,"status_written":"udhaar","date":"23 Sep"},{"bill":"5105","customer":"Harish Chand","sku":"Biscuits","amount":60,"status_written":"udhaar","date":"27 Aug"},{"bill":"5063","customer":"Harish Chand","sku":"Sugar 1kg","amount":48,"status_written":"Khata","date":"16 Aug"}]};
+
+const T1="#E6EDF3", T2="#9AA9B8", T3="#6B7A8A", LINE="#252F3A", HAIR="#1E2731",
+      ACCENT="#CE7C3C", ACCENT_LIT="#E8995C", COOL="#4586C9", COOL_LIT="#6BA3DC",
+      PAID="#3FA98A", OWED="#D8645A", CARD="#161C23";
+const rs = n => "₹" + Math.round(n).toLocaleString("en-IN");
+
+Chart.defaults.font.family="Inter, sans-serif";
+Chart.defaults.font.size=12;
+Chart.defaults.color=T3;
+Chart.defaults.maintainAspectRatio=false;
+Chart.defaults.plugins.tooltip.backgroundColor="#0B1015";
+Chart.defaults.plugins.tooltip.borderColor=LINE;
+Chart.defaults.plugins.tooltip.borderWidth=1;
+Chart.defaults.plugins.tooltip.titleColor=T1;
+Chart.defaults.plugins.tooltip.bodyColor=T2;
+Chart.defaults.plugins.tooltip.padding=12;
+Chart.defaults.plugins.tooltip.cornerRadius=9;
+Chart.defaults.plugins.tooltip.displayColors=false;
+Chart.defaults.plugins.tooltip.titleFont={weight:"600",size:12.5};
+Chart.defaults.plugins.legend.labels.boxWidth=10;
+Chart.defaults.plugins.legend.labels.boxHeight=10;
+Chart.defaults.plugins.legend.labels.padding=18;
+Chart.defaults.plugins.legend.labels.color=T2;
+Chart.defaults.plugins.legend.labels.usePointStyle=true;
+Chart.defaults.plugins.legend.labels.pointStyle="rectRounded";
+Chart.defaults.elements.bar.borderRadius=4;
+Chart.defaults.elements.bar.borderSkipped=false;
+
+const grid  = {color:HAIR, drawTicks:false};
+const axisY = {grid, border:{display:false}, ticks:{padding:10}};
+const axisX = {grid:{display:false}, border:{color:LINE}, ticks:{padding:8}};
+
+// vertical fade for area fills
+function fade(chart, hex, top=.34){
+  const {ctx, chartArea} = chart;
+  if(!chartArea) return "transparent";
+  const g = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+  const a = v => hex + Math.round(v*255).toString(16).padStart(2,"0");
+  g.addColorStop(0, a(top)); g.addColorStop(1, a(0));
+  return g;
+}
+
+// Direct value labels. Green/red sit at CVD ΔE 6.9, so the paid/owed split is
+// never carried by colour alone — the number is drawn on the bar as well.
+const labelOwed = {
+  id:"labelOwed",
+  afterDatasetsDraw(chart){
+    const ds = chart.getDatasetMeta(1);
+    if(!ds || ds.hidden) return;
+    const {ctx} = chart;
+    ctx.save();
+    ctx.font = "600 11px 'JetBrains Mono', monospace";
+    ctx.textBaseline = "middle";
+    ds.data.forEach((bar, i) => {
+      const v = chart.data.datasets[1].data[i];
+      if(!v) return;
+      ctx.fillStyle = OWED;
+      ctx.textAlign = "left";
+      ctx.fillText(rs(v), bar.x + 9, bar.y);
+    });
+    ctx.restore();
+  }
+};
+
+const make = {};
+
+make["c-spark"] = el => new Chart(el, {
+  type:"line",
+  data:{labels:D.daily.map(d=>d.date), datasets:[{
+    data:D.daily.map(d=>d.revenue), borderColor:ACCENT_LIT, borderWidth:1.6,
+    pointRadius:0, pointHoverRadius:0, tension:.4,
+    fill:true, backgroundColor:c=>fade(c.chart, "#E8995C", .3)}]},
+  options:{events:[], animation:{duration:900},
+    scales:{x:{display:false}, y:{display:false, beginAtZero:true}},
+    plugins:{legend:{display:false}, tooltip:{enabled:false}}}
+});
+
+make["c-daily"] = el => new Chart(el, {
+  type:"line",
+  data:{labels:D.daily.map(d=>d.date), datasets:[{
+    label:"Takings",
+    data:D.daily.map(d=>d.revenue), borderColor:ACCENT_LIT, borderWidth:2,
+    pointRadius:0, pointHoverRadius:6, pointHoverBackgroundColor:ACCENT_LIT,
+    pointHoverBorderColor:CARD, pointHoverBorderWidth:2.5, tension:.32,
+    fill:true, backgroundColor:c=>fade(c.chart, "#CE7C3C", .36)}]},
+  options:{interaction:{mode:"index", intersect:false}, animation:{duration:800},
+    scales:{y:{...axisY, beginAtZero:true, ticks:{...axisY.ticks, callback:v=>rs(v)}},
+            x:{...axisX, ticks:{...axisX.ticks, maxRotation:0, autoSkipPadding:26}}},
+    plugins:{legend:{display:false}, tooltip:{callbacks:{
+      title:i=>i[0].label,
+      label:c=>rs(c.parsed.y)+"  ·  "+D.daily[c.dataIndex].bills+" bill"+(D.daily[c.dataIndex].bills>1?"s":"")}}}}
+});
+
+make["c-pareto"] = el => new Chart(el, {
+  data:{labels:D.skus.map(s=>s.sku), datasets:[
+    // one series, one flat colour: a gradient keyed to the chart area would make
+    // a tall bar a different hue from a short one, double-encoding length as colour
+    {type:"bar", label:"Share of revenue", data:D.skus.map(s=>s.rev_share),
+     backgroundColor:ACCENT, maxBarThickness:38},
+    {type:"line", label:"Running total", data:D.skus.map(s=>s.cum_share),
+     borderColor:COOL_LIT, borderWidth:2, pointRadius:3.5, pointBackgroundColor:COOL_LIT,
+     pointBorderColor:CARD, pointBorderWidth:2, tension:.25, fill:false}]},
+  options:{interaction:{mode:"index", intersect:false}, animation:{duration:800},
+    scales:{y:{...axisY, beginAtZero:true, max:100, ticks:{...axisY.ticks, callback:v=>v+"%"}},
+            x:{...axisX, ticks:{...axisX.ticks, maxRotation:44, minRotation:44}}},
+    plugins:{legend:{position:"bottom"}, tooltip:{displayColors:true, callbacks:{
+      label:c=>c.dataset.label+": "+c.parsed.y+"%",
+      afterBody:i=>"Revenue "+rs(D.skus[i[0].dataIndex].revenue)
+                   +"  ·  "+D.skus[i[0].dataIndex].bills+" bills"}}}}
+});
+
+make["c-vv"] = el => new Chart(el, {
+  type:"bar",
+  data:{labels:D.skus.map(s=>s.sku), datasets:[
+    {label:"Share of money", data:D.skus.map(s=>s.rev_share), backgroundColor:ACCENT, maxBarThickness:20},
+    {label:"Share of units", data:D.skus.map(s=>s.unit_share), backgroundColor:COOL, maxBarThickness:20}]},
+  options:{interaction:{mode:"index", intersect:false}, animation:{duration:800},
+    scales:{y:{...axisY, beginAtZero:true, ticks:{...axisY.ticks, callback:v=>v+"%"}},
+            x:{...axisX, ticks:{...axisX.ticks, maxRotation:44, minRotation:44}}},
+    plugins:{legend:{position:"bottom"}, tooltip:{displayColors:true, callbacks:{
+      label:c=>c.dataset.label+": "+c.parsed.y+"%",
+      afterBody:i=>{const s=D.skus[i[0].dataIndex];
+        return rs(s.revenue)+" from "+s.units+" units across "+s.bills+" bills";}}}}}
+});
+
+make["c-cust"] = el => {
+  const c = D.customers;
+  return new Chart(el, {
+    type:"bar", plugins:[labelOwed],
+    data:{labels:c.map(x=>x.name), datasets:[
+      {label:"Paid for", data:c.map(x=>x.spend-x.owed), backgroundColor:PAID, maxBarThickness:24},
+      {label:"Still owed", data:c.map(x=>x.owed), backgroundColor:OWED, maxBarThickness:24}]},
+    options:{indexAxis:"y", interaction:{mode:"index", intersect:false},
+      animation:{duration:800},
+      layout:{padding:{right:74}},
+      scales:{x:{...axisY, stacked:true, beginAtZero:true, ticks:{...axisY.ticks, callback:v=>rs(v)}},
+              y:{grid:{display:false}, border:{color:LINE}, stacked:true,
+                 ticks:{padding:8, color:T2, font:{size:12.5}}}},
+      plugins:{legend:{position:"bottom"}, tooltip:{displayColors:true, callbacks:{
+        label:x=>x.dataset.label+": "+rs(x.parsed.x),
+        afterBody:i=>{const x=c[i[0].dataIndex];
+          return x.bills+" bills · "+x.pct_unpaid+"% unpaid";}}}}}
+  });
+};
+
+make["c-creditsku"] = el => new Chart(el, {
+  type:"bar",
+  data:{labels:D.credit_by_sku.map(c=>c.sku), datasets:[
+    {label:"Unpaid", data:D.credit_by_sku.map(c=>c.amount),
+     backgroundColor:OWED, maxBarThickness:22}]},
+  options:{indexAxis:"y", animation:{duration:800},
+    scales:{x:{...axisY, beginAtZero:true, ticks:{...axisY.ticks, callback:v=>rs(v)}},
+            y:{grid:{display:false}, border:{color:LINE}, ticks:{padding:8, color:T2, font:{size:12.5}}}},
+    plugins:{legend:{display:false}, tooltip:{callbacks:{
+      label:c=>rs(c.parsed.x)+" unpaid",
+      afterLabel:c=>{const t=D.credit_by_sku.reduce((a,b)=>a+b.amount,0);
+        return (c.parsed.x/t*100).toFixed(1)+"% of the credit book";}}}}}
+});
+
+make["c-wd"] = el => new Chart(el, {
+  type:"bar",
+  data:{labels:D.weekday.map(w=>w.day), datasets:[
+    {label:"Recomputed from the dates", data:D.weekday.map(w=>w.bills),
+     backgroundColor:ACCENT, maxBarThickness:28},
+    {label:"As the 'day' column claims", data:D.weekday.map(w=>w.claimed_bills),
+     backgroundColor:"#3A4552", maxBarThickness:28}]},
+  options:{interaction:{mode:"index", intersect:false}, animation:{duration:800},
+    scales:{y:{...axisY, beginAtZero:true, title:{display:true, text:"bills", color:T3}},
+            x:axisX},
+    plugins:{legend:{position:"bottom"}, tooltip:{displayColors:true, callbacks:{
+      label:c=>c.dataset.label+": "+c.parsed.y+" bills",
+      afterBody:i=>"Takings "+rs(D.weekday[i[0].dataIndex].revenue)}}}}
+});
+
+// collection-rate ring
+(function(){
+  const arc = document.getElementById("ring-arc");
+  if(!arc) return;
+  const C = 2 * Math.PI * 32;
+  arc.style.strokeDasharray = C;
+  arc.style.strokeDashoffset = C;
+  arc.style.transition = "stroke-dashoffset 1.1s cubic-bezier(.2,.7,.3,1)";
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    arc.style.strokeDashoffset = C * (1 - D.kpi.collected_pct/100);
+  }));
+})();
+
+// Build charts only when their tab is first shown, so canvases size correctly.
+// A chart inside a hidden section cannot measure itself, so it keeps whatever
+// width it was built at — resize it again every time its section is revealed
+// or the window changes, or a phone rotation leaves the page scrolling sideways.
+const built = {};
+function build(section){
+  section.querySelectorAll("canvas").forEach(cv=>{
+    if(built[cv.id]) built[cv.id].resize();
+    else if(make[cv.id]) built[cv.id] = make[cv.id](cv);
+  });
+}
+let resizeTimer;
+addEventListener("resize", ()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(()=>{
+    const sec = document.querySelector("section.on");
+    if(sec) build(sec);
+  }, 150);
+});
+
+const tabs = [...document.querySelectorAll('nav button')];
+tabs.forEach(tab=>{
+  tab.addEventListener("click", ()=>{
+    tabs.forEach(t=>{
+      const on = t===tab;
+      t.setAttribute("aria-selected", on);
+      document.getElementById(t.getAttribute("aria-controls")).classList.toggle("on", on);
+    });
+    build(document.getElementById(tab.getAttribute("aria-controls")));
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+});
+
+document.querySelectorAll('ul.plain input').forEach(cb=>{
+  cb.addEventListener("change", ()=> cb.closest("li").classList.toggle("done", cb.checked));
+});
+
+build(document.getElementById("s1"));
+</script>
+</body>
+</html>
