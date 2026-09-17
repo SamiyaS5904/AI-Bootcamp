@@ -1,0 +1,107 @@
+bill_no,date,day,customer,item,qty,rate,amount,payment_status,amount_paid
+5001,09/09/2026,Sun,manpreet kaur,rice,2,390,780,udhaar,
+5002,28-09-2026,Mon,Cash,salt,1,24,24,paid,24
+5003,02-08-2026,Tue,Walk-in,Aata,1,420,Rs 420,Cash,420
+5004,25-8-26,Thu,Anil Sethi ,Milk 1L,1,66,66,Credit,
+5005,28-08-2026,Mon,cash,tea,2,135,270,Done,270
+5006,09/15/2026,Fri,Walk-in,milk,2,66,,Cash,132
+5007,18-09-2026,Sun,Cash,Tel 1L,3,140,420,Done,420
+5008,11/09/2026,Sun,,Cheeni 1kg,1,48,48,Cash,48
+5009,08/11/2026,Sun,Walk-in,aata 10kg,2,420,840,Paid,840
+5010,22-9-26,Tue,Counter,Chai Patti,1,135,135,paid,135/-
+5011,04/08/2026,Sun,,Sugar,1,48,48,paid,48
+5012,04/08/2026,Sun,Counter,Salt,1,24,24,paid,24
+5013,25/09/2026,Sun,Walk-in,Milk 1L,5,66,330,Paid,330
+5014,26/08/2026,Wed,ANIL SETHI,Chai Patti,1,135,135,Udhaar,
+5015,26/09/2026,Sat, Anil Sethi,tea,1,135,Rs 135,Pending,
+5016,20 Aug,Wed,Counter,Refined Oil 1L,5,140,700/-,paid,₹700
+5017,6 Sep,Sun,Counter,Refined Oil,4,140,560,Paid,560/-
+5018,26 Sep,Mon,,Mixture,3,55,165,Paid,165
+5019,27 Sep,Wed,Cash,Aata,,420,420,Done,420/-
+5020,3 Sep,Sat,Counter,Milk 1L,4 pcs,66,264,Paid,₹264
+5021,23-8-26,Mon,,Atta 10kg,3,420,1260,Cash,1260
+5022,25-8-26,Tue,Anil Sethi,aata 10kg,1,420,420,Cash,420
+5023,10/09/2026,Sun,Neha Gupta,Namak,2,24,48/-,paid,48/-
+5024,21/08/2026,Mon,Counter,Rice 5kg,4,390,1560,Paid,1560
+5025,4 Sep,Fri,,biscuit,1,30,30,Done,30
+5026,03/09/2026,Sat,Anil Sethi ,milk,2,66,132,Done,132/-
+5027,19/08/2026,Thu,Counter,Rice,3,390,Rs 1170,Cash,1170
+5028,14-8-26,Mon,Cash,Rice 5kg,1,390,390,paid,390/-
+5029,24/08/2026,Mon,cash,Namkeen 200g,2,55,Rs 110,Paid,110
+5030,4-8-26,Mon,Walk-in,Atta 10kg,2,420,840,Paid,840
+5031,18/08/2026,Thu,gurpreet singh,Chawal 5kg,,390, 780 ,paid,780
+5032,20/09/2026,Sun,,sugar,3,48,144,Paid,₹144
+5033,11/08/2026,Mon,Cash,Aata 10kg,2,420,840,Cash,Rs 840
+5034,14-9-26,Sun,cash,Doodh 1L,5,66,,Cash,330
+5035,2-8-26,Sun,sukhwinder kaur,Aata,1,420, 420 ,paid,420
+5036,08/09/2026,Thu,Harish Chand,Rice 5kg,5,390,1950,paid,Rs 1950
+5037,23/08/2026,Sun,Counter,tea,5 pcs,135, 675 ,Cash,675
+5038,15/09/2026,Thu,Harish Chand ,Atta 10kg,1,420,420/-,Credit,
+5039,11/08/2026,Fri,cash,Salt,4,24,Rs 96,paid,Rs 96
+5040,1 Sep,Mon,Sukhwinder Kaur,Aata,4,420,1680,Khata,
+5041,23/09/2026,Thu,Harish Chand,Doodh 1L,1,66,66,udhaar,
+5042,25/09/2026,Sun,Cash,Milk,4,66,,Paid,264
+5043,27-09-2026,Sat,Cash,Atta 10kg,2,420,840,Cash,840/-
+5044,8-8-26,Wed,Baljit Singh,Daal 1kg,4,120,480/-,Cash,480/-
+5045,27/08/2026,Thu,Counter,Atta 10kg,1,420,Rs 420,Cash,420/-
+5046,12/08/2026,Sun,Walk-in,Rice,2,390,Rs 780,Done,780
+5047,21/09/2026,Fri,Cash,Tea 250g,2,135,270,paid,270
+5048,17/09/2026,Sun,Cash,Aata,4,420,1680/-,Paid,1680
+5049,10/08/2026,Tue,Cash,Milk,3,66,198,Cash, 198 
+5050,8-8-26,Sat,cash,aata 10kg,3,420,1260,Done,1260
+5051,4 Sep,Sun,cash,aata 10kg,1,420, 420 ,Done,420
+5052,11/09/2026,Fri,Counter,Milk 1L,2,66,132,Cash, 132 
+5053,6-8-26,Thu,Manpreet Kaur,Rice,5,390,₹1950,Cash,1950
+5054,9 Aug,Fri,,Sugar,5,48,₹240,Done,240
+5055,4 Sep,Sun,,Doodh 1L,1,66,66,paid,66
+5056,24/09/2026,Fri,Cash,Aata 10kg,4,420,1680,Done,1680
+5057,17 Aug,Sun,Walk-in,dal,4,120,,Paid,480
+5058,28/08/2026,Sun,cash,Doodh 1L,2,66,,Paid,₹132
+5059,08/22/2026,Tue,Walk-in,Tea,1,135,135/-,paid,135
+5060,22 Aug,Tue,,Refined Oil 1L,1,140,140,Cash,140
+5016,20 Aug,Wed,Counter,Refined Oil 1L,5,140,700/-,paid,₹700
+5061,08/04/2026,Sun,Cash,aata 10kg,2,420,840,Done,840
+5062,20/08/2026,Sat,Cash,biscuit,1,30,30,Cash,30
+5063,16-08-2026,Sat,Harish Chand,Sugar,1,48,48,Khata,0
+5064,12 Sep,Fri,Walk-in,Mixture,1,55,55,paid,55
+5065,08/03/2026,Fri,Cash,oil,2,140,280,Paid,280
+5066,18 Sep,Wed,Walk-in,milk,1,66,66/-,Cash,₹66
+5067,19/08/2026,Sun,Walk-in,Milk 1L,5,66,330,Cash,330/-
+5068,27/08/2026,Sun,harish chand,Cheeni 1kg,3,48,144,Pending,0
+5069,22/09/2026,Sun,Counter,Milk 1L,4,66,264,Paid,264
+5070,17 Aug,Fri,Cash,Mixture,1,55,₹55,Paid,55
+5071,11 Sep,Thu,neha gupta,Sugar 1kg,2,48,96,Pending,0
+5072,26/08/2026,Sat,Cash,Refined Oil 1L,5,140,700,Done, 700 
+5073,24/08/2026,Sun,Counter,Sugar 1kg,1,48,48,Done,48
+5074,09/05/2026,Sat,Neha Gupta,Milk 1L,4,66,264,Paid,264
+5075,26-8-26,Sun,Counter,namkeen,4,55,₹220,Done, 220 
+5076,07/09/2026,Tue,Gurpreet Singh,Milk,3,66,198/-,Paid,198
+5077,25/08/2026,Tue,Gurpreet Singh,Namkeen 200g,3,55,165,Cash,Rs 165
+5078,2 Aug,Thu,,Namak,4,24,96,Paid,96
+5079,9 Aug,Mon,Walk-in,Biscuits,5,30,150,Done,150
+5080,03/09/2026,Sun,Counter,rice,1 pcs,390,390,Cash,390
+5081,22/08/2026,Tue,Cash,Aata,1,420,420,Done, 420 
+5082,26/08/2026,Fri,Baljit Singh,Dal 1kg,2,120,240/-,Udhaar,
+5083,6 Aug,Tue,,namkeen,2,55,110,Paid,110
+5084,28-08-2026,Thu,Sukhwinder Kaur,Sugar,1,48,48,Cash,₹48
+5085,23/08/2026,Sun,Walk-in,Aata,1,420,,Paid,420/-
+5086,08/16/2026,Tue,cash,Rice,2,390,₹780,Paid,780
+5087,27/09/2026,Sat,Counter,Refined Oil,3,140,420,Paid,420
+5088,03/09/2026,Sat,Harish Chand,Aata 10kg,5,420,2100/-,Paid,2100
+5089,27-9-26,Mon,,Biscuits,1,30,30,Done,30
+5090,26/08/2026,Sun,,Milk 1L,1,66,66,Paid,66
+5091,06-08-2026,Mon,baljit singh,Milk 1L,3,66,198,Paid, 198 
+5092,12/09/2026,Thu,Counter,milk,1,66,66,Done,Rs 66
+5093,10/09/2026,Sun,Cash,Aata,1,420,420,Done,420
+5094,19-08-2026,Sun,Manpreet Kaur,Aata,1,420,420,Credit,0
+5095,11-08-2026,Fri,,namkeen,2,55,Rs 110,Paid,₹110
+5096,09-08-2026,Fri,Walk-in,Milk 1L,1,66,66,Cash,66
+5097,6-8-26,Sun,Walk-in,namkeen,5,55,275/-,Done,₹275
+5098,6-9-26,Sun,Anil Sethi ,Chawal 5kg,1,390,390,Pending,0
+5099,07-08-2026,Sat,,Sugar,,48,96,Done,96
+5100,08/27/2026,Fri,Cash,Aata 10kg,1,420,,paid,420
+5101,09-09-2026,Sun,,Sugar,1,48,,Paid,48/-
+5102,16-08-2026,Tue,Walk-in,milk,4,66,264,Paid, 264 
+5103,7-9-26,Sun,Cash,Rice,5,390,1950,paid,₹1950
+5104,12/08/2026,Sat,cash,Aata,,420,840,paid,840/-
+5105,27-8-26,Thu,harish chand,Parle-G,2,30,60,udhaar,
