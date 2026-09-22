@@ -102,10 +102,15 @@ export async function sendEmail(
   }
 }
 
-/** EmailJS rejects with { status, text } rather than an Error. */
+/**
+ * EmailJS rejects with { status, text } rather than an Error. The status code
+ * is worth keeping: 400 usually means the template or its To Email field,
+ * 403 means the origin allowlist or the connected mail service.
+ */
 function describe(error: unknown): string {
   if (typeof error === "object" && error !== null && "text" in error) {
-    return String((error as { text: unknown }).text);
+    const { status, text } = error as { status?: unknown; text: unknown };
+    return status ? `${String(status)} — ${String(text)}` : String(text);
   }
   return error instanceof Error ? error.message : String(error);
 }

@@ -21,6 +21,9 @@ const TICK_MS = 10_000;
 /** EmailJS allows one request per second, so sends are spaced out. */
 const SEND_GAP_MS = 1_100;
 
+/** All three emails, in the order the tracker shows them. */
+const KINDS: readonly ReminderKind[] = ["confirmation", "m30", "m5"];
+
 const DOCTORS = [
   "Dr. A. Mehta (General Medicine)",
   "Dr. S. Rao (Dermatology)",
@@ -235,6 +238,13 @@ const MARKS: Record<ReminderState, { mark: string; means: string }> = {
 };
 
 function Row({ appointment, now }: { appointment: Appointment; now: number }) {
+  // Shown inline rather than only in a tooltip: a send that failed is the one
+  // thing you actually need to read while setting EmailJS up.
+  const failures = KINDS.map((kind) => ({
+    kind,
+    error: appointment.sent[kind]?.error
+  })).filter((f) => f.error);
+
   return (
     <li>
       <div className="who">
@@ -265,6 +275,15 @@ function Row({ appointment, now }: { appointment: Appointment; now: number }) {
           state={reminderState(appointment, "m5", now)}
         />
       </div>
+      {failures.length > 0 && (
+        <div className="errors">
+          {failures.map(({ kind, error }) => (
+            <div key={kind}>
+              <strong>{kind}</strong> failed — {error}
+            </div>
+          ))}
+        </div>
+      )}
     </li>
   );
 }
