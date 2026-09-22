@@ -1,0 +1,189 @@
+:root {
+  --ink: #1b2430;
+  --muted: #6b7684;
+  --line: #e2e6ea;
+  --bg: #f7f8f9;
+  --card: #ffffff;
+  --accent: #1f6f5c;
+  --warn: #8a5a00;
+  --warn-bg: #fff6e0;
+  --fail: #a32020;
+
+  font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  /* Set explicitly so the page never inherits a dark UA background. */
+  background: var(--bg);
+  color: var(--ink);
+}
+
+main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+header p {
+  margin: 0 0 2rem;
+  color: var(--muted);
+}
+
+h2 {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+}
+
+form,
+section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+input,
+select {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.55rem 0.6rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  font: inherit;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: var(--muted);
+  cursor: not-allowed;
+}
+
+.notice {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--bg);
+  border-radius: 0.3rem;
+}
+
+.notice.warn {
+  color: var(--warn);
+  background: var(--warn-bg);
+}
+
+.notice code {
+  font-size: 0.95em;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tracker {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tracker li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.tracker li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.who,
+.when {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.9rem;
+}
+
+.who {
+  min-width: 10rem;
+}
+
+.who span,
+.when span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.marks {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.mark {
+  cursor: help;
+  white-space: nowrap;
+}
+
+.mark b {
+  font-size: 0.95rem;
+}
+
+.mark.sent {
+  color: var(--accent);
+}
+
+.mark.failed,
+.mark.missed {
+  color: var(--fail);
+}
+
+.mark.due {
+  color: var(--ink);
+}

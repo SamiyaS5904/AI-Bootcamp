@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Architecture Overview</title>
+<style>
+  @page { size: A4; margin: 0; }
+  :root{
+    --ink:#161a20; --navy:#16324f; --accent:#a4561a;
+    --muted:#5f6772; --line:#d6dbe2; --soft:#f4f6f9; --warm:#fdf7f1;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;font-size:10.8pt;line-height:1.62;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:295.6mm;padding:20mm 19mm 16mm;position:relative;page-break-after:always}
+  .page:last-child{page-break-after:avoid}
+  .foot{position:absolute;bottom:9mm;left:19mm;right:19mm;display:flex;
+    justify-content:space-between;font-family:"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:7.6pt;color:#8b929c;border-top:.5pt solid var(--line);padding-top:2.5mm}
+  h1,h2,h3,.kicker,th,.lbl{font-family:"Segoe UI",Helvetica,Arial,sans-serif}
+  .kicker{font-size:8pt;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-size:25pt;line-height:1.16;margin:5mm 0 3mm;color:var(--navy);font-weight:600;letter-spacing:-.2pt}
+  .sub{font-size:12.5pt;color:var(--muted);font-style:italic;margin:0 0 7mm}
+  h2{font-size:14pt;color:var(--navy);font-weight:600;margin:0 0 4mm;
+     padding-bottom:2mm;border-bottom:1.6pt solid var(--navy)}
+  h2 .n{color:var(--accent);margin-right:2.5mm}
+  h3{font-size:10.5pt;color:var(--navy);font-weight:600;margin:6mm 0 2mm;
+     letter-spacing:.04em;text-transform:uppercase}
+  p{margin:0 0 3.4mm}
+  ul{margin:0 0 4mm;padding-left:5.5mm}
+  li{margin-bottom:1.6mm}
+  .rule{height:2.6pt;background:var(--navy);width:26mm;margin:0 0 6mm}
+  table{width:100%;border-collapse:collapse;margin:0 0 5mm;font-size:9.3pt}
+  th{background:var(--navy);color:#fff;text-align:left;padding:2.4mm 3mm;
+     font-size:8.2pt;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+  td{padding:2.4mm 3mm;border-bottom:.5pt solid var(--line);vertical-align:top}
+  tr:nth-child(even) td{background:#fafbfc}
+  .call{background:var(--warm);border-left:3.4pt solid var(--accent);
+    padding:4.5mm 5mm;margin:0 0 5mm}
+  .call .lbl{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;display:block;margin-bottom:2mm}
+  .call p:last-child{margin-bottom:0}
+  .formula{font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:12pt;
+    font-weight:600;color:var(--navy);text-align:center;margin:3mm 0}
+  .bx{border:1pt solid var(--navy);border-radius:1.5mm;padding:3mm 3.5mm;background:#fff;
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9pt;text-align:center}
+  .bx .t{font-weight:600;color:var(--navy);font-size:9.6pt;display:block;margin-bottom:.8mm}
+  .bx .d{color:var(--muted);font-size:8.2pt;line-height:1.45}
+  .chain{display:flex;align-items:stretch;gap:0;margin:0 0 3mm}
+  .chain .bx{flex:1;border-radius:0;border-right:none;padding:2.6mm 1.5mm;font-size:8.4pt}
+  .chain .bx:first-child{border-radius:1.5mm 0 0 1.5mm}
+  .chain .bx:last-child{border-right:1pt solid var(--navy);border-radius:0 1.5mm 1.5mm 0}
+  .arrowdown{text-align:center;color:var(--accent);font-size:13pt;line-height:1;margin:1.6mm 0}
+  .layerstack{border:1.3pt solid var(--navy);border-radius:2mm;overflow:hidden;margin:0 0 3mm}
+  .layerstack .hd{background:var(--navy);color:#fff;padding:2.6mm 4mm;
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9.4pt;font-weight:600;
+    display:flex;justify-content:space-between}
+  .layerstack .hd span{font-weight:400;opacity:.8;font-size:8.4pt}
+  .lay{display:flex;gap:3mm;align-items:flex-start;padding:3.2mm 4mm;border-bottom:.5pt solid var(--line);
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9pt}
+  .lay:last-child{border-bottom:none}
+  .lay .num{flex:0 0 6mm;height:6mm;border-radius:50%;background:var(--accent);color:#fff;
+    font-size:8.4pt;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:.3mm}
+  .lay .bd b{color:var(--navy);font-size:9.4pt}
+  .lay .bd i{color:var(--muted);font-style:normal;font-size:8.4pt;display:block;line-height:1.45}
+  .three{display:flex;gap:4mm;margin:0 0 3mm}
+  .three .bx{flex:1}
+  .tag{display:inline-block;background:var(--soft);border:.5pt solid var(--line);
+    border-radius:1mm;padding:.5mm 1.8mm;font-family:"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:7.8pt;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="kicker">System Architecture &middot; Overview</div>
+  <h1>AI Vendor, Procurement &amp;<br>Inventory Platform</h1>
+  <p class="sub">A focused system for a small multi&#8209;outlet cloud kitchen</p>
+  <div class="rule"></div>
+
+  <div class="call">
+    <span class="lbl">In one sentence</span>
+    <p>It keeps vendors, purchase orders, deliveries, stock, bills and payments in one place &mdash; and then tells the kitchen <b>what to order, how much, from whom, and by when</b>.</p>
+  </div>
+
+  <h3>The problem it replaces</h3>
+  <ul>
+    <li>Vendor rates live in WhatsApp, orders in a notebook, bills in a drawer, stock in someone&rsquo;s head.</li>
+    <li>Payments get missed, and vendors who are always late are never actually compared.</li>
+    <li>Stock runs out mid&#8209;service, or sits until it spoils. Nobody knows which, until it happens.</li>
+    <li>Nobody records how much material was <i>used</i> &mdash; so nothing can be predicted.</li>
+  </ul>
+
+  <div class="call">
+    <span class="lbl">The one idea that makes the AI possible</span>
+    <div class="formula">Dishes sold &times; recipe = raw material consumed</div>
+    <p>Usage is never typed in by hand. Sales data becomes consumption data automatically through the recipe &mdash; and consumption is the one number every prediction depends on, whether it is reorder timing, stockout risk or deadstock.</p>
+  </div>
+
+  <h3>The two loops the system runs on</h3>
+  <div class="chain">
+    <div class="bx"><span class="t">Vendor</span><span class="d">rate, lead time, terms</span></div>
+    <div class="bx"><span class="t">Purchase order</span><span class="d">what &amp; how much</span></div>
+    <div class="bx"><span class="t">Delivery</span><span class="d">received or short</span></div>
+    <div class="bx"><span class="t">Stock</span><span class="d">goes up</span></div>
+    <div class="bx"><span class="t">Bill</span><span class="d">due date set</span></div>
+    <div class="bx"><span class="t">Payment</span><span class="d">recorded</span></div>
+  </div>
+  <div class="chain">
+    <div class="bx"><span class="t">Sales imported</span><span class="d">dish &times; qty &times; day</span></div>
+    <div class="bx"><span class="t">Recipe applied</span><span class="d">material per plate</span></div>
+    <div class="bx"><span class="t">Stock</span><span class="d">goes down</span></div>
+    <div class="bx"><span class="t">Usage rate known</span><span class="d">per day, per outlet</span></div>
+    <div class="bx"><span class="t">AI advises</span><span class="d">order / transfer / stop</span></div>
+    <div class="bx"><span class="t">Owner approves</span><span class="d">becomes a PO</span></div>
+  </div>
+  <p style="font-size:9pt;color:var(--muted);margin-top:4mm"><b>Top row</b> is material and money coming in. <b>Bottom row</b> is material going out, which is what teaches the system. The two rows meet at stock.</p>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Overview</span><span>Page 1 of 3</span></div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <h2><span class="n">1</span>System architecture</h2>
+  <p>Four layers, one backend. Each layer only does what it is genuinely good at, and the boundary between them is the most important decision in the whole design.</p>
+
+  <div class="bx" style="text-align:left;padding:3.4mm 4mm">
+    <span class="t">Browser &mdash; React dashboard</span>
+    <span class="d">Dashboard &middot; Vendors &middot; Purchase Orders &middot; Stock &middot; Recipes &middot; Finance &middot; AI Insights &middot; Assistant</span>
+  </div>
+  <div class="arrowdown">&#9660;<span style="font-size:7.6pt;color:#5f6772;font-family:Helvetica,Arial,sans-serif;margin-left:2mm">HTTPS + login token</span></div>
+
+  <div class="layerstack">
+    <div class="hd">Backend &mdash; FastAPI (Python)<span>one service, four internal layers</span></div>
+    <div class="lay"><div class="num">1</div><div class="bd"><b>Core logic &mdash; plain code, no AI</b>
+      <i>Stock balances, PO totals, bill due dates, outstanding amounts, order status. These must be exactly right, so a model is never allowed near them.</i></div></div>
+    <div class="lay"><div class="num">2</div><div class="bd"><b>Analytics &mdash; formulas, not machine learning</b>
+      <i>Daily usage rate, days of cover, real vendor lead time, delay rate, reorder point, safety stock, deadstock, overstock, wastage variance. Every figure here is explainable line by line.</i></div></div>
+    <div class="lay"><div class="num">3</div><div class="bd"><b>Forecast &mdash; the only real model</b>
+      <i>Fourteen&#8209;day demand per material, per outlet. Always checked against a simple baseline; if the model cannot beat the baseline, the baseline is used and that fact is shown openly.</i></div></div>
+    <div class="lay"><div class="num">4</div><div class="bd"><b>Claude &mdash; explains and answers</b>
+      <i>Turns the computed numbers into a plain sentence, and answers typed questions by calling a fixed set of safe, read&#8209;only functions. It never calculates and never writes to the database.</i></div></div>
+  </div>
+
+  <div class="arrowdown">&#9660;</div>
+  <div class="three">
+    <div class="bx"><span class="t">PostgreSQL</span><span class="d">Supabase<br>All business data. Stock is stored as a list of movements, never as one editable number.</span></div>
+    <div class="bx"><span class="t">Claude API</span><span class="d">Anthropic<br>Sonnet for the question&#8209;answering assistant, Haiku for short cached explanations.</span></div>
+    <div class="bx"><span class="t">Nightly job</span><span class="d">Cron<br>Recomputes analytics, runs the forecasts, and generates the day&rsquo;s recommendations.</span></div>
+  </div>
+
+  <div class="call" style="margin-top:4mm">
+    <span class="lbl">The rule that holds the design together</span>
+    <p><b>Layers 1 and 2 decide. Layer 4 only speaks.</b> Every recommendation is produced by ordinary code, with its numbers attached to it. Claude is then handed those numbers and asked to write one sentence. That is why the advice can always be audited, and why a wrong answer traces back to a formula rather than to a model&rsquo;s mood.</p>
+  </div>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Overview</span><span>Page 2 of 3</span></div>
+</div>
+
+<!-- ============ PAGE 3 ============ -->
+<div class="page">
+  <h2><span class="n">2</span>Technology</h2>
+  <table>
+    <tr><th style="width:24%">Layer</th><th style="width:26%">Choice</th><th>Why this one</th></tr>
+    <tr><td>Frontend</td><td>React + Vite + TypeScript</td><td>Shared filters and an outlet switcher; no public pages to server&#8209;render.</td></tr>
+    <tr><td>Backend</td><td>FastAPI (Python 3.12)</td><td>Python is needed anyway for analytics and forecasting.</td></tr>
+    <tr><td>Database</td><td>PostgreSQL (Supabase)</td><td>Deeply related, money&#8209;sensitive data; every metric is a SQL aggregation.</td></tr>
+    <tr><td>Login</td><td>Supabase Auth (JWT)</td><td>Never hand&#8209;roll auth; role checked on every request.</td></tr>
+    <tr><td>Analytics &amp; forecast</td><td>pandas, statsmodels, scikit&#8209;learn</td><td>History is short, so simple methods beat complex ones.</td></tr>
+    <tr><td>AI</td><td>Claude API</td><td>Sonnet answers questions; Haiku writes cached explanations.</td></tr>
+    <tr><td>Files</td><td>Supabase Storage</td><td>Bill photos and generated PO PDFs.</td></tr>
+    <tr><td>Hosting</td><td>Vercel + Render</td><td>Free tiers, deploy on push; Render runs the nightly job.</td></tr>
+  </table>
+  <p style="font-size:8.8pt;color:#5f6772;margin-bottom:0"><span class="tag">Cost</span> &nbsp;Every service has a free tier that fits this scale. The only real spend is Claude API usage, kept small by caching explanations.</p>
+
+  <h2 style="margin-top:7mm"><span class="n">3</span>Three decisions worth defending</h2>
+  <div class="call" style="margin-top:5mm">
+    <p><b>1.</b>&nbsp; Consumption is <i>derived</i> from sales and recipes, never typed in &mdash; otherwise nobody records it, and the AI has nothing to work with.</p>
+    <p><b>2.</b>&nbsp; Stock is always the <i>sum</i> of its movements, never a stored number &mdash; stored quantities drift away from their own history.</p>
+    <p><b>3.</b>&nbsp; The model <i>explains and retrieves; it never calculates</i> &mdash; so the numbers stay correct and the advice stays traceable.</p>
+  </div>
+
+  <div class="foot"><span>Samiya Sehgal &middot; 17 September 2026 &middot; Version 1.0</span><span>Page 3 of 3</span></div>
+</div>
+
+</body>
+</html>

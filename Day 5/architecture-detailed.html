@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Architecture Detail</title>
+<style>
+  @page { size: A4; margin: 0; }
+  :root{
+    --ink:#161a20; --navy:#16324f; --accent:#a4561a;
+    --muted:#5f6772; --line:#d6dbe2; --soft:#f4f6f9; --warm:#fdf7f1;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;font-size:10.2pt;line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:295.6mm;padding:19mm 19mm 16mm;position:relative;page-break-after:always}
+  .page:last-child{page-break-after:avoid}
+  .foot{position:absolute;bottom:9mm;left:19mm;right:19mm;display:flex;
+    justify-content:space-between;font-family:"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:7.6pt;color:#8b929c;border-top:.5pt solid var(--line);padding-top:2.5mm}
+  h1,h2,h3,.kicker,th,.lbl,.mono{font-family:"Segoe UI",Helvetica,Arial,sans-serif}
+  .kicker{font-size:8pt;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-size:25pt;line-height:1.16;margin:5mm 0 3mm;color:var(--navy);font-weight:600;letter-spacing:-.2pt}
+  .sub{font-size:12.5pt;color:var(--muted);font-style:italic;margin:0 0 7mm}
+  h2{font-size:13pt;color:var(--navy);font-weight:600;margin:0 0 3.5mm;
+     padding-bottom:1.8mm;border-bottom:1.6pt solid var(--navy)}
+  h2.mt{margin-top:7mm}
+  h2 .n{color:var(--accent);margin-right:2.5mm}
+  h3{font-size:9.6pt;color:var(--navy);font-weight:600;margin:4.5mm 0 2mm;
+     letter-spacing:.05em;text-transform:uppercase}
+  p{margin:0 0 2.8mm}
+  ul{margin:0 0 3mm;padding-left:5.5mm}
+  li{margin-bottom:1.4mm}
+  .rule{height:2.6pt;background:var(--navy);width:26mm;margin:0 0 6mm}
+  table{width:100%;border-collapse:collapse;margin:0 0 4mm;font-size:8.8pt}
+  th{background:var(--navy);color:#fff;text-align:left;padding:2.2mm 2.6mm;
+     font-size:7.8pt;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+  td{padding:1.9mm 2.6mm;border-bottom:.5pt solid var(--line);vertical-align:top}
+  tr:nth-child(even) td{background:#fafbfc}
+  table.tight{font-size:8.2pt}
+  table.tight td{padding:1.4mm 2.4mm}
+  .call{background:var(--warm);border-left:3.4pt solid var(--accent);
+    padding:4mm 4.5mm;margin:0 0 4mm}
+  .call .lbl{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;display:block;margin-bottom:1.8mm}
+  .call p:last-child{margin-bottom:0}
+  .mono{font-family:Consolas,"Courier New",monospace;font-size:8.1pt;
+    background:var(--soft);border:.5pt solid var(--line);border-radius:1mm;
+    padding:3mm 3.5mm;white-space:pre;line-height:1.48;color:#2c3440;margin:0 0 4mm}
+  .toc{margin:7mm 0 0}
+  .toc div{display:flex;align-items:baseline;gap:2mm;padding:2.2mm 0;
+    border-bottom:.5pt solid var(--line);font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9.6pt}
+  .toc b{color:var(--accent);flex:0 0 7mm;font-weight:600}
+  .toc span.t{flex:1;color:var(--navy);font-weight:600}
+  .toc span.p{color:var(--muted);font-size:8.4pt}
+  .steps .s{display:flex;gap:3mm;align-items:flex-start;margin-bottom:2.1mm}
+  .steps .s .n{flex:0 0 5.2mm;height:5.2mm;border-radius:50%;background:var(--navy);color:#fff;
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:7.6pt;font-weight:600;
+    display:flex;align-items:center;justify-content:center;margin-top:.6mm}
+  .steps .s .b{flex:1;font-size:9.6pt}
+  .steps .s .b b{color:var(--navy)}
+  .lay{display:flex;gap:3mm;align-items:flex-start;padding:2.8mm 0;border-bottom:.5pt solid var(--line)}
+  .lay:last-child{border-bottom:none}
+  .lay .num{flex:0 0 13mm;font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:7.4pt;
+    font-weight:600;color:#fff;background:var(--accent);border-radius:1mm;text-align:center;
+    padding:1mm .5mm;letter-spacing:.06em;margin-top:.5mm}
+  .lay .bd{font-size:9.6pt}
+  .lay .bd b{color:var(--navy);font-size:10pt}
+  .note{font-size:8.6pt;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="kicker">System Architecture &middot; Detail</div>
+  <h1>AI Vendor, Procurement &amp;<br>Inventory Platform</h1>
+  <p class="sub">Supporting detail behind the three&#8209;page overview</p>
+  <div class="rule"></div>
+
+  <p>This document fills in what the overview deliberately left out: who uses the system, what each module holds, how work actually flows through it, what the database looks like, and exactly which job each layer of the AI does.</p>
+
+  <div class="call">
+    <span class="lbl">Scope, in one line</span>
+    <p>One focused product for a small multi&#8209;outlet cloud kitchen &mdash; not a general&#8209;purpose ERP. Every design choice below follows from that narrowness.</p>
+  </div>
+
+  <div class="toc">
+    <div><b>1</b><span class="t">Who uses it</span><span class="p">page 2</span></div>
+    <div><b>2</b><span class="t">Modules, and what gets built first</span><span class="p">page 3</span></div>
+    <div><b>3</b><span class="t">How work flows</span><span class="p">page 4</span></div>
+    <div><b>4</b><span class="t">Database</span><span class="p">page 5</span></div>
+    <div><b>5</b><span class="t">How the AI works</span><span class="p">page 6</span></div>
+    <div><b>6</b><span class="t">One recommendation, and the infrastructure</span><span class="p">page 7</span></div>
+  </div>
+
+  <div class="call" style="margin-top:10mm">
+    <span class="lbl">A note on the data behind the demo</span>
+    <p>There is no live customer behind this design, so the demo runs on generated history. That history comes from a <b>separate simulator the application cannot see</b>: it holds the hidden truth about demand, vendor behaviour and price drift, and emits only the transaction records such a business would have left behind.</p>
+    <p>The forecast is then measured on a stretch of time it was never shown, and always against a simple baseline. If it cannot beat that baseline, the baseline is used and the accuracy screen says so. This is what keeps the intelligence honest rather than circular.</p>
+  </div>
+
+  <div class="foot"><span>Samiya Sehgal &middot; 17 September 2026 &middot; Version 1.0</span><span>Page 1 of 7</span></div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <h2><span class="n">1</span>Who uses it</h2>
+  <p>The target business is a cloud kitchen or small restaurant group running two to four outlets. Everything here is sized for that, and would need rethinking at ten times the scale.</p>
+
+  <table class="tight">
+    <tr><th style="width:58%">What the system handles</th><th>Typical volume</th></tr>
+    <tr><td>Raw materials tracked</td><td>40 &ndash; 70</td></tr>
+    <tr><td>Vendors</td><td>8 &ndash; 15</td></tr>
+    <tr><td>Menu items with recipes</td><td>20 &ndash; 35</td></tr>
+    <tr><td>Purchase orders per week</td><td>15 &ndash; 30</td></tr>
+    <tr><td>Sales rows per outlet per day</td><td>20 &ndash; 35</td></tr>
+    <tr><td>History needed before the AI is useful</td><td>90 days minimum, 180 preferred</td></tr>
+  </table>
+
+  <h3>Three roles, not five</h3>
+  <p>A three&#8209;outlet kitchen has an owner, a manager per outlet, and a part&#8209;time accountant. Modelling a separate procurement officer and inventory officer would be modelling an organisation chart that does not exist.</p>
+
+  <table>
+    <tr><th style="width:21%">Role</th><th style="width:17%">Sees</th><th>Can do</th></tr>
+    <tr><td><b>Owner</b></td><td>All outlets</td><td>Everything &mdash; vendors, materials, recipes, approvals, costs and margins, analytics, AI advice, users, alert settings.</td></tr>
+    <tr><td><b>Outlet manager</b></td><td>Own outlet only</td><td>Raise a purchase order within a spend limit, receive goods, record wastage, run a stock count, import sales, request a transfer. Cannot see other outlets or record payments.</td></tr>
+    <tr><td><b>Accounts</b></td><td>All outlets, money only</td><td>View bills, record payments, mark a bill disputed, view spend reports. Cannot touch stock, orders or recipes.</td></tr>
+  </table>
+
+  <div class="call">
+    <span class="lbl">Vendors do not log in</span>
+    <p>In this segment vendors work on WhatsApp, not portals, and a login for them would double the security surface for no real gain. Instead the system produces a purchase&#8209;order PDF and a ready&#8209;to&#8209;send WhatsApp message that a person presses send on. A simple link&#8209;based confirmation page can come later.</p>
+  </div>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Detail</span><span>Page 2 of 7</span></div>
+</div>
+
+<!-- ============ PAGE 3 ============ -->
+<div class="page">
+  <h2><span class="n">2</span>Modules</h2>
+  <table>
+    <tr><th style="width:23%">Module</th><th style="width:33%">What it holds</th><th>Why it has to exist</th></tr>
+    <tr><td><b>Vendors</b></td><td>Contacts, rate per material with dates, payment terms, stated lead time</td><td>Rates are kept as history, so &ldquo;this vendor raised atta 8% in two months&rdquo; becomes a query instead of a memory.</td></tr>
+    <tr><td><b>Materials</b></td><td>Unit, pack size, category, shelf life</td><td>Reorder levels are deliberately <i>not</i> entered by the user &mdash; the system computes them. Asking the user hands the problem back.</td></tr>
+    <tr><td><b>Recipes</b></td><td>Material quantity per plate, plus a wastage allowance</td><td>The bridge that turns sales into consumption. Without it there is no AI.</td></tr>
+    <tr><td><b>Purchase orders</b></td><td>Lines, quantities, rates, expected date, status</td><td>Must support part delivery and short supply, because that is what really happens.</td></tr>
+    <tr><td><b>Inventory</b></td><td>Movement ledger, wastage, counts, transfers between outlets</td><td>The single record of what physically moved, and the basis of every stock figure.</td></tr>
+    <tr><td><b>Bills &amp; payments</b></td><td>Bill, due date, part payments, ageing</td><td>Payments are <i>recorded</i>, never made. No gateway means no compliance burden and no insight lost.</td></tr>
+    <tr><td><b>AI insights</b></td><td>Recommendations with their reasons, plus the assistant</td><td>The reason the product exists rather than a spreadsheet.</td></tr>
+  </table>
+
+  <p class="note">The screens follow the modules: a dashboard, an AI insight inbox, the assistant, vendors, materials, recipes, purchase orders, stock, finance, CSV import, and a forecast&#8209;accuracy page. That last one is the screen that makes the rest believable.</p>
+
+  <h2 class="mt">What gets built first</h2>
+  <table class="tight">
+    <tr><th style="width:52%">Version 1 &mdash; build now</th><th>Later</th></tr>
+    <tr><td>Vendors with rate history, terms and lead time</td><td>Vendor login to confirm orders</td></tr>
+    <tr><td>Materials, recipes, two to three outlets</td><td>Central kitchen and bulk production</td></tr>
+    <tr><td>Purchase orders with part delivery and short supply</td><td>Multi&#8209;step approval workflows</td></tr>
+    <tr><td>Stock ledger, wastage, counts and transfers</td><td>Batch and expiry tracking per lot</td></tr>
+    <tr><td>Bills, due dates, part payments and ageing</td><td>Accounting software sync</td></tr>
+    <tr><td>CSV import for sales and opening stock</td><td>Direct POS and delivery&#8209;app integration</td></tr>
+    <tr><td>Reorder, deadstock, transfer and vendor advice</td><td>Measuring whether accepted advice helped</td></tr>
+    <tr><td>Forecast with an honest accuracy report</td><td>Reading vendor bill photos automatically</td></tr>
+  </table>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Detail</span><span>Page 3 of 7</span></div>
+</div>
+
+<!-- ============ PAGE 4 ============ -->
+<div class="page">
+  <h2><span class="n">3</span>How work flows</h2>
+
+  <h3>The purchase loop &mdash; whenever something is needed</h3>
+  <div class="steps">
+    <div class="s"><div class="n">1</div><div class="b"><b>A need appears</b> &mdash; either the AI recommends it, or a manager raises it directly.</div></div>
+    <div class="s"><div class="n">2</div><div class="b"><b>A purchase order is drafted</b> with a suggested vendor, a quantity rounded to pack size, and a by&#8209;when date.</div></div>
+    <div class="s"><div class="n">3</div><div class="b"><b>Approved</b> by the owner, or auto&#8209;approved if inside the manager&rsquo;s spend limit.</div></div>
+    <div class="s"><div class="n">4</div><div class="b"><b>Sent</b> as a PDF by email, and as a prefilled WhatsApp message a person presses send on.</div></div>
+    <div class="s"><div class="n">5</div><div class="b"><b>Goods arrive</b> &mdash; possibly partly, possibly with rejects. Each receipt is recorded separately against the order.</div></div>
+    <div class="s"><div class="n">6</div><div class="b"><b>Stock goes up</b> automatically, as new entries in the movement ledger.</div></div>
+    <div class="s"><div class="n">7</div><div class="b"><b>The bill is attached</b> and its due date is computed as delivery date plus the vendor&rsquo;s agreed credit days.</div></div>
+    <div class="s"><div class="n">8</div><div class="b"><b>Payment is recorded</b>, in full or in part, and the vendor&rsquo;s performance figures update on their own.</div></div>
+  </div>
+
+  <h3>The consumption loop &mdash; every day, and this is the engine</h3>
+  <div class="steps">
+    <div class="s"><div class="n">1</div><div class="b"><b>Sales are imported</b> &mdash; dish, quantity, outlet, date &mdash; from a CSV or Excel export, or typed in.</div></div>
+    <div class="s"><div class="n">2</div><div class="b"><b>Recipes are applied</b> to convert dishes into raw materials used.</div></div>
+    <div class="s"><div class="n">3</div><div class="b"><b>Stock goes down</b> as consumption entries in the same ledger.</div></div>
+    <div class="s"><div class="n">4</div><div class="b"><b>Usage rate, cover and stockout risk</b> are recalculated per material, per outlet.</div></div>
+  </div>
+
+  <h3>The reconcile loop &mdash; weekly, and this is the truth check</h3>
+  <div class="steps">
+    <div class="s"><div class="n">1</div><div class="b"><b>Someone counts the shelf</b> and enters the real quantity.</div></div>
+    <div class="s"><div class="n">2</div><div class="b"><b>The difference is recorded</b> against what the ledger expected &mdash; never by editing history, always as a new adjustment entry.</div></div>
+    <div class="s"><div class="n">3</div><div class="b"><b>That gap is the real insight.</b> Expected usage minus actual usage is wastage, over&#8209;portioning, theft, or a recipe that no longer matches the kitchen. Tracked per material, it is often worth more than the forecast.</div></div>
+  </div>
+
+  <h3>The nightly loop &mdash; unattended, at 2am</h3>
+  <div class="mono">refresh analytics
+  &#8594; run 14-day forecasts
+  &#8594; recompute reorder points and safety stock
+  &#8594; find deadstock and overstock
+  &#8594; score vendors
+  &#8594; check whether another outlet has spare stock
+  &#8594; write tomorrow's recommendations, each with its reasons
+  &#8594; raise alerts</div>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Detail</span><span>Page 4 of 7</span></div>
+</div>
+
+<!-- ============ PAGE 5 ============ -->
+<div class="page">
+  <h2><span class="n">4</span>Database</h2>
+  <p>PostgreSQL, with an audit log alongside. Only the fields that matter are listed.</p>
+
+  <table class="tight">
+    <tr><th style="width:31%">Table</th><th>Important fields</th></tr>
+    <tr><td><b>organizations</b></td><td>name, currency, timezone</td></tr>
+    <tr><td><b>locations</b></td><td>org, name &mdash; one row per outlet</td></tr>
+    <tr><td><b>users</b></td><td>org, name, email, role, and which locations they may access</td></tr>
+    <tr><td><b>vendors</b></td><td>org, name, phone, GSTIN, credit days, stated lead time</td></tr>
+    <tr><td><b>materials</b></td><td>org, name, unit, pack size, category, shelf life</td></tr>
+    <tr><td><b>vendor_materials</b></td><td>vendor, material, rate, minimum order, <i>valid from / valid to</i> &mdash; this is rate history</td></tr>
+    <tr><td><b>menu_items</b></td><td>org, name, selling price</td></tr>
+    <tr><td><b>recipe_components</b></td><td>menu item, material, quantity per plate, wastage % &mdash; a generic bill of materials</td></tr>
+    <tr><td><b>purchase_orders</b> <span class="note">+ items</span></td><td>outlet, vendor, status, expected date, who approved, which recommendation caused it; per line: material, quantity, rate</td></tr>
+    <tr><td><b>goods_receipts</b> <span class="note">+ items</span></td><td>order, outlet, received date; per line: accepted, rejected, reason</td></tr>
+    <tr><td><b>stock_movements</b></td><td>outlet, material, <b>quantity change</b> (+ or &minus;), type, cost, what caused it, when</td></tr>
+    <tr><td><b>sales_records</b></td><td>outlet, date, menu item, quantity sold</td></tr>
+    <tr><td><b>stock_counts</b></td><td>outlet, date; per material: counted, expected, difference</td></tr>
+    <tr><td><b>invoices / payments</b></td><td>vendor, order, total, due date, amount paid, status; payments may be partial</td></tr>
+    <tr><td><b>recommendations</b></td><td>type, material, vendor, suggested quantity, by&#8209;when, rupee impact, <b>reasons</b>, <b>input snapshot</b>, status</td></tr>
+  </table>
+
+  <div class="call">
+    <span class="lbl">The most important decision in this schema</span>
+    <p>There is <b>no current&#8209;stock column anywhere</b>. Stock on hand is always the sum of every movement for that material at that outlet, and movements are only ever added &mdash; a correction is a new entry, never an edit. Every inventory system that stores a quantity eventually drifts out of step with its own history. This one cannot, by construction.</p>
+  </div>
+
+  <h3>How it fits together, in plain words</h3>
+  <ul>
+    <li>A <b>vendor</b> supplies many <b>materials</b>, each at a rate valid between two dates &mdash; so price history is a fact, not a guess.</li>
+    <li>A <b>menu item</b> is made of <b>materials</b> through its recipe. This is the link that turns sales into consumption.</li>
+    <li>A <b>purchase order</b> has lines; receiving it creates one or more <b>receipts</b>, which is how part delivery works naturally. Receipts, sales and counts all add entries to the ledger.</li>
+  </ul>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Detail</span><span>Page 5 of 7</span></div>
+</div>
+
+<!-- ============ PAGE 6 ============ -->
+<div class="page">
+  <h2><span class="n">5</span>How the AI works</h2>
+  <p>Most of what is sold as &ldquo;AI&rdquo; in this space is arithmetic. Being clear about which part is which is what makes the system trustworthy.</p>
+
+  <div class="lay"><div class="num">LAYER 1</div><div class="bd"><b>Plain code &mdash; no model</b>
+    <p style="margin:1mm 0 0">Stock balances, order totals, bill due dates, outstanding amounts, ageing buckets, order status. Exact by requirement. A model here would be a bug.</p></div></div>
+
+  <div class="lay"><div class="num">LAYER 2</div><div class="bd"><b>Analytics &mdash; formulas, not machine learning</b>
+    <p style="margin:1mm 0 0">Average daily usage and how erratic it is. Real vendor lead time, taken at the <b>85th percentile</b> rather than the average, because you plan for the bad week. Delay rate, fill rate, reject rate, price drift. Days of cover and days to stockout. Deadstock is simply no outward movement for N days while stock remains; overstock is cover far beyond what shelf life or lead time justifies.</p>
+    <p style="margin:2mm 0 0"><b>Reorder point</b> = average daily usage &times; lead time at the 85th percentile + safety stock, where safety stock grows with demand variability. This is standard inventory theory, and calling it a formula rather than AI is a strength: it can be audited line by line.</p></div></div>
+
+  <div class="lay"><div class="num">LAYER 3</div><div class="bd"><b>Forecast &mdash; the only genuine model</b>
+    <p style="margin:1mm 0 0">Fourteen&#8209;day demand per material, per outlet. Candidates in order of cost: same weekday last week as the <b>baseline</b>, a weekday&#8209;weighted moving average, a method built for items used only twice a week, and gradient boosting on calendar features. Each is tested on time it has never seen and the winner is chosen per material. <b>If nothing beats the baseline, the baseline is used and the accuracy screen says so.</b></p>
+    <p style="margin:2mm 0 0">The forecast returns a range, not just a number, and that uncertainty feeds straight into safety stock &mdash; so a material the system understands poorly automatically gets a bigger buffer.</p></div></div>
+
+  <div class="lay"><div class="num">LAYER 4</div><div class="bd"><b>Claude &mdash; explains and answers, never calculates</b>
+    <p style="margin:1mm 0 0"><b>Explaining:</b> it receives the already&#8209;computed numbers and writes one sentence. Every figure in its output is checked against the figures it was given; if a number appears that was not supplied, the system falls back to a fixed template.</p>
+    <p style="margin:2mm 0 0"><b>Answering:</b> typed questions are handled by calling a fixed set of read&#8209;only functions &mdash; low stock, deadstock, pending payments, vendor performance, spend, price history, explain a recommendation. Claude picks which to call; the backend runs the query. It never writes SQL, which keeps one outlet&rsquo;s data out of another&rsquo;s answers and makes wrong&#8209;but&#8209;plausible totals impossible.</p></div></div>
+
+  <div class="foot"><span>AI Vendor, Procurement &amp; Inventory Platform &mdash; Architecture Detail</span><span>Page 6 of 7</span></div>
+</div>
+
+<!-- ============ PAGE 7 ============ -->
+<div class="page">
+  <h2><span class="n">6</span>One recommendation, end to end</h2>
+  <div class="mono">computed by layers 2 and 3:
+  paneer, Indiranagar     on hand 4.2 kg     used 6.8 kg/day
+  runs out in             0.6 days
+  vendor lead time (85th percentile)        2 days
+  suggested               22 kg from Sri Dairy
+  alternative             Milk Mart, 6% cheaper, late on 38% of orders
+  value at risk           Rs 6,100</div>
+  <div class="call">
+    <span class="lbl">What Claude turns that into</span>
+    <p>&ldquo;Paneer at Indiranagar will run out tomorrow &mdash; 4.2&nbsp;kg left against 6.8&nbsp;kg used per day. Order 22&nbsp;kg from Sri Dairy today; their lead time runs to 2 days at worst. Milk Mart is 6% cheaper but late on 38% of orders, which is why it is not the pick.&rdquo;</p>
+  </div>
+  <p class="note">Note what happened: the <i>decision</i> and every number came from layers 2 and 3. Claude only chose the words. The vendor was not picked for being cheapest either &mdash; rate, reliability, fill rate, quality and credit terms are combined into a weighted score whose contributions are shown on screen. If the owner accepts the card, it becomes a purchase order that remembers which recommendation created it, so the advice can be judged later.</p>
+
+  <h2 class="mt"><span class="n">7</span>Infrastructure</h2>
+  <table class="tight">
+    <tr><th style="width:38%">Concern</th><th style="width:36%">Service</th><th>Tier</th></tr>
+    <tr><td>Frontend hosting</td><td>Vercel</td><td>Free</td></tr>
+    <tr><td>Backend hosting</td><td>Render</td><td>Free</td></tr>
+    <tr><td>Database and login</td><td>Supabase (Postgres + Auth)</td><td>Free</td></tr>
+    <tr><td>Bill photos, PO PDFs</td><td>Supabase Storage</td><td>Free</td></tr>
+    <tr><td>Nightly and weekly jobs</td><td>Render Cron</td><td>Free</td></tr>
+    <tr><td>Email</td><td>Resend</td><td>Free</td></tr>
+    <tr><td>Error tracking</td><td>Sentry</td><td>Free</td></tr>
+    <tr><td>Language model</td><td>Claude API</td><td>Pay per use, small</td></tr>
+  </table>
+
+  <p class="note"><b>Two practical notes.</b> Supabase is used as managed Postgres, login and file storage only &mdash; the business logic stays in the Python backend, because the analytics and forecasting layers need to live together. And the free backend tier sleeps when idle, so a scheduled ping keeps it warm; without it, the first click of a live demo waits half a minute.</p>
+
+  <div class="foot"><span>Samiya Sehgal &middot; 17 September 2026 &middot; Version 1.0</span><span>Page 7 of 7</span></div>
+</div>
+
+</body>
+</html>

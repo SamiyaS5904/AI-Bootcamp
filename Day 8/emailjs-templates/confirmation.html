@@ -1,0 +1,105 @@
+<div
+  style="
+    font-family: system-ui, sans-serif, Arial;
+    font-size: 14px;
+    color: #333;
+    padding: 14px 8px;
+    background-color: #f5f5f5;
+  "
+>
+  <div style="max-width: 600px; margin: auto; background-color: #fff">
+    <div style="border-top: 6px solid #1f6f5c; padding: 16px">
+      <span
+        style="
+          font-size: 16px;
+          vertical-align: middle;
+          color: #1f6f5c;
+          margin-right: 8px;
+        "
+      >
+        <strong>{{clinic_name}}</strong>
+      </span>
+      <span
+        style="
+          font-size: 16px;
+          vertical-align: middle;
+          border-left: 1px solid #333;
+          padding-left: 8px;
+        "
+      >
+        <strong>Appointment Confirmed</strong>
+      </span>
+    </div>
+    <div style="padding: 0 16px">
+      <p>Hello {{patient_name}},</p>
+      <p>Your appointment is booked. Here are the details:</p>
+      <table style="width: 100%; border-collapse: collapse">
+        <tr style="vertical-align: top">
+          <td style="padding: 10px 8px 10px 0; color: #888; white-space: nowrap">
+            Doctor
+          </td>
+          <td style="padding: 10px 0; width: 100%">
+            <strong>{{doctor_name}}</strong>
+          </td>
+        </tr>
+        <tr style="vertical-align: top">
+          <td
+            style="
+              padding: 10px 8px 10px 0;
+              color: #888;
+              white-space: nowrap;
+              border-top: 1px solid #eee;
+            "
+          >
+            When
+          </td>
+          <td style="padding: 10px 0; width: 100%; border-top: 1px solid #eee">
+            <strong>{{appointment_time}}</strong>
+          </td>
+        </tr>
+      </table>
+      <div style="padding: 24px 0">
+        <div style="border-top: 2px solid #333"></div>
+      </div>
+      <div
+        style="
+          text-align: left;
+          font-size: 14px;
+          padding-bottom: 4px;
+          border-bottom: 2px solid #333;
+        "
+      >
+        <strong>What happens next</strong>
+      </div>
+      <table style="width: 100%; border-collapse: collapse">
+        <tr style="vertical-align: top">
+          <td style="padding: 16px 8px 0 0; color: #888; white-space: nowrap">
+            30 min before
+          </td>
+          <td style="padding: 16px 0 0; width: 100%">
+            We email you so you know when to leave.
+          </td>
+        </tr>
+        <tr style="vertical-align: top">
+          <td style="padding: 12px 8px 0 0; color: #888; white-space: nowrap">
+            5 min before
+          </td>
+          <td style="padding: 12px 0 0; width: 100%">
+            We email you again &mdash; you are next.
+          </td>
+        </tr>
+      </table>
+      <p style="padding-top: 24px">
+        Please arrive about 10 minutes early, and bring any previous
+        prescriptions or reports with you.
+      </p>
+      <p style="padding-bottom: 8px">&mdash; {{clinic_name}}</p>
+    </div>
+  </div>
+  <div style="max-width: 600px; margin: auto">
+    <p style="color: #999">
+      The email was sent to {{to_email}}<br />
+      You received this email because you booked an appointment
+    </p>
+  </div>
+</div>
