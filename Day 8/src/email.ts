@@ -31,10 +31,13 @@ const TEMPLATES = {
 
 export const CLINIC_NAME = "Model Town Clinic";
 
-/** What distinguishes the two reminders inside the shared template. */
-const REMINDER_COPY: Record<TimedKind, { when: string; headline: string }> = {
-  m30: { when: "30 minutes", headline: "Time to leave" },
-  m5: { when: "5 minutes", headline: "You are next" }
+/**
+ * The urgency line for each reminder. Only the wording lives here — the
+ * "in N minutes" figure is measured at send time, see timeUntil().
+ */
+const REMINDER_COPY: Record<TimedKind, { headline: string }> = {
+  m30: { headline: "Time to leave" },
+  m5: { headline: "You are next" }
 };
 
 /**
@@ -67,6 +70,25 @@ export function formatAppointmentTime(startsAt: string): string {
 }
 
 /**
+ * How long until the appointment, as finished text for {{when}}.
+ *
+ * Measured at the moment of sending rather than hardcoded per reminder. It
+ * matters: a reminder delayed inside the catch-up window would otherwise
+ * claim "30 minutes" while the appointment is really 27 minutes away, and an
+ * email that misstates the time is worse than no email.
+ *
+ * EmailJS templates cannot do arithmetic, so the subtraction has to happen
+ * here and arrive as a string.
+ */
+export function timeUntil(startsAt: string, from: number): string {
+  const minutes = Math.round((new Date(startsAt).getTime() - from) / 60_000);
+
+  if (minutes < 1) return "less than a minute";
+  if (minutes === 1) return "1 minute";
+  return `${minutes} minutes`;
+}
+
+/**
  * Send one email and report what happened. Never throws: the caller stores
  * the returned record either way, so a failure stays visible in the tracker
  * rather than disappearing into an unhandled rejection.
@@ -75,7 +97,8 @@ export async function sendEmail(
   appointment: Appointment,
   kind: ReminderKind
 ): Promise<SendRecord> {
-  const at = new Date().toISOString();
+  const sentAt = Date.now();
+  const at = new Date(sentAt).toISOString();
 
   // The dashboard template's "To Email" field must be {{to_email}} — EmailJS
   // only allows a changing recipient when it comes from a template value.
@@ -91,7 +114,9 @@ export async function sendEmail(
     kind === "confirmation" ? TEMPLATES.confirmation : TEMPLATES.reminder;
 
   if (kind !== "confirmation") {
-    Object.assign(values, REMINDER_COPY[kind]);
+    Object.assign(values, REMINDER_COPY[kind], {
+      when: timeUntil(appointment.startsAt, sentAt)
+    });
   }
 
   try {

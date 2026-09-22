@@ -5,7 +5,8 @@ Sent twice: 30 minutes before the appointment, and 5 minutes before.
 Its ID goes in `.env` as `VITE_EMAILJS_TEMPLATE_REMINDER`.
 
 One template serves both emails. `{{headline}}` and `{{when}}` are what differ —
-`src/email.ts` fills them in per send. That is also why two templates is enough for
+`src/email.ts` fills them in per send, with `{{when}}` measured against the clock at
+that moment rather than hardcoded. That is also why two templates is enough for
 all three emails, which matters because the free plan allows exactly two.
 
 ---

@@ -54,6 +54,11 @@ The reminder template also receives:
 | `headline` | `Time to leave` | `You are next` |
 | `when` | `30 minutes` | `5 minutes` |
 
+`when` is **measured when the email is sent**, not a fixed label — usually "30
+minutes" and "5 minutes", but "27 minutes" if the send was delayed. Templates cannot
+do arithmetic, so the subtraction happens in `timeUntil()` in `src/email.ts` and
+arrives here as finished text.
+
 A variable you reference in the dashboard but never send arrives empty. A variable you
 send but never reference is ignored. Both fail quietly, so the names have to match
 `src/email.ts` exactly.
