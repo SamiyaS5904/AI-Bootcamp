@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Restaurant Ops Hub Architecture</title>
+<style>
+  @page { size: A4; margin: 14mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #2a3140; font-size: 10pt; line-height: 1.5; margin: 0; }
+  h1, h2, h3 { margin: 0; color: #16233f; }
+  p { margin: 0 0 6px; }
+  .page-break { break-before: page; page-break-before: always; }
+  tr, .avoid, .diagram { break-inside: avoid; page-break-inside: avoid; }
+
+  .head { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 8px; border-bottom: 3px solid #16233f; margin-bottom: 12px; }
+  .head .kicker { font-size: 8.5pt; letter-spacing: 2.5px; text-transform: uppercase; color: #3b6fd8; font-weight: 700; }
+  .head h1 { font-size: 21pt; line-height: 1.15; margin-top: 2px; }
+  .head .sub { color: #6b7489; font-size: 10pt; }
+  .head .who { text-align: right; font-size: 10pt; color: #4a5468; line-height: 1.5; white-space: nowrap; }
+  .head .who b { color: #16233f; font-size: 11pt; }
+
+  h2 { font-size: 13pt; margin: 16px 0 7px; display: flex; align-items: center; gap: 8px; }
+  h2 .n { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: #16233f; color: #fff; font-size: 10pt; text-align: center; line-height: 22px; }
+  h2:first-of-type { margin-top: 4px; }
+
+  .diagram { border: 1px solid #e1e6ef; border-radius: 10px; padding: 10px; margin: 4px 0 4px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .caption { font-size: 8.8pt; color: #6b7489; text-align: center; margin-top: 4px; }
+
+  .parts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .part { border-radius: 9px; padding: 9px 12px; border: 1px solid; }
+  .part h3 { font-size: 10.5pt; margin-bottom: 2px; }
+  .part .tool { font-size: 8.5pt; font-weight: 600; opacity: 0.85; margin-top: 3px; }
+  .part p { margin: 0; font-size: 9.4pt; }
+  .fe { background: #f1faf5; border-color: #bfe3cf; } .fe h3, .fe .tool { color: #1f7a50; }
+  .be { background: #fff8ec; border-color: #f0d3a3; } .be h3, .be .tool { color: #a5650c; }
+  .db { background: #f8f2fe; border-color: #dcc6f3; } .db h3, .db .tool { color: #6b35ad; }
+  .ex { background: #f5f5f5; border-color: #dadada; } .ex h3, .ex .tool { color: #555; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.4pt; margin: 2px 0 4px; }
+  th, td { padding: 6px 9px; text-align: left; vertical-align: top; border-bottom: 1px solid #e8ecf3; }
+  th { color: #8a93a6; font-size: 7.8pt; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid #e1e6ef; }
+  td.k { font-weight: 700; color: #16233f; white-space: nowrap; }
+
+  .flow { display: flex; align-items: stretch; gap: 0; margin: 4px 0 10px; }
+  .flow .s { flex: 1; background: #f5f7fb; border-radius: 8px; padding: 7px 9px; font-size: 8.9pt; line-height: 1.35; }
+  .flow .s b { display: block; color: #16233f; font-size: 8pt; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+  .flow .arr { width: 18px; display: flex; align-items: center; justify-content: center; color: #8a93a6; font-size: 12pt; }
+  .flow-title { font-weight: 700; color: #16233f; margin: 8px 0 2px; }
+
+  .callout { background: #edf2fd; border-left: 4px solid #3b6fd8; border-radius: 6px; padding: 9px 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="head">
+  <div>
+    <div class="kicker">AI Bootcamp · Task 5 · System Architecture</div>
+    <h1>Restaurant Ops Hub</h1>
+    <div class="sub">One portal for every team and vendor, with an AI agent doing the follow-ups</div>
+  </div>
+  <div class="who"><b>Samiya Sehgal</b><br>URN: 2302662</div>
+</div>
+
+<h2><span class="n">1</span>What is it?</h2>
+<p>A restaurant chain works with <b>many teams</b> (outlets, purchase, maintenance, HR, owner) and <b>many vendors</b> (vegetables, maida, packaging, gas, electricity, IT, hiring agencies). Today all of this lives in phone contacts and notebooks. <b>Restaurant Ops Hub</b> puts every team and every vendor in <b>one portal</b>. An <b>AI agent</b> watches stock, contacts vendors on <b>WhatsApp</b>, and turns attendance into <b>salary</b> automatically.</p>
+
+<h2><span class="n">2</span>The big picture</h2>
+<div class="diagram">
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="12">
+  <defs>
+    <marker id="e" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7489"/></marker>
+    <marker id="s" markerWidth="10" markerHeight="10" refX="2" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6b7489"/></marker>
+  </defs>
+  <rect x="10" y="20" width="125" height="52" rx="8" fill="#e8f0fe" stroke="#3b6fd8"/><text x="72" y="42" text-anchor="middle" font-weight="700">Ops teams</text><text x="72" y="60" text-anchor="middle" font-size="10" fill="#4a5468">outlet · purchase · repair</text>
+  <rect x="10" y="98" width="125" height="52" rx="8" fill="#e8f0fe" stroke="#3b6fd8"/><text x="72" y="120" text-anchor="middle" font-weight="700">HR &amp; Owner</text><text x="72" y="138" text-anchor="middle" font-size="10" fill="#4a5468">payroll · approvals</text>
+  <rect x="170" y="20" width="140" height="130" rx="8" fill="#e6f6ee" stroke="#2e9e6a"/>
+  <text x="240" y="62" text-anchor="middle" font-weight="700" font-size="13">FRONTEND</text>
+  <text x="240" y="82" text-anchor="middle" font-size="10.5" fill="#4a5468">One portal</text>
+  <text x="240" y="98" text-anchor="middle" font-size="10.5" fill="#4a5468">"what users see"</text>
+  <text x="240" y="122" text-anchor="middle" font-size="10" fill="#2e9e6a">Next.js · Vercel</text>
+  <rect x="345" y="20" width="160" height="130" rx="8" fill="#fff4e0" stroke="#d98a1c"/>
+  <text x="425" y="62" text-anchor="middle" font-weight="700" font-size="13">BACKEND</text>
+  <text x="425" y="82" text-anchor="middle" font-size="10.5" fill="#4a5468">Server + AI agent</text>
+  <text x="425" y="98" text-anchor="middle" font-size="10.5" fill="#4a5468">"the brain"</text>
+  <text x="425" y="122" text-anchor="middle" font-size="10" fill="#a5650c">FastAPI · Render</text>
+  <rect x="540" y="20" width="150" height="130" rx="8" fill="#f3e8fd" stroke="#8a4fd1"/>
+  <text x="615" y="62" text-anchor="middle" font-weight="700" font-size="13">DATABASE</text>
+  <text x="615" y="82" text-anchor="middle" font-size="10.5" fill="#4a5468">vendors · stock · staff</text>
+  <text x="615" y="98" text-anchor="middle" font-size="10.5" fill="#4a5468">"the memory"</text>
+  <text x="615" y="122" text-anchor="middle" font-size="10" fill="#6b35ad">Supabase</text>
+  <line x1="135" y1="46" x2="168" y2="46" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e)"/>
+  <line x1="135" y1="124" x2="168" y2="124" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e)"/>
+  <line x1="312" y1="85" x2="343" y2="85" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s)" marker-end="url(#e)"/>
+  <line x1="507" y1="85" x2="538" y2="85" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s)" marker-end="url(#e)"/>
+  <rect x="150" y="200" width="125" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="212" y="221" text-anchor="middle" font-weight="700">Claude AI</text><text x="212" y="238" text-anchor="middle" font-size="10" fill="#4a5468">understands &amp; decides</text>
+  <rect x="290" y="200" width="125" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="352" y="221" text-anchor="middle" font-weight="700">WhatsApp</text><text x="352" y="238" text-anchor="middle" font-size="10" fill="#4a5468">talks to vendors</text>
+  <rect x="430" y="200" width="125" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="492" y="221" text-anchor="middle" font-weight="700">POS / Billing</text><text x="492" y="238" text-anchor="middle" font-size="10" fill="#4a5468">daily sales</text>
+  <rect x="570" y="200" width="120" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="630" y="221" text-anchor="middle" font-weight="700">Biometric</text><text x="630" y="238" text-anchor="middle" font-size="10" fill="#4a5468">staff attendance</text>
+  <rect x="290" y="275" width="125" height="38" rx="8" fill="#e8f0fe" stroke="#3b6fd8"/><text x="352" y="299" text-anchor="middle" font-weight="700">Vendors</text>
+  <line x1="230" y1="198" x2="370" y2="152" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s)" marker-end="url(#e)"/>
+  <line x1="365" y1="198" x2="400" y2="152" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s)" marker-end="url(#e)"/>
+  <line x1="480" y1="198" x2="450" y2="152" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e)"/>
+  <line x1="610" y1="198" x2="490" y2="152" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e)"/>
+  <line x1="352" y1="250" x2="352" y2="273" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s)" marker-end="url(#e)"/>
+</svg>
+<div class="caption">Users → Frontend → Backend → Database. Only the backend talks to the outside services.</div>
+</div>
+
+<h2><span class="n">3</span>The four parts</h2>
+<div class="parts">
+  <div class="part fe"><h3>Frontend: what users see</h3><p>One website / phone app for all teams. Each team sees its own screens: chat with the agent, stock, approvals, vendors, payroll.</p><div class="tool">Next.js · hosted on Vercel</div></div>
+  <div class="part be"><h3>Backend: the brain</h3><p>Checks who is logged in, runs the AI agent, follows the rules (like the ₹ order limit), sends WhatsApp messages and runs daily and monthly jobs.</p><div class="tool">Python FastAPI · hosted on Render</div></div>
+  <div class="part db"><h3>Database: the memory</h3><p>Stores vendors, items and stock, sales, orders, messages, employees, attendance and salaries.</p><div class="tool">Supabase (Postgres)</div></div>
+  <div class="part ex"><h3>Outside services: helpers</h3><p>Claude (thinks and decides), WhatsApp (talks to vendors), POS (sales data), biometric machine (attendance).</p><div class="tool">Called only by the backend</div></div>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page-break"></div>
+<h2><span class="n">4</span>A closer look</h2>
+<div class="diagram">
+<svg viewBox="0 0 700 430" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="12">
+  <defs>
+    <marker id="e2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7489"/></marker>
+    <marker id="s2" markerWidth="10" markerHeight="10" refX="2" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#6b7489"/></marker>
+  </defs>
+  <!-- people -->
+  <rect x="20" y="10" width="200" height="44" rx="8" fill="#e8f0fe" stroke="#3b6fd8"/><text x="120" y="37" text-anchor="middle" font-weight="700">Ops teams</text>
+  <rect x="240" y="10" width="200" height="44" rx="8" fill="#e8f0fe" stroke="#3b6fd8"/><text x="340" y="37" text-anchor="middle" font-weight="700">HR &amp; Owner</text>
+  <rect x="490" y="10" width="190" height="44" rx="8" fill="#e8f0fe" stroke="#3b6fd8"/><text x="585" y="37" text-anchor="middle" font-weight="700">Vendors</text>
+  <line x1="120" y1="54" x2="120" y2="82" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <line x1="340" y1="54" x2="340" y2="82" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <!-- frontend -->
+  <rect x="20" y="84" width="420" height="82" rx="10" fill="#e6f6ee" stroke="#2e9e6a"/>
+  <text x="230" y="104" text-anchor="middle" font-weight="700">FRONTEND: one portal</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="32" y="114" width="92" height="40" rx="6" fill="#fff" stroke="#2e9e6a"/><text x="78" y="138">Chat with AI</text>
+    <rect x="133" y="114" width="92" height="40" rx="6" fill="#fff" stroke="#2e9e6a"/><text x="179" y="138">Stock</text>
+    <rect x="234" y="114" width="92" height="40" rx="6" fill="#fff" stroke="#2e9e6a"/><text x="280" y="138">Approvals</text>
+    <rect x="335" y="114" width="92" height="40" rx="6" fill="#fff" stroke="#2e9e6a"/><text x="381" y="138">Payroll</text>
+  </g>
+  <!-- fe<->be -->
+  <line x1="200" y1="166" x2="200" y2="200" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <line x1="260" y1="200" x2="260" y2="166" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <text x="192" y="187" text-anchor="end" font-size="10" fill="#5b6475">requests</text>
+  <text x="268" y="187" font-size="10" fill="#5b6475">answers + live updates</text>
+  <!-- backend -->
+  <rect x="20" y="202" width="420" height="104" rx="10" fill="#fff4e0" stroke="#d98a1c"/>
+  <text x="230" y="222" text-anchor="middle" font-weight="700">BACKEND: the brain</text>
+  <g font-size="11" text-anchor="middle">
+    <rect x="32" y="232" width="125" height="62" rx="6" fill="#fff" stroke="#d98a1c"/><text x="94" y="256" font-weight="700">AI Agent</text><text x="94" y="274" font-size="10" fill="#4a5468">understands requests,</text><text x="94" y="287" font-size="10" fill="#4a5468">takes actions</text>
+    <rect x="167" y="232" width="125" height="62" rx="6" fill="#fff" stroke="#d98a1c"/><text x="229" y="256" font-weight="700">Rules</text><text x="229" y="274" font-size="10" fill="#4a5468">₹ order limit,</text><text x="229" y="287" font-size="10" fill="#4a5468">who can see what</text>
+    <rect x="302" y="232" width="126" height="62" rx="6" fill="#fff" stroke="#d98a1c"/><text x="365" y="256" font-weight="700">Scheduled jobs</text><text x="365" y="274" font-size="10" fill="#4a5468">nightly stock check,</text><text x="365" y="287" font-size="10" fill="#4a5468">monthly payroll</text>
+  </g>
+  <line x1="230" y1="306" x2="230" y2="334" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s2)" marker-end="url(#e2)"/>
+  <!-- db -->
+  <rect x="20" y="336" width="420" height="84" rx="10" fill="#f3e8fd" stroke="#8a4fd1"/>
+  <text x="230" y="356" text-anchor="middle" font-weight="700">DATABASE: the memory</text>
+  <g font-size="10.5" text-anchor="middle">
+    <rect x="32" y="366" width="92" height="42" rx="6" fill="#fff" stroke="#8a4fd1"/><text x="78" y="391">Vendors &amp; orders</text>
+    <rect x="133" y="366" width="92" height="42" rx="6" fill="#fff" stroke="#8a4fd1"/><text x="179" y="391">Stock &amp; sales</text>
+    <rect x="234" y="366" width="92" height="42" rx="6" fill="#fff" stroke="#8a4fd1"/><text x="280" y="391">Staff &amp; salary</text>
+    <rect x="335" y="366" width="92" height="42" rx="6" fill="#fff" stroke="#8a4fd1"/><text x="381" y="391">Messages log</text>
+  </g>
+  <!-- externals -->
+  <rect x="490" y="90" width="190" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="585" y="111" text-anchor="middle" font-weight="700">WhatsApp</text><text x="585" y="128" text-anchor="middle" font-size="10" fill="#4a5468">orders, reminders, replies</text>
+  <rect x="490" y="180" width="190" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="585" y="201" text-anchor="middle" font-weight="700">Claude AI</text><text x="585" y="218" text-anchor="middle" font-size="10" fill="#4a5468">thinks &amp; decides</text>
+  <rect x="490" y="250" width="190" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="585" y="271" text-anchor="middle" font-weight="700">POS / Billing</text><text x="585" y="288" text-anchor="middle" font-size="10" fill="#4a5468">daily sales</text>
+  <rect x="490" y="320" width="190" height="50" rx="8" fill="#efefef" stroke="#777"/><text x="585" y="341" text-anchor="middle" font-weight="700">Biometric machine</text><text x="585" y="358" text-anchor="middle" font-size="10" fill="#4a5468">staff check-in / out</text>
+  <line x1="570" y1="88" x2="570" y2="56" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <line x1="600" y1="56" x2="600" y2="88" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <path d="M442,222 L465,222 L465,115 L488,115" fill="none" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s2)" marker-end="url(#e2)"/>
+  <line x1="442" y1="240" x2="488" y2="210" stroke="#6b7489" stroke-width="1.6" marker-start="url(#s2)" marker-end="url(#e2)"/>
+  <line x1="488" y1="275" x2="442" y2="268" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+  <path d="M488,345 L465,345 L465,292 L442,292" fill="none" stroke="#6b7489" stroke-width="1.6" marker-end="url(#e2)"/>
+</svg>
+<div class="caption">Inside each layer: the screens, the backend's three jobs, and what the database stores.</div>
+</div>
+
+<h2><span class="n">5</span>How the frontend and backend talk</h2>
+<table>
+  <tr><th style="width:24%">Way</th><th>What happens</th><th style="width:30%">Example</th></tr>
+  <tr><td class="k">1. Request &amp; answer</td><td>The portal asks the backend over the internet (HTTPS) and gets an answer back in JSON. The login token proves who is asking.</td><td>Open the stock page → "Maida: 18 kg, 4 days left"</td></tr>
+  <tr><td class="k">2. Live chat</td><td>The agent's reply streams in word by word while it works.</td><td>"Checking stock… ordering 50 kg…"</td></tr>
+  <tr><td class="k">3. Live updates</td><td>The database pushes new items to the screen without a refresh.</td><td>A new order needing approval pops up</td></tr>
+  <tr><td class="k">4. Messages coming in</td><td>WhatsApp and the biometric machine send data <i>to</i> the backend by themselves.</td><td>Vendor replies "OK, 3 pm"</td></tr>
+</table>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page-break"></div>
+<h2><span class="n">6</span>Two examples, start to finish</h2>
+
+<div class="flow-title">"Gas cylinder is leaking at Model Town, get someone urgently"</div>
+<div class="flow avoid">
+  <div class="s"><b>Portal</b>Manager types it in the chat</div><div class="arr">→</div>
+  <div class="s"><b>AI agent</b>Finds the gas vendor for that outlet</div><div class="arr">→</div>
+  <div class="s"><b>WhatsApp</b>"Urgent leak, reply with a time"</div><div class="arr">→</div>
+  <div class="s"><b>Vendor</b>Replies "YES, 3 pm"</div><div class="arr">→</div>
+  <div class="s"><b>Portal</b>Slot booked, reminder sent at 2:30</div>
+</div>
+
+<div class="flow-title">"We might run out of maida"</div>
+<div class="flow avoid">
+  <div class="s"><b>Nightly job</b>Reads sales: momos selling fast</div><div class="arr">→</div>
+  <div class="s"><b>Forecast</b>Maida runs out in 4 days</div><div class="arr">→</div>
+  <div class="s"><b>Rules</b>Godown first, then order if needed</div><div class="arr">→</div>
+  <div class="s"><b>Under ₹ limit?</b>Yes: order sent on WhatsApp. No: owner approves</div><div class="arr">→</div>
+  <div class="s"><b>Database</b>Order and messages saved</div>
+</div>
+
+<h2><span class="n">7</span>Who uses the portal</h2>
+<table>
+  <tr><th style="width:22%">Team</th><th>What they do</th><th style="width:34%">Vendors they handle</th></tr>
+  <tr><td class="k">Outlet managers</td><td>Check stock, raise requests, chat with the agent</td><td>Vegetables, maida, dairy</td></tr>
+  <tr><td class="k">Purchase</td><td>Vendor list, rates, orders, godown transfers</td><td>Raw material, packaging, utensils</td></tr>
+  <tr><td class="k">Maintenance</td><td>Repair requests and slot bookings</td><td>Gas, electricity, equipment, IT</td></tr>
+  <tr><td class="k">HR</td><td>Attendance and payroll</td><td>Hiring and chef agencies</td></tr>
+  <tr><td class="k">Owner</td><td>Approves big orders, sets ₹ limits, sees all reports</td><td>All vendors</td></tr>
+</table>
+
+<h2><span class="n">8</span>Free tools</h2>
+<table>
+  <tr><th style="width:22%">Part</th><th>Tool</th><th style="width:40%">Note</th></tr>
+  <tr><td class="k">Frontend</td><td>Next.js on Vercel</td><td>Free hobby plan</td></tr>
+  <tr><td class="k">Backend</td><td>Python FastAPI on Render</td><td>Free tier (sleeps when idle)</td></tr>
+  <tr><td class="k">Database &amp; login</td><td>Supabase</td><td>Free up to 500 MB</td></tr>
+  <tr><td class="k">AI</td><td>Claude API</td><td>Starter credits, then pay-as-you-go</td></tr>
+  <tr><td class="k">Vendor messages</td><td>WhatsApp Cloud API</td><td>Free test number, small per-message cost</td></tr>
+</table>
+
+<div class="callout"><b>In one line:</b> one portal (Next.js) talks to one brain (FastAPI + Claude agent), which remembers everything in one database (Supabase) and handles every vendor through WhatsApp.</div>
+
+</body>
+</html>
