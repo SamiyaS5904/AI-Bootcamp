@@ -1,1 +1,8 @@
-Homeworks/
+# Ignore everything inside Homeworks...
+Homeworks/*
+# ...except this submission, which is tracked.
+!Homeworks/Session 7 - Vercel Endpoint/
+
+node_modules/
+.vercel
+.env
